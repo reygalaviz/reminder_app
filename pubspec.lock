@@ -62,13 +62,27 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_colorpicker:
-    dependency: "direct main"
+  flutter_keyboard_visibility:
+    dependency: transitive
     description:
-      name: flutter_colorpicker
+      name: flutter_keyboard_visibility
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "5.2.0"
+  flutter_keyboard_visibility_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_keyboard_visibility_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  flutter_keyboard_visibility_web:
+    dependency: transitive
+    description:
+      name: flutter_keyboard_visibility_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -81,6 +95,25 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_web_plugins:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  js:
+    dependency: transitive
+    description:
+      name: js
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.4"
+  keyboard_attachable:
+    dependency: "direct main"
+    description:
+      name: keyboard_attachable
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
   lints:
     dependency: transitive
     description:
@@ -116,6 +149,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.1"
+  plugin_platform_interface:
+    dependency: transitive
+    description:
+      name: plugin_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.2"
+  responsive_framework:
+    dependency: "direct main"
+    description:
+      name: responsive_framework
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -193,4 +240,4 @@ packages:
     version: "2.1.2"
 sdks:
   dart: ">=2.17.0 <3.0.0"
-  flutter: ">=1.17.0"
+  flutter: ">=3.0.0"
