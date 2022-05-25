@@ -75,4 +75,38 @@ class NotificationService {
       //notification tapped logic needs to be implemented still
     });
   }
+
+  void displayNotification({required String body}) async {
+    print("doing test");
+    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+        "Test_Channel 1", //Required for Android 8.0 or after
+        "Notif Memo", //Required for Android 8.0 or after
+        channelDescription:
+            "THis is for notifications created by the app", //Required for Android 8.0 or after
+        importance: Importance.max,
+        priority: Priority.high);
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails(
+      presentAlert:
+          false, // Present an alert when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
+      presentBadge:
+          true, // Present the badge number when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
+      presentSound:
+          true, // Play a sound when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
+      sound: null, // Specifics the file path to play (only from iOS 10 onwards)
+      badgeNumber: 15, // The application's icon badge number
+      //attachments: List<IOSNotificationAttachment>?, (only from iOS 10 onwards)
+      subtitle: "Your note", //Secondary description  (only from iOS 10 onwards)
+      //threadIdentifier: String? (only from iOS 10 onwards)
+    );
+    var platformChannelSpecifics = new NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+    await notifsPlugin.show(
+      0,
+      'You change your theme',
+      body,
+      platformChannelSpecifics,
+      payload: body,
+    );
+  }
 }

@@ -15,20 +15,13 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _configureLocalTimeZone();
   await NotificationService().init();
-  runApp(const MaterialApp(
-    home: AddNote(),
-    debugShowCheckedModeBanner: false,
-  ));
-
+  runApp(const MyApp());
 }
 
 Future<void> _configureLocalTimeZone() async {
   tz.initializeTimeZones();
   final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
   tz.setLocalLocation(tz.getLocation(timeZoneName!));
-}
-  void main() {
-  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -55,3 +48,4 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
     );
   }
+}
