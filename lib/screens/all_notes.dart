@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:reminder_app/screens/add_note.dart';
 import 'package:reminder_app/screens/home.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
+import 'package:reminder_app/controllers/Notifications.dart';
 
 class AllNotes extends StatefulWidget {
   const AllNotes({Key? key}) : super(key: key);
@@ -11,6 +12,8 @@ class AllNotes extends StatefulWidget {
   @override
   State<AllNotes> createState() => _AllNotesState();
 }
+
+String body = "";
 
 class _AllNotesState extends State<AllNotes> {
   //keyboard textfield attachment
@@ -32,9 +35,17 @@ class _AllNotesState extends State<AllNotes> {
                   child: Column(
                     children: [
                       TextFormField(
+                        onChanged: (value) => body = value,
                         autofocus: true,
                       ),
-                      SizedBox(height: 10)
+                      SizedBox(height: 10),
+                      TextButton(
+                        onPressed: () {
+                          print(body);
+                          NotificationService().displayNotification(body: body);
+                        },
+                        child: Text("Submit"),
+                      )
                     ],
                   ),
                 ),

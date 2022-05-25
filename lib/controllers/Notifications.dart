@@ -2,6 +2,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:image/image.dart' as image;
 import 'package:path_provider/path_provider.dart';
+import 'package:reminder_app/screens/home.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:http/http.dart' as http;
 
@@ -41,8 +42,8 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   Future<void> init() async {
-    final AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('icon');
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('gradient');
 
     final IOSInitializationSettings initializationSettingsIOS =
         IOSInitializationSettings(
@@ -77,15 +78,14 @@ class NotificationService {
   }
 
   void displayNotification({required String body}) async {
-    print("doing test");
-    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
         "Test_Channel 1", //Required for Android 8.0 or after
         "Notif Memo", //Required for Android 8.0 or after
         channelDescription:
             "THis is for notifications created by the app", //Required for Android 8.0 or after
         importance: Importance.max,
         priority: Priority.high);
-    var iOSPlatformChannelSpecifics = new IOSNotificationDetails(
+    var iOSPlatformChannelSpecifics = const IOSNotificationDetails(
       presentAlert:
           false, // Present an alert when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
       presentBadge:
@@ -98,12 +98,12 @@ class NotificationService {
       subtitle: "Your note", //Secondary description  (only from iOS 10 onwards)
       //threadIdentifier: String? (only from iOS 10 onwards)
     );
-    var platformChannelSpecifics = new NotificationDetails(
+    var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
     await notifsPlugin.show(
       0,
-      'You change your theme',
+      'Reminder:',
       body,
       platformChannelSpecifics,
       payload: body,
