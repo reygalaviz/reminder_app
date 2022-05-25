@@ -21,16 +21,16 @@ class _AllNotesState extends State<AllNotes> {
     await showModalBottomSheet(
         enableDrag: false,
         isScrollControlled: true,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
         context: context,
         builder: (context) {
           return SingleChildScrollView(
             reverse: true,
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height / 2,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
+                padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
                 child: Form(
                   child: Column(
                     children: [
@@ -38,13 +38,12 @@ class _AllNotesState extends State<AllNotes> {
                         onChanged: (value) => body = value,
                         autofocus: true,
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       TextButton(
                         onPressed: () {
-                          print(body);
                           NotificationService().displayNotification(body: body);
                         },
-                        child: Text("Submit"),
+                        child: const Text("Submit"),
                       )
                     ],
                   ),
@@ -59,7 +58,7 @@ class _AllNotesState extends State<AllNotes> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Center(
+      body: const Center(
           child: Text(
         'All Notes',
         style: TextStyle(
@@ -67,12 +66,12 @@ class _AllNotesState extends State<AllNotes> {
       )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
         backgroundColor: Colors.grey[900],
         foregroundColor: Colors.white,
         onPressed: () {
           return _showModal();
         },
+        child: const Icon(Icons.add),
       ),
     );
   }

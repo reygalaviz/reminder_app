@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:reminder_app/screens/home.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:http/http.dart' as http;
+import 'package:reminder_app/main.dart';
 
 String? selectedNotificationPayload;
 
@@ -72,7 +73,7 @@ class NotificationService {
             iOS: initializationSettingsIOS);
     await notifsPlugin.initialize(initializationSettings,
         onSelectNotification: (String? payload) async {
-      // TODO
+      openMain(payload: payload);
       //notification tapped logic needs to be implemented still
     });
   }

@@ -18,6 +18,13 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+Future<void> openMain({required String? payload}) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await _configureLocalTimeZone();
+  await NotificationService().init();
+  runApp(const MyApp());
+}
+
 Future<void> _configureLocalTimeZone() async {
   tz.initializeTimeZones();
   final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
