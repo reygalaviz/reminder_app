@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
           const ResponsiveBreakpoint.autoScale(2460, name: "4K"),
         ],
       ),
-      // theme: ThemeData.dark(),
+      theme: ThemeData.dark(),
       home: Home(),
       debugShowCheckedModeBanner: false,
     );

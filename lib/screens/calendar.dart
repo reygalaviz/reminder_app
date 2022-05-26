@@ -28,18 +28,10 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[900],
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text('Calendar',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6!
-                    .copyWith(color: Colors.tealAccent[100])),
-          ),
+          SizedBox(height: 20),
           CalendarTimeline(
             showYears: true,
             initialDate: _selectedDate,
@@ -72,11 +64,6 @@ class _CalendarState extends State<Calendar> {
                 onPressed: () => setState(() => _resetSelectedDate()),
               )),
           SizedBox(height: 20),
-          Center(
-              child: Text(
-            'Selected date is $_selectedDate',
-            style: TextStyle(color: Colors.white),
-          ))
         ],
       ),
     );
