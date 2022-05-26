@@ -42,6 +42,7 @@ class _AllNotesState extends State<AllNotes> {
                       TextButton(
                         onPressed: () {
                           NotificationService().displayNotification(body: body);
+                          Navigator.pop(context);
                         },
                         child: const Text("Submit"),
                       )
