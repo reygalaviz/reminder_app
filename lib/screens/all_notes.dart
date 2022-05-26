@@ -5,6 +5,7 @@ import 'package:reminder_app/screens/add_note.dart';
 import 'package:reminder_app/screens/home.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:reminder_app/controllers/Notifications.dart';
+import 'package:reminder_app/main.dart' as count;
 
 class AllNotes extends StatefulWidget {
   const AllNotes({Key? key}) : super(key: key);
@@ -41,8 +42,10 @@ class _AllNotesState extends State<AllNotes> {
                       const SizedBox(height: 10),
                       TextButton(
                         onPressed: () {
-                          NotificationService().displayNotification(body: body);
+                          NotificationService().displayNotification(
+                              body: body, channel: count.channelCounter);
                           Navigator.pop(context);
+                          count.channelCounter++;
                         },
                         child: const Text("Submit"),
                       )
