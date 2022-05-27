@@ -5,6 +5,7 @@ import 'package:reminder_app/screens/add_note.dart';
 import 'package:reminder_app/screens/home.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:reminder_app/controllers/Notifications.dart';
+import 'package:reminder_app/main.dart' as count;
 
 class AllNotes extends StatefulWidget {
   const AllNotes({Key? key}) : super(key: key);
@@ -14,7 +15,6 @@ class AllNotes extends StatefulWidget {
 }
 
 class _AllNotesState extends State<AllNotes> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

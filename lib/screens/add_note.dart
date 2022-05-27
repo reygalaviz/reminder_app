@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:reminder_app/controllers/Notifications.dart';
+import 'package:reminder_app/main.dart' as count;
 
 class AddNote extends StatefulWidget {
   const AddNote({Key? key}) : super(key: key);
@@ -37,7 +38,8 @@ class _AddNoteState extends State<AddNote> {
                   ),
                   TextButton(
                     onPressed: () {
-                      NotificationService().displayNotification(body: body);
+                      NotificationService().displayNotification(
+                          body: body, channel: count.channelCounter);
                       Navigator.pop(context);
                     },
                     child: const Text("Submit"),
