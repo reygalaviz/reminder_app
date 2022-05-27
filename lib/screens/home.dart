@@ -10,6 +10,7 @@ import 'package:reminder_app/screens/add_note.dart';
 import 'package:reminder_app/screens/all_notes.dart';
 import 'package:reminder_app/screens/calendar.dart';
 import 'package:reminder_app/controllers/Notifications.dart';
+import 'package:reminder_app/screens/settings.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -34,16 +35,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Reminders'),
-        actions: <Widget>[
-          Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: IconButton(
-                  onPressed: () => showSettingsModal(),
-                  icon: Icon(Icons.settings)))
-        ],
-      ),
+      appBar: _appBar(),
       resizeToAvoidBottomInset: false,
       body: PageView(
         controller: pageController,
@@ -97,6 +89,17 @@ class _HomeState extends State<Home> {
     );
   }
 
+  _appBar() {
+    return AppBar(
+      actions: [
+        IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+        SizedBox(width: 20),
+        IconButton(
+            onPressed: () => showSettingsModal(), icon: Icon(Icons.settings)),
+      ],
+    );
+  }
+
   void showSettingsModal() {
     showModalBottomSheet(
         context: context,
@@ -105,7 +108,7 @@ class _HomeState extends State<Home> {
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
         builder: (context) {
-          return Container(height: 850, child: Column());
+          return SettingsTab();
         });
   }
 
@@ -118,32 +121,7 @@ class _HomeState extends State<Home> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
         context: context,
         builder: (context) {
-          return SingleChildScrollView(
-            reverse: true,
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height / 2,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
-                child: Form(
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        onChanged: (value) => body = value,
-                        autofocus: true,
-                      ),
-                      const SizedBox(height: 10),
-                      TextButton(
-                        onPressed: () {
-                          NotificationService().displayNotification(body: body);
-                        },
-                        child: const Text("Submit"),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
+          return AddNote();
         });
   }
 }
