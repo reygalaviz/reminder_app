@@ -10,7 +10,11 @@ import 'package:reminder_app/screens/add_note.dart';
 import 'package:reminder_app/screens/all_notes.dart';
 import 'package:reminder_app/screens/calendar.dart';
 import 'package:reminder_app/controllers/Notifications.dart';
+
 import 'package:reminder_app/screens/settings.dart';
+
+import 'package:reminder_app/main.dart' as count;
+
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -121,7 +125,9 @@ class _HomeState extends State<Home> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
         context: context,
         builder: (context) {
+
           return AddNote();
+
         });
   }
 }
