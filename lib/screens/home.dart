@@ -1,6 +1,4 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:reminder_app/models/color_data.dart';
 import 'package:reminder_app/models/note_data.dart';
@@ -9,12 +7,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:reminder_app/screens/add_note.dart';
 import 'package:reminder_app/screens/all_notes.dart';
 import 'package:reminder_app/screens/calendar.dart';
-import 'package:reminder_app/controllers/Notifications.dart';
+import 'package:reminder_app/controllers/notifications.dart';
 
 import 'package:reminder_app/screens/settings.dart';
 
 import 'package:reminder_app/main.dart' as count;
-
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -125,41 +122,7 @@ class _HomeState extends State<Home> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
         context: context,
         builder: (context) {
-<<<<<<< HEAD
-          return SingleChildScrollView(
-            reverse: true,
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height / 2,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
-                child: Form(
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        onChanged: (value) => body = value,
-                        autofocus: true,
-                      ),
-                      const SizedBox(height: 10),
-                      TextButton(
-                        onPressed: () {
-                          NotificationService().displayNotification(
-                              body: body, channel: count.channelCounter);
-                          count.channelCounter++;
-                          Navigator.pop(context);
-                        },
-                        child: const Text("Submit"),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-=======
-
           return AddNote();
-
->>>>>>> 519124fe6d54674a44d73b4ea6824934af597b4d
         });
   }
 }

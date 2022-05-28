@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:reminder_app/screens/add_note.dart';
 import 'package:reminder_app/screens/home.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
-import 'package:reminder_app/controllers/Notifications.dart';
+import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/main.dart' as count;
 
 class AllNotes extends StatefulWidget {
