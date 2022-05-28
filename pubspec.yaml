@@ -33,6 +33,7 @@ dependencies:
   responsive_framework: ^0.2.0
   keyboard_attachable: ^2.1.0
   calendar_timeline: ^1.0.4
+  settings_ui: ^2.0.2
   
   
   
@@ -52,6 +53,7 @@ dependencies:
   path_provider: ^2.0.10
   rxdart: ^0.27.3
   http: ^0.13.4
+  shared_preferences_web: ^2.0.4
 
 
 dev_dependencies:
