@@ -10,6 +10,6 @@ class EditNote extends StatefulWidget {
 class _EditNoteState extends State<EditNote> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }

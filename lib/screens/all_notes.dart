@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:reminder_app/screens/add_note.dart';
-import 'package:reminder_app/screens/home.dart';
-import 'package:keyboard_attachable/keyboard_attachable.dart';
-import 'package:reminder_app/controllers/notifications.dart';
-import 'package:reminder_app/main.dart' as count;
+//import 'package:cupertino_icons/cupertino_icons.dart';
+//import 'package:reminder_app/screens/add_note.dart';
+//import 'package:reminder_app/screens/home.dart';
+//import 'package:keyboard_attachable/keyboard_attachable.dart';
+//import 'package:reminder_app/controllers/notifications.dart';
+//import 'package:reminder_app/main.dart' as count;
 
 class AllNotes extends StatefulWidget {
   const AllNotes({Key? key}) : super(key: key);
@@ -17,9 +16,9 @@ class AllNotes extends StatefulWidget {
 class _AllNotesState extends State<AllNotes> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       resizeToAvoidBottomInset: false,
-      body: const Center(
+      body: Center(
           child: Text(
         'All Notes',
         style: TextStyle(

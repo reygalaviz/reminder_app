@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:keyboard_attachable/keyboard_attachable.dart';
+//import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/main.dart' as count;
 
@@ -17,7 +17,7 @@ class _AddNoteState extends State<AddNote> {
     return LayoutBuilder(
       builder: (context, constraints) => SingleChildScrollView(
         reverse: true,
-        child: Container(
+        child: SizedBox(
           height: constraints.maxHeight * .7,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
@@ -28,8 +28,8 @@ class _AddNoteState extends State<AddNote> {
                     maxLines: 3,
                     autocorrect: false,
                     enableSuggestions: false,
-                    style: TextStyle(decoration: TextDecoration.none),
-                    decoration: InputDecoration(
+                    style: const TextStyle(decoration: TextDecoration.none),
+                    decoration: const InputDecoration(
                       hintText: 'Write Reminder',
                       border: InputBorder.none,
                     ),

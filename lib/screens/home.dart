@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:reminder_app/models/color_data.dart';
-import 'package:reminder_app/models/note_data.dart';
-import 'package:reminder_app/models/datetime_data.dart';
+//import 'package:flutter/services.dart';
+//import 'package:reminder_app/models/color_data.dart';
+//import 'package:reminder_app/models/note_data.dart';
+//import 'package:reminder_app/models/datetime_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:reminder_app/screens/add_note.dart';
 import 'package:reminder_app/screens/all_notes.dart';
 import 'package:reminder_app/screens/calendar.dart';
-import 'package:reminder_app/controllers/notifications.dart';
-
+//import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/screens/settings.dart';
-
-import 'package:reminder_app/main.dart' as count;
+//import 'package:reminder_app/main.dart' as count;
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -40,8 +38,8 @@ class _HomeState extends State<Home> {
       resizeToAvoidBottomInset: false,
       body: PageView(
         controller: pageController,
-        physics: NeverScrollableScrollPhysics(),
-        children: [
+        physics: const NeverScrollableScrollPhysics(),
+        children: const [
           AllNotes(),
           Calendar(),
         ],
@@ -57,7 +55,7 @@ class _HomeState extends State<Home> {
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),
@@ -67,7 +65,7 @@ class _HomeState extends State<Home> {
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             //change nav bar top radius
             topLeft: Radius.circular(20.0),
             topRight: Radius.circular(20.0),
@@ -82,7 +80,7 @@ class _HomeState extends State<Home> {
             ],
             currentIndex: _selectedIndex,
             selectedItemColor: Colors.white,
-            unselectedItemColor: Color.fromARGB(255, 122, 122, 122),
+            unselectedItemColor: const Color.fromARGB(255, 122, 122, 122),
             onTap: onTapped,
           ),
         ),
@@ -93,10 +91,11 @@ class _HomeState extends State<Home> {
   _appBar() {
     return AppBar(
       actions: [
-        IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-        SizedBox(width: 20),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+        const SizedBox(width: 20),
         IconButton(
-            onPressed: () => showSettingsModal(), icon: Icon(Icons.settings)),
+            onPressed: () => showSettingsModal(),
+            icon: const Icon(Icons.settings)),
       ],
     );
   }
@@ -109,7 +108,7 @@ class _HomeState extends State<Home> {
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
         builder: (context) {
-          return SettingsTab();
+          return const SettingsTab();
         });
   }
 
@@ -122,7 +121,7 @@ class _HomeState extends State<Home> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
         context: context,
         builder: (context) {
-          return AddNote();
+          return const AddNote();
         });
   }
 }
