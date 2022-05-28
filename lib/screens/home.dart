@@ -137,6 +137,7 @@ class _HomeState extends State<Home> {
                         onPressed: () {
                           NotificationService().displayNotification(
                               body: body, channel: count.channelCounter);
+                          count.channelCounter++;
                           Navigator.pop(context);
                         },
                         child: const Text("Submit"),
