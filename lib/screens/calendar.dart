@@ -43,8 +43,8 @@ class _CalendarState extends State<Calendar> {
               });
             },
             leftMargin: 20,
-            monthColor: Colors.white70,
-            dayColor: Colors.teal[200],
+            monthColor: Theme.of(context).primaryColor,
+            dayColor: Theme.of(context).primaryColor,
             dayNameColor: Color(0xFF333A47),
             activeDayColor: Colors.white,
             activeBackgroundDayColor: Colors.redAccent[100],
@@ -60,7 +60,7 @@ class _CalendarState extends State<Calendar> {
                     backgroundColor:
                         MaterialStateProperty.all(Colors.teal[200])),
                 child:
-                    Text('Reset', style: TextStyle(color: Color(0xFF333A47))),
+                    Text('Today', style: TextStyle(color: Color(0xFF333A47))),
                 onPressed: () => setState(() => _resetSelectedDate()),
               )),
           SizedBox(height: 20),

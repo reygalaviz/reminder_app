@@ -33,7 +33,10 @@ dependencies:
   responsive_framework: ^0.2.0
   keyboard_attachable: ^2.1.0
   calendar_timeline: ^1.0.4
-  settings_ui: ^2.0.2
+  
+  shared_preferences: ^2.0.15
+  provider: ^6.0.3
+  switcher_button: ^0.0.4
   
   
   
