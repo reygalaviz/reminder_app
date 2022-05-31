@@ -1,4 +1,8 @@
+
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 import 'package:reminder_app/screens/home.dart';
+import 'package:reminder_app/themes/theme_model.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +11,7 @@ import 'package:reminder_app/controllers/notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:reminder_app/themes/theme_shared_prefs.dart';
 
 int channelCounter = 0;
 Future<void> main() async {
@@ -35,23 +40,30 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-    return MaterialApp(
-      builder: (context, child) => ResponsiveWrapper.builder(
-        BouncingScrollWrapper.builder(context, child!),
-        maxWidth: 1200,
-        minWidth: 450,
-        defaultScale: true,
-        breakpoints: [
-          const ResponsiveBreakpoint.resize(450, name: MOBILE),
-          const ResponsiveBreakpoint.autoScale(800, name: TABLET),
-          const ResponsiveBreakpoint.autoScale(1000, name: TABLET),
-          const ResponsiveBreakpoint.resize(1200, name: DESKTOP),
-          const ResponsiveBreakpoint.autoScale(2460, name: "4K"),
-        ],
-      ),
-      theme: ThemeData.dark(),
-      home: const Home(),
-      debugShowCheckedModeBanner: false,
-    );
+    return ChangeNotifierProvider(
+        create: (_) => ThemeModel(),
+        child: Consumer(
+          builder: (context, ThemeModel themeModel, child) => MaterialApp(
+            builder: (context, child) => ResponsiveWrapper.builder(
+              BouncingScrollWrapper.builder(context, child!),
+              maxWidth: 1200,
+              minWidth: 450,
+              defaultScale: true,
+              breakpoints: [
+                const ResponsiveBreakpoint.resize(450, name: MOBILE),
+                const ResponsiveBreakpoint.autoScale(800, name: TABLET),
+                const ResponsiveBreakpoint.autoScale(1000, name: TABLET),
+                const ResponsiveBreakpoint.resize(1200, name: DESKTOP),
+                const ResponsiveBreakpoint.autoScale(2460, name: "4K"),
+              ],
+            ),
+            theme: themeModel.isDark
+                ? ThemeModel.darkTheme
+                : ThemeModel.lightTheme,
+            home: Home(),
+            debugShowCheckedModeBanner: false,
+          ),
+        ));
+
   }
 }
