@@ -1,14 +1,13 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:reminder_app/models/color_data.dart';
-import 'package:reminder_app/models/note_data.dart';
-import 'package:reminder_app/models/datetime_data.dart';
+//import 'package:flutter/services.dart';
+//import 'package:reminder_app/models/color_data.dart';
+//import 'package:reminder_app/models/note_data.dart';
+//import 'package:reminder_app/models/datetime_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:reminder_app/screens/add_note.dart';
 import 'package:reminder_app/screens/all_notes.dart';
 import 'package:reminder_app/screens/calendar.dart';
+
 import 'package:reminder_app/controllers/Notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder_app/screens/settings.dart';
@@ -16,6 +15,10 @@ import 'package:reminder_app/main.dart' as count;
 import 'package:reminder_app/themes/theme_shared_prefs.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:switcher_button/switcher_button.dart';
+//import 'package:reminder_app/controllers/notifications.dart';
+import 'package:reminder_app/screens/settings.dart';
+//import 'package:reminder_app/main.dart' as count;
+
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -39,6 +42,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
     return Consumer(
       builder: (context, ThemeModel themeNotifier, child) => Scaffold(
         appBar: AppBar(
@@ -46,6 +50,7 @@ class _HomeState extends State<Home> {
           title: Text(
             themeNotifier.isDark ? 'Dark Theme' : 'Light Theme',
             style: TextStyle(color: Theme.of(context).primaryColor),
+
           ),
           actions: [
             SwitcherButton(
@@ -63,6 +68,7 @@ class _HomeState extends State<Home> {
                 icon: Icon(Icons.settings)),
           ],
         ),
+
         resizeToAvoidBottomInset: false,
         body: PageView(
           controller: pageController,
@@ -115,11 +121,13 @@ class _HomeState extends State<Home> {
               // unselectedItemColor: Color.fromARGB(255, 122, 122, 122),
               onTap: onTapped,
             ),
+
           ),
         ),
       ),
     );
   }
+
 
   void showSettingsModal() {
     showModalBottomSheet(
@@ -129,7 +137,7 @@ class _HomeState extends State<Home> {
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
         builder: (context) {
-          return SettingsTab();
+          return const SettingsTab();
         });
   }
 
@@ -142,7 +150,10 @@ class _HomeState extends State<Home> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
         context: context,
         builder: (context) {
-          return AddNote();
+
+
+          return const AddNote();
+
         });
   }
 }
