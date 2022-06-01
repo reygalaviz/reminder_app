@@ -16,6 +16,7 @@ import 'package:reminder_app/themes/theme_shared_prefs.dart';
 import 'package:reminder_app/Screens/all_notes.dart' as notes1;
 import 'package:localstore/localstore.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
+import 'package:intl/date_symbol_data_local.dart';
 
 int channelCounter = 0;
 Future<void> main() async {
@@ -26,7 +27,7 @@ Future<void> main() async {
   if (items != null) {
     channelCounter = items.length;
   }
-  runApp(const MyApp());
+  initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 
 Future<void> openMain({required String? payload}) async {

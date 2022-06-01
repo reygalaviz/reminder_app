@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter/services.dart';
-//import 'package:reminder_app/models/color_data.dart';
-//import 'package:reminder_app/models/note_data.dart';
-//import 'package:reminder_app/models/datetime_data.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:reminder_app/models/color_data.dart';
+import 'package:reminder_app/models/note_data.dart';
+import 'package:reminder_app/models/datetime_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:reminder_app/screens/add_note.dart';
 import 'package:reminder_app/screens/all_notes.dart';
 import 'package:reminder_app/screens/calendar.dart';
-
 import 'package:reminder_app/controllers/Notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder_app/screens/settings.dart';
@@ -15,6 +16,7 @@ import 'package:reminder_app/main.dart' as count;
 import 'package:reminder_app/themes/theme_shared_prefs.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:switcher_button/switcher_button.dart';
+import 'package:reminder_app/screens/table_calendar.dart';
 //import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/screens/settings.dart';
 //import 'package:reminder_app/main.dart' as count;
@@ -75,7 +77,7 @@ class _HomeState extends State<Home> {
           physics: const NeverScrollableScrollPhysics(),
           children: [
             AllNotes(),
-            Calendar(),
+            TableCalendar(),
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
