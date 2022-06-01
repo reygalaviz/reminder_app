@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder_app/screens/home.dart';
@@ -5,9 +6,8 @@ import 'package:reminder_app/themes/theme_model.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:reminder_app/screens/add_note.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:reminder_app/controllers/Notifications.dart';
+//import 'package:reminder_app/screens/add_note.dart';
+import 'package:reminder_app/controllers/notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
@@ -41,7 +41,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-
     return ChangeNotifierProvider(
         create: (_) => ThemeModel(),
         child: Consumer(
@@ -66,5 +65,6 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
           ),
         ));
+
   }
 }

@@ -1,16 +1,14 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:reminder_app/models/color_data.dart';
+//import 'package:reminder_app/models/color_data.dart';
 
-class NoteData_ extends StatefulWidget {
-  const NoteData_({Key? key}) : super(key: key);
+class NoteData extends StatefulWidget {
+  const NoteData({Key? key}) : super(key: key);
 
   @override
-  State<NoteData_> createState() => _NoteData_State();
+  State<NoteData> createState() => _NoteDataState();
 }
 
-class _NoteData_State extends State<NoteData_> {
+class _NoteDataState extends State<NoteData> {
   final myController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -20,7 +18,7 @@ class _NoteData_State extends State<NoteData_> {
       keyboardType: TextInputType.multiline,
       minLines: 1,
       maxLines: 3,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: InputBorder.none,
         focusedBorder: InputBorder.none,
         contentPadding: EdgeInsets.all(8.0),
