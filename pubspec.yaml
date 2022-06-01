@@ -58,6 +58,8 @@ dependencies:
   http: ^0.13.4
   shared_preferences_web: ^2.0.4
   timezone: ^0.8.0
+  localstore: ^1.2.3
+  async: ^2.8.2
 
 
 dev_dependencies:

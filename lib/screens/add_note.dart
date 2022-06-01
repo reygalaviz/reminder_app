@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:reminder_app/controllers/Notifications.dart';
-//import 'package:keyboard_attachable/keyboard_attachable.dart';
+import 'package:localstore/localstore.dart';
 import 'package:reminder_app/controllers/notifications.dart';
+//import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:reminder_app/main.dart' as count;
+import 'package:reminder_app/models/note_data_store.dart' as store;
 
 class AddNote extends StatefulWidget {
   const AddNote({Key? key}) : super(key: key);
@@ -13,6 +16,7 @@ class AddNote extends StatefulWidget {
 
 class _AddNoteState extends State<AddNote> {
   String body = '';
+  var generator = Random(5);
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -39,6 +43,31 @@ class _AddNoteState extends State<AddNote> {
                   ),
                   TextButton(
                     onPressed: () {
+                      /*int id = generator.nextInt(150);
+                      String title = "Test";
+                      DateTime date = new DateTime(2022, 5, 31, 4, 50);
+                      Color color = Color.fromARGB(199, 148, 84, 84);
+                      String priority = "high";
+
+                      store.writeData(
+                          title, body, date, priority, color);*/
+                      final id =
+                          Localstore.instance.collection("notes").doc().id;
+                      final date = DateTime.now().toIso8601String();
+                      Color color = Color.fromARGB(199, 148, 84, 84);
+                      String color1 = color.toString();
+                      String title = "Test";
+                      String priority = "high";
+                      final item = store.Notes(
+                          id: id,
+                          title: title,
+                          data: body,
+                          date: date,
+                          priority: priority,
+                          color: color1);
+                      item.save();
+                      count.channelCounter++;
+
                       NotificationService().displayNotification(
                           body: body, channel: count.channelCounter);
                       Navigator.pop(context);
