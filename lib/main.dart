@@ -12,13 +12,14 @@ import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:reminder_app/themes/theme_shared_prefs.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 int channelCounter = 0;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _configureLocalTimeZone();
   await NotificationService().init();
-  runApp(const MyApp());
+  initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 
 Future<void> openMain({required String? payload}) async {
