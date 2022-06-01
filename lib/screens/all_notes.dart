@@ -9,6 +9,7 @@ import 'dart:async';
 //import 'package:keyboard_attachable/keyboard_attachable.dart';
 //import 'package:reminder_app/controllers/notifications.dart';
 //import 'package:reminder_app/main.dart' as count;
+int initNumber = 0;
 
 class AllNotes extends StatefulWidget {
   const AllNotes({Key? key}) : super(key: key);
@@ -53,6 +54,7 @@ class _AllNotesState extends State<AllNotes> {
 
   @override
   Widget build(BuildContext context) {
+    initNumber = _items.keys.length;
     print(_items);
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -61,13 +63,31 @@ class _AllNotesState extends State<AllNotes> {
             itemBuilder: (context, index) {
               final key = _items.keys.elementAt(index);
               final item = _items[key]!;
-              return Center(
-                  child: Text(
-                item.data,
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 0, 0, 0)),
-              ));
+              return Card(
+                child: ListTile(
+                    title: Text(
+                      item.title,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 0, 0, 0)),
+                    ),
+                    onTap: () {
+                      //Insert Function here TODO editing
+                      print("add function here");
+                    },
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete),
+
+                      onPressed: () {
+                        setState(() {
+                          item.delete();
+                          _items.remove(item.id);
+                        });
+                      }, //Center(
+                      //  child: Text(
+                      //item.data,
+                    )),
+              );
             }
 
             /*Center(
