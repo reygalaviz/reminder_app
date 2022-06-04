@@ -3,6 +3,7 @@ import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
 import 'dart:async';
 import 'package:reminder_app/screens/all_notes.dart' as note;
+import 'package:reminder_app/screens/home.dart';
 
 class EditNote extends StatefulWidget {
   const EditNote({Key? key, required this.id}) : super(key: key);
@@ -12,7 +13,7 @@ class EditNote extends StatefulWidget {
 }
 
 class _EditNoteState extends State<EditNote> {
-  StreamSubscription<Map<String, dynamic>>? _subscription;
+  // StreamSubscription<Map<String, dynamic>>? _subscription;
   final _db = Localstore.instance;
   final _items = <String, store.Notes>{};
   var item;
@@ -20,12 +21,18 @@ class _EditNoteState extends State<EditNote> {
   void initState() {
     super.initState();
     _db.collection('notes').get().then((value) {
-      _subscription = _db.collection('notes').stream.listen((event) {
-        setState(() {
-          final item = store.Notes.fromMap(event);
+      setState(() {
+        value?.entries.forEach((element) {
+          final item = store.Notes.fromMap(element.value);
           _items.putIfAbsent(item.id, () => item);
         });
       });
+      // _subscription = _db.collection('notes').stream.listen((event) {
+      //   setState(() {
+      //     final item = store.Notes.fromMap(event);
+      //     _items.putIfAbsent(item.id, () => item);
+      // });
+      // });
     });
   }
 
@@ -74,40 +81,36 @@ class _EditNoteState extends State<EditNote> {
                             hintText: 'Write Reminder body',
                             border: InputBorder.none,
                           ),
-                          onChanged: (value) => title = value,
+                          onChanged: (value) => body = value,
                           autofocus: false,
                         ),
                         TextButton(
                           onPressed: () {
-                            /*int id = generator.nextInt(150);
-                      String title = "Test";
-                      DateTime date = new DateTime(2022, 5, 31, 4, 50);
-                      Color color = Color.fromARGB(199, 148, 84, 84);
-                      String priority = "high";
+                            item.delete();
+                            _items.remove(item.id);
 
-                      store.writeData(
-                          title, body, date, priority, color);*/
-                            // final id =
-                            //     Localstore.instance.collection("notes").doc().id;
-                            // final date = DateTime.now().toIso8601String();
-                            // Color color = Color.fromARGB(199, 148, 84, 84);
-                            // String color1 = color.toString();
-                            // String priority = "high";
-                            // final item = store.Notes(
-                            //     id: id,
-                            //     title: title,
-                            //     data: title,
-                            //     date: date,
-                            //     priority: priority,
-                            //     color: color1);
-                            // item.save();
-                            // count.channelCounter++;
+                            final id = Localstore.instance
+                                .collection("notes")
+                                .doc()
+                                .id;
+                            final date = DateTime.now().toIso8601String();
+                            Color color = Color.fromARGB(199, 148, 84, 84);
+                            String color1 = color.toString();
+                            String priority = "high";
+                            final item1 = store.Notes(
+                                id: id,
+                                title: title,
+                                data: title,
+                                date: date,
+                                priority: priority,
+                                color: color1);
+                            item1.save();
 
-                            // NotificationService().displayNotification(
-                            //     body: body,
-                            //     channel: count.channelCounter,
-                            //     title: title);
-                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Home()),
+                            );
                           },
                           child: const Text("Submit"),
                         )
@@ -119,9 +122,9 @@ class _EditNoteState extends State<EditNote> {
             ));
   }
 
-  @override
+  /*@override
   void dispose() {
     if (_subscription != null) _subscription?.cancel();
     super.dispose();
-  }
+  }*/
 }
