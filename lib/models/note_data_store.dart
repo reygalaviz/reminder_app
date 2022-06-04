@@ -14,7 +14,7 @@ Future<File> get _localFile async {
   return File('$pathName/notes.txt');
 }
 
-Future<File> writeContent(int id, String title, String data, DateTime date,
+Future<File> writeContent(String id, String title, String data, DateTime date,
     String priority, Color color) async {
   final file = await _localFile;
   final fileData = "$id,$title,$data,$date,$priority,$color~";
@@ -29,6 +29,11 @@ Future<String> readcontent() async {
   } catch (e) {
     return 'There was an issue reading the notes';
   }
+}
+
+getData(String id) async {
+  final item = await db.collection('notes').doc(id).get();
+  return item;
 }
 
 class Notes {

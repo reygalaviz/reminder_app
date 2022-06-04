@@ -3,6 +3,9 @@ import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
 import 'dart:async';
 
+import 'package:reminder_app/screens/edit_notes.dart';
+import 'package:reminder_app/Screens/home.dart' as home;
+
 //import 'package:cupertino_icons/cupertino_icons.dart';
 //import 'package:reminder_app/screens/add_note.dart';
 //import 'package:reminder_app/screens/home.dart';
@@ -10,6 +13,7 @@ import 'dart:async';
 //import 'package:reminder_app/controllers/notifications.dart';
 //import 'package:reminder_app/main.dart' as count;
 int initNumber = 0;
+String id = "No notes exist";
 
 class AllNotes extends StatefulWidget {
   const AllNotes({Key? key}) : super(key: key);
@@ -55,7 +59,6 @@ class _AllNotesState extends State<AllNotes> {
   @override
   Widget build(BuildContext context) {
     initNumber = _items.keys.length;
-    print(_items);
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: ListView.builder(
@@ -72,8 +75,18 @@ class _AllNotesState extends State<AllNotes> {
                           color: Color.fromARGB(255, 0, 0, 0)),
                     ),
                     onTap: () {
-                      //Insert Function here TODO editing
-                      print("add function here");
+                      id = item.id;
+                      //make a map to handle this
+                      showModalBottomSheet(
+                          enableDrag: false,
+                          isScrollControlled: true,
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20.0))),
+                          context: context,
+                          builder: (context) {
+                            return EditNote(id: id);
+                          });
                     },
                     trailing: IconButton(
                       icon: const Icon(Icons.delete),

@@ -77,14 +77,17 @@ class NotificationService {
     });
   }
 
-  void displayNotification({required String body, required int channel}) async {
+  void displayNotification(
+      {required String body,
+      required int channel,
+      required String title}) async {
     var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
         "Notif memo", //Required for Android 8.0 or after
         "Notif memo", //Required for Android 8.0 or after
         channelDescription:
             "This is for notifications created by the app", //Required for Android 8.0 or after
-        importance: Importance.max,
-        priority: Priority.high);
+        importance: Importance.min,
+        priority: Priority.low);
     var iOSPlatformChannelSpecifics = const IOSNotificationDetails(
       presentAlert:
           false, // Present an alert when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
@@ -103,7 +106,7 @@ class NotificationService {
         iOS: iOSPlatformChannelSpecifics);
     await notifsPlugin.show(
       channel,
-      'Reminder:',
+      title,
       body,
       platformChannelSpecifics,
       payload: body,

@@ -16,6 +16,7 @@ class AddNote extends StatefulWidget {
 
 class _AddNoteState extends State<AddNote> {
   String body = '';
+  String title = "No title inserted";
   var generator = Random(5);
   @override
   Widget build(BuildContext context) {
@@ -35,11 +36,23 @@ class _AddNoteState extends State<AddNote> {
                     enableSuggestions: false,
                     style: const TextStyle(decoration: TextDecoration.none),
                     decoration: const InputDecoration(
-                      hintText: 'Write Reminder',
+                      hintText: 'Title of Note',
+                      border: InputBorder.none,
+                    ),
+                    onChanged: (value) => title = value,
+                    autofocus: true,
+                  ),
+                  TextFormField(
+                    maxLines: 3,
+                    autocorrect: false,
+                    enableSuggestions: false,
+                    style: const TextStyle(decoration: TextDecoration.none),
+                    decoration: const InputDecoration(
+                      hintText: 'Write Reminder body',
                       border: InputBorder.none,
                     ),
                     onChanged: (value) => body = value,
-                    autofocus: true,
+                    autofocus: false,
                   ),
                   TextButton(
                     onPressed: () {
@@ -56,7 +69,6 @@ class _AddNoteState extends State<AddNote> {
                       final date = DateTime.now().toIso8601String();
                       Color color = Color.fromARGB(199, 148, 84, 84);
                       String color1 = color.toString();
-                      String title = "Test";
                       String priority = "high";
                       final item = store.Notes(
                           id: id,
@@ -69,7 +81,9 @@ class _AddNoteState extends State<AddNote> {
                       count.channelCounter++;
 
                       NotificationService().displayNotification(
-                          body: body, channel: count.channelCounter);
+                          body: body,
+                          channel: count.channelCounter,
+                          title: title);
                       Navigator.pop(context);
                     },
                     child: const Text("Submit"),
