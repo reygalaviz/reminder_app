@@ -14,6 +14,7 @@ import 'package:reminder_app/Screens/home.dart' as home;
 //import 'package:reminder_app/main.dart' as count;
 int initNumber = 0;
 String id = "No notes exist";
+bool res = false;
 
 class AllNotes extends StatefulWidget {
   const AllNotes({Key? key}) : super(key: key);
@@ -91,11 +92,15 @@ class _AllNotesState extends State<AllNotes> {
                     trailing: IconButton(
                       icon: const Icon(Icons.delete),
 
-                      onPressed: () {
-                        setState(() {
-                          item.delete();
-                          _items.remove(item.id);
-                        });
+                      onPressed: () async {
+                        await _showDialog(item);
+                        if (res == true) {
+                          setState(() {
+                            item.delete();
+                            _items.remove(item.id);
+                            res = false;
+                          });
+                        }
                       }, //Center(
                       //  child: Text(
                       //item.data,
@@ -115,5 +120,39 @@ class _AllNotesState extends State<AllNotes> {
   void dispose() {
     if (_subscription != null) _subscription?.cancel();
     super.dispose();
+  }
+
+  Future<bool?> _showDialog(final item) async {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Are you sure you want to delete?'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('This is a permanent and data cannot be recovered again!'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                res = false;
+              },
+            ),
+            TextButton(
+                onPressed: () {
+                  res = true;
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Delete"))
+          ],
+        );
+      },
+    );
   }
 }
