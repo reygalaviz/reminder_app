@@ -100,7 +100,7 @@ class _EditNoteState extends State<EditNote> {
                             final item1 = store.Notes(
                                 id: id,
                                 title: title,
-                                data: title,
+                                data: body,
                                 date: date,
                                 priority: priority,
                                 color: color1);
