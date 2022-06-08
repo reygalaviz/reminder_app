@@ -5,9 +5,9 @@ import 'dart:async';
 import 'package:reminder_app/screens/all_notes.dart' as note;
 import 'package:reminder_app/screens/home.dart';
 
-enum colorList { blue, green, red, yellow, white, cyan, purple, pink }
+enum ColorList { blue, green, red, yellow, white, cyan, purple, pink, orange }
 
-Color selectColor = Colors.green;
+Color selectColor = const Color.fromARGB(255, 180, 175, 175);
 
 class EditNote extends StatefulWidget {
   const EditNote({Key? key, required this.id}) : super(key: key);
@@ -90,62 +90,67 @@ class _EditNoteState extends State<EditNote> {
                           onChanged: (value) => body = value,
                           autofocus: false,
                         ),
-                        PopupMenuButton<colorList>(
+                        PopupMenuButton<ColorList>(
                             icon: Icon(
                               Icons.color_lens,
                               color: selectColor,
                             ),
                             onSelected: (value) {
-                              if (value == colorList.blue) {
+                              if (value == ColorList.blue) {
                                 setState(() {
                                   selectColor = Colors.blue;
                                 });
 
                                 colPick = Colors.blue;
-                              } else if (value == colorList.green) {
+                              } else if (value == ColorList.green) {
                                 setState(() {
                                   selectColor = Colors.green;
                                 });
                                 colPick = Colors.green;
-                              } else if (value == colorList.red) {
+                              } else if (value == ColorList.red) {
                                 colPick = Colors.red;
                                 setState(() {
                                   selectColor = Colors.red;
                                 });
-                              } else if (value == colorList.yellow) {
+                              } else if (value == ColorList.yellow) {
                                 colPick = Colors.yellow;
                                 setState(() {
                                   selectColor = Colors.yellow;
                                 });
-                              } else if (value == colorList.white) {
+                              } else if (value == ColorList.white) {
                                 colPick = Colors.white;
                                 setState(() {
                                   selectColor =
                                       const Color.fromARGB(255, 180, 175, 175);
                                 });
-                              } else if (value == colorList.cyan) {
+                              } else if (value == ColorList.cyan) {
                                 colPick = Colors.cyan;
                                 setState(() {
                                   selectColor = Colors.cyan;
                                 });
-                              } else if (value == colorList.purple) {
+                              } else if (value == ColorList.purple) {
                                 colPick = Colors.purple;
                                 setState(() {
                                   selectColor = Colors.purple;
                                 });
-                              } else if (value == colorList.pink) {
+                              } else if (value == ColorList.pink) {
                                 colPick =
                                     const Color.fromARGB(255, 244, 103, 150);
                                 setState(() {
                                   selectColor =
                                       const Color.fromARGB(255, 244, 103, 150);
                                 });
+                              } else if (value == ColorList.orange) {
+                                colPick = Colors.orange;
+                                setState(() {
+                                  selectColor = Colors.orange;
+                                });
                               }
                             },
                             itemBuilder: (BuildContext context) =>
-                                <PopupMenuEntry<colorList>>[
-                                  PopupMenuItem<colorList>(
-                                    value: colorList.blue,
+                                <PopupMenuEntry<ColorList>>[
+                                  PopupMenuItem<ColorList>(
+                                    value: ColorList.blue,
                                     child: Container(
                                       height: 30,
                                       width: 30,
@@ -155,8 +160,8 @@ class _EditNoteState extends State<EditNote> {
                                       ),
                                     ),
                                   ),
-                                  PopupMenuItem<colorList>(
-                                    value: colorList.green,
+                                  PopupMenuItem<ColorList>(
+                                    value: ColorList.green,
                                     child: Container(
                                       height: 30,
                                       width: 30,
@@ -166,8 +171,8 @@ class _EditNoteState extends State<EditNote> {
                                       ),
                                     ),
                                   ),
-                                  PopupMenuItem<colorList>(
-                                    value: colorList.red,
+                                  PopupMenuItem<ColorList>(
+                                    value: ColorList.red,
                                     child: Container(
                                       height: 30,
                                       width: 30,
@@ -177,8 +182,8 @@ class _EditNoteState extends State<EditNote> {
                                       ),
                                     ),
                                   ),
-                                  PopupMenuItem<colorList>(
-                                    value: colorList.yellow,
+                                  PopupMenuItem<ColorList>(
+                                    value: ColorList.yellow,
                                     child: Container(
                                       height: 30,
                                       width: 30,
@@ -188,8 +193,8 @@ class _EditNoteState extends State<EditNote> {
                                       ),
                                     ),
                                   ),
-                                  PopupMenuItem<colorList>(
-                                    value: colorList.white,
+                                  PopupMenuItem<ColorList>(
+                                    value: ColorList.white,
                                     child: Container(
                                       height: 30,
                                       width: 30,
@@ -208,8 +213,8 @@ class _EditNoteState extends State<EditNote> {
                                       ),
                                     ),
                                   ),
-                                  PopupMenuItem<colorList>(
-                                    value: colorList.cyan,
+                                  PopupMenuItem<ColorList>(
+                                    value: ColorList.cyan,
                                     child: Container(
                                       height: 30,
                                       width: 30,
@@ -219,8 +224,8 @@ class _EditNoteState extends State<EditNote> {
                                       ),
                                     ),
                                   ),
-                                  PopupMenuItem<colorList>(
-                                    value: colorList.purple,
+                                  PopupMenuItem<ColorList>(
+                                    value: ColorList.purple,
                                     child: Container(
                                       height: 30,
                                       width: 30,
@@ -230,14 +235,25 @@ class _EditNoteState extends State<EditNote> {
                                       ),
                                     ),
                                   ),
-                                  PopupMenuItem<colorList>(
-                                    value: colorList.pink,
+                                  PopupMenuItem<ColorList>(
+                                    value: ColorList.pink,
                                     child: Container(
                                       height: 30,
                                       width: 30,
                                       decoration: const BoxDecoration(
                                         color:
                                             Color.fromARGB(255, 244, 103, 150),
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                  ),
+                                  PopupMenuItem<ColorList>(
+                                    value: ColorList.orange,
+                                    child: Container(
+                                      height: 30,
+                                      width: 30,
+                                      decoration: const BoxDecoration(
+                                        color: Colors.orange,
                                         shape: BoxShape.circle,
                                       ),
                                     ),
