@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
 import 'package:reminder_app/screens/home.dart';
+import 'package:intl/intl.dart';
+import 'dart:async';
 
 enum ColorList { blue, green, red, yellow, white, cyan, purple, pink, orange }
 
@@ -15,46 +17,44 @@ class EditNote extends StatefulWidget {
 }
 
 class _EditNoteState extends State<EditNote> {
-  // StreamSubscription<Map<String, dynamic>>? _subscription;
   final _db = Localstore.instance;
   final _items = <String, store.Notes>{};
-  var item;
+  StreamSubscription<Map<String, dynamic>>? _subscription;
+  //var item;
+  DateFormat format = DateFormat("yyyy-MM-dd");
+  final dCont = TextEditingController();
+  final cCont = TextEditingController();
   Color colPick = Colors.white;
+
   @override
   void initState() {
     super.initState();
     _db.collection('notes').get().then((value) {
-      setState(() {
-        value?.entries.forEach((element) {
-          final item = store.Notes.fromMap(element.value);
+      _subscription = _db.collection('notes').stream.listen((event) {
+        setState(() {
+          final item = store.Notes.fromMap(event);
           _items.putIfAbsent(item.id, () => item);
         });
       });
-      // _subscription = _db.collection('notes').stream.listen((event) {
-      //   setState(() {
-      //     final item = store.Notes.fromMap(event);
-      //     _items.putIfAbsent(item.id, () => item);
-      // });
-      // });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    //final item = store.getData(widget.id);
-
     var item = _items[widget.id]!;
+    String selectDate = item.date;
     String title = item.title;
     String body = item.data;
+    //DateTime? dateT = DateTime.now();
+    dCont.text = selectDate;
+    String daySelect = item.time;
+    cCont.text = daySelect;
+    colPick = Color(int.parse(item.color));
     return LayoutBuilder(
         builder: (context, constraints) => SingleChildScrollView(
               reverse: true,
-              child:
-                  // SizedBox(
-                  //   height: constraints.maxHeight * .3,
-                  // ),
-                  SizedBox(
-                height: constraints.maxHeight * .7,
+              child: SizedBox(
+                height: constraints.maxHeight * .8,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
                   child: Form(
@@ -257,6 +257,56 @@ class _EditNoteState extends State<EditNote> {
                                     ),
                                   ),
                                 ]),
+                        TextFormField(
+                          readOnly: true,
+                          maxLines: 1,
+                          autocorrect: false,
+                          controller: dCont,
+                          style:
+                              const TextStyle(decoration: TextDecoration.none),
+                          //initialValue: formatted,
+                          decoration: const InputDecoration(
+                              hintText: 'Date for the note',
+                              border: InputBorder.none,
+                              labelText: "Date"),
+                          onTap: () async {
+                            DateTime? dateT = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.parse(selectDate),
+                                firstDate: DateTime(2022),
+                                lastDate: DateTime(2025));
+                            String compForm = format.format(dateT!);
+                            selectDate = compForm;
+                            dCont.text = compForm;
+                          },
+                          autofocus: false,
+                        ),
+                        TextFormField(
+                          readOnly: true,
+                          maxLines: 1,
+                          autocorrect: false,
+                          enableSuggestions: false,
+                          controller: cCont,
+                          style:
+                              const TextStyle(decoration: TextDecoration.none),
+                          //initialValue: formatted,
+                          decoration: const InputDecoration(
+                              hintText: 'Time for the note',
+                              border: InputBorder.none,
+                              labelText: "Time"),
+                          onTap: () async {
+                            TimeOfDay? timeT = await showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay.fromDateTime(DateTime.parse(
+                                    daySelect))); // TimeOfDay.fromDateTime(DateTime.now()));
+
+                            if (!mounted) return;
+                            String timeString = timeT!.format(context);
+                            daySelect = timeString;
+                            cCont.text = timeString;
+                          },
+                          autofocus: false,
+                        ),
                         TextButton(
                           onPressed: () {
                             item.delete();
@@ -266,14 +316,15 @@ class _EditNoteState extends State<EditNote> {
                                 .collection("notes")
                                 .doc()
                                 .id;
-                            final date = DateTime.now().toIso8601String();
+                            //  final date = DateTime.now().toIso8601String();
 
                             String priority = "high";
                             final item1 = store.Notes(
                                 id: id,
                                 title: title,
                                 data: body,
-                                date: date,
+                                date: selectDate,
+                                time: daySelect,
                                 priority: priority,
                                 color: colPick.value.toString());
                             item1.save();
@@ -294,9 +345,11 @@ class _EditNoteState extends State<EditNote> {
             ));
   }
 
-  /*@override
+  @override
   void dispose() {
     if (_subscription != null) _subscription?.cancel();
+    // Clean up the controller when the widget is removed
+    dCont.dispose();
     super.dispose();
-  }*/
+  }
 }

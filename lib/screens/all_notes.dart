@@ -25,30 +25,14 @@ class _AllNotesState extends State<AllNotes> {
   void initState() {
     super.initState();
     _db.collection('notes').get().then((value) {
-      /*      setState(() {
-        value?.entries.forEach((element) {
-          final item = store.Notes.fromMap(element.value);
-          _items.putIfAbsent(item.id, () => item);
-        });
-      }); */
       _subscription = _db.collection('notes').stream.listen((event) {
         setState(() {
           final item = store.Notes.fromMap(event);
           _items.putIfAbsent(item.id, () => item);
         });
       });
-      // if (kIsWeb) _db.collection('notes').stream.asBroadcastStream();
     });
   }
-  /*@override
-  void initState() {
-    super.initState();
-    store.readcontent().then((String value) {
-      setState(() {
-        data = value;
-      });
-    });
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +55,7 @@ class _AllNotesState extends State<AllNotes> {
                     tileColor: Color(int.parse(item.color)).withOpacity(1),
                     onTap: () {
                       id = item.id;
-                      //make a map to handle this
+
                       showModalBottomSheet(
                           enableDrag: false,
                           isScrollControlled: true,
@@ -85,7 +69,6 @@ class _AllNotesState extends State<AllNotes> {
                     },
                     trailing: IconButton(
                       icon: const Icon(Icons.delete),
-
                       onPressed: () async {
                         await _showDialog(item);
                         if (res == true) {
@@ -95,19 +78,10 @@ class _AllNotesState extends State<AllNotes> {
                             res = false;
                           });
                         }
-                      }, //Center(
-                      //  child: Text(
-                      //item.data,
+                      },
                     )),
               );
-            }
-
-            /*Center(
-          child: Text(
-        data,
-        style: const TextStyle(
-            fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 0, 0)),*/
-            ));
+            }));
   }
 
   @override

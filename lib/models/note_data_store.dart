@@ -41,6 +41,7 @@ class Notes {
   String title;
   String data;
   String date;
+  String time;
   String priority;
   String color;
   Notes(
@@ -48,6 +49,7 @@ class Notes {
       required this.title,
       required this.data,
       required this.date,
+      required this.time,
       required this.priority,
       required this.color});
 
@@ -57,6 +59,7 @@ class Notes {
       'title': title,
       'data': data,
       'date': date,
+      'time': time,
       'priority': priority,
       'color': color
     };
@@ -68,6 +71,7 @@ class Notes {
         title: map['title'],
         data: map['data'],
         date: map['date'],
+        time: map['time'],
         priority: map["priority"],
         color: map["color"]);
   }
@@ -86,13 +90,14 @@ extension ExtNotes on Notes {
 }
 
 final db = Localstore.instance;
-void writeData(
-    String title, String data, String date, String priority, String color) {
+void writeData(String title, String data, String date, String time,
+    String priority, String color) {
   final id = db.collection('notes').doc().id;
   db.collection('notes').doc(id).set({
     'title': title,
     'data': data,
-    'datetime': date,
+    'date': date,
+    'time': time,
     'priority': priority,
     'color': color
   });

@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:localstore/localstore.dart';
 import 'package:reminder_app/controllers/notifications.dart';
@@ -19,13 +19,21 @@ class AddNote extends StatefulWidget {
 }
 
 class _AddNoteState extends State<AddNote> {
-  String body = '';
-  String title = "No title inserted";
+  final _db = Localstore.instance;
+  final _items = <String, store.Notes>{};
+  var item;
+  DateFormat format = DateFormat("yyyy-MM-dd");
+  final dCont = TextEditingController();
+  final cCont = TextEditingController();
   Color colPick = Colors.white;
 
+  String title = '';
+  String body = '';
   var generator = Random(5);
   @override
   Widget build(BuildContext context) {
+    String selectDate = format.format(DateTime.now()).toString();
+    String daySelect = TimeOfDay.now().toString();
     return LayoutBuilder(
       builder: (context, constraints) => SingleChildScrollView(
         reverse: true,
@@ -226,6 +234,53 @@ class _AddNoteState extends State<AddNote> {
                             ),
                           ),
                         ]),
+                TextFormField(
+                  readOnly: true,
+                  maxLines: 1,
+                  autocorrect: false,
+                  enableSuggestions: false,
+                  controller: dCont,
+                  style: const TextStyle(decoration: TextDecoration.none),
+                  //initialValue: formatted,
+                  decoration: const InputDecoration(
+                      hintText: 'Date for the note',
+                      border: InputBorder.none,
+                      labelText: "Date"),
+                  onTap: () async {
+                    DateTime? dateT = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2022),
+                        lastDate: DateTime(2025));
+                    String compForm = format.format(dateT!);
+                    selectDate = compForm;
+                    dCont.text = compForm;
+                  },
+                  autofocus: false,
+                ),
+                TextFormField(
+                  readOnly: true,
+                  maxLines: 1,
+                  autocorrect: false,
+                  enableSuggestions: false,
+                  controller: cCont,
+                  style: const TextStyle(decoration: TextDecoration.none),
+                  //initialValue: formatted,
+                  decoration: const InputDecoration(
+                      hintText: 'Time for the note',
+                      border: InputBorder.none,
+                      labelText: "Time"),
+                  onTap: () async {
+                    TimeOfDay? timeT = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.fromDateTime(DateTime.now()));
+                    if (!mounted) return;
+                    String timeString = timeT!.format(context);
+                    daySelect = timeString;
+                    cCont.text = timeString;
+                  },
+                  autofocus: false,
+                ),
                 TextButton(
                   onPressed: () {
                     final id = Localstore.instance.collection("notes").doc().id;
@@ -235,7 +290,8 @@ class _AddNoteState extends State<AddNote> {
                         id: id,
                         title: title,
                         data: body,
-                        date: date,
+                        date: selectDate,
+                        time: daySelect,
                         priority: priority,
                         color: colPick.value.toString());
                     item.save();
