@@ -6,7 +6,6 @@ import 'package:reminder_app/controllers/notifications.dart';
 //import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:reminder_app/main.dart' as count;
 import 'package:reminder_app/models/note_data_store.dart' as store;
-import 'package:reminder_app/models/color_data.dart' as colors;
 
 enum ColorList { blue, green, red, yellow, white, cyan, purple, pink, orange }
 
@@ -231,8 +230,6 @@ class _AddNoteState extends State<AddNote> {
                   onPressed: () {
                     final id = Localstore.instance.collection("notes").doc().id;
                     final date = DateTime.now().toIso8601String();
-                    Color color = Color.fromARGB(199, 148, 84, 84);
-                    String color1 = color.toString();
                     String priority = "high";
                     final item = store.Notes(
                         id: id,

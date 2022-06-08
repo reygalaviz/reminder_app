@@ -2,16 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
 import 'dart:async';
-
 import 'package:reminder_app/screens/edit_notes.dart';
-import 'package:reminder_app/Screens/home.dart' as home;
-
-//import 'package:cupertino_icons/cupertino_icons.dart';
-//import 'package:reminder_app/screens/add_note.dart';
-//import 'package:reminder_app/screens/home.dart';
 //import 'package:keyboard_attachable/keyboard_attachable.dart';
-//import 'package:reminder_app/controllers/notifications.dart';
-//import 'package:reminder_app/main.dart' as count;
+
 int initNumber = 0;
 String id = "No notes exist";
 bool res = false;

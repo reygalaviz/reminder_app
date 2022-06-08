@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
-import 'dart:async';
-import 'package:reminder_app/screens/all_notes.dart' as note;
 import 'package:reminder_app/screens/home.dart';
 
 enum ColorList { blue, green, red, yellow, white, cyan, purple, pink, orange }

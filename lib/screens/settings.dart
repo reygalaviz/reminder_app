@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class SettingsTab extends StatelessWidget {
   const SettingsTab({Key? key}) : super(key: key);
@@ -8,18 +6,18 @@ class SettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-        builder: (context, constraints) => Container(
+        builder: (context, constraints) => SizedBox(
               height: constraints.maxHeight * .92,
               child: Column(
                 children: [
-                  ListTile(
+                  const ListTile(
                     title: Center(
                         child: Text(
                       'Settings',
                       style: TextStyle(fontSize: 20),
                     )),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
@@ -29,15 +27,18 @@ class SettingsTab extends StatelessWidget {
                       child: Column(
                         children: [
                           TextButton(
-                              onPressed: () {}, child: Text('Notifications')),
-                          TextButton(onPressed: () {}, child: Text('Calendar')),
+                              onPressed: () {},
+                              child: const Text('Notifications')),
                           TextButton(
-                              onPressed: () {}, child: Text('Notifications')),
+                              onPressed: () {}, child: const Text('Calendar')),
+                          TextButton(
+                              onPressed: () {},
+                              child: const Text('Notifications')),
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
@@ -47,7 +48,7 @@ class SettingsTab extends StatelessWidget {
                       child: Column(),
                     ),
                   ),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Container(

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
-import 'package:table_calendar/table_calendar.dart';
+//import 'package:table_calendar/table_calendar.dart';
 
 class TableCalendar extends StatefulWidget {
+  const TableCalendar({Key? key}) : super(key: key);
+
   @override
   State<TableCalendar> createState() => _TableCalendarState();
 }
@@ -34,7 +36,7 @@ class _TableCalendarState extends State<TableCalendar> {
               color: Colors.white,
             ),
             hideArrows: false,
-            weekDays: ['Sun', 'Mon', 'Tues', 'Wed', 'Thu', 'Fri', 'Sat'],
+            weekDays: const ['Sun', 'Mon', 'Tues', 'Wed', 'Thu', 'Fri', 'Sat'],
           ),
         ),
       ),

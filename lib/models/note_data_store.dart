@@ -75,13 +75,13 @@ class Notes {
 
 extension ExtNotes on Notes {
   Future save() async {
-    final _db = Localstore.instance;
-    return _db.collection('notes').doc(id).set(toMap());
+    final db = Localstore.instance;
+    return db.collection('notes').doc(id).set(toMap());
   }
 
   Future delete() async {
-    final _db = Localstore.instance;
-    return _db.collection('notes').doc(id).delete();
+    final db = Localstore.instance;
+    return db.collection('notes').doc(id).delete();
   }
 }
 
