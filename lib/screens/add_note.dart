@@ -10,6 +10,8 @@ import 'package:reminder_app/models/color_data.dart' as colors;
 
 enum colorList { blue, green, red, yellow, white, cyan, purple, pink }
 
+Color selectColor = Colors.green;
+
 class AddNote extends StatefulWidget {
   const AddNote({Key? key}) : super(key: key);
 
@@ -58,15 +60,55 @@ class _AddNoteState extends State<AddNote> {
                   onChanged: (value) => body = value,
                   autofocus: false,
                 ),
-                // Row(
                 PopupMenuButton<colorList>(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.color_lens,
-                      color: Colors.green,
+                      color: selectColor,
                     ),
                     onSelected: (value) {
                       if (value == colorList.blue) {
+                        setState(() {
+                          selectColor = Colors.blue;
+                        });
+
                         colPick = Colors.blue;
+                      } else if (value == colorList.green) {
+                        setState(() {
+                          selectColor = Colors.green;
+                        });
+                        colPick = Colors.green;
+                      } else if (value == colorList.red) {
+                        colPick = Colors.red;
+                        setState(() {
+                          selectColor = Colors.red;
+                        });
+                      } else if (value == colorList.yellow) {
+                        colPick = Colors.yellow;
+                        setState(() {
+                          selectColor = Colors.yellow;
+                        });
+                      } else if (value == colorList.white) {
+                        colPick = Colors.white;
+                        setState(() {
+                          selectColor =
+                              const Color.fromARGB(255, 180, 175, 175);
+                        });
+                      } else if (value == colorList.cyan) {
+                        colPick = Colors.cyan;
+                        setState(() {
+                          selectColor = Colors.cyan;
+                        });
+                      } else if (value == colorList.purple) {
+                        colPick = Colors.purple;
+                        setState(() {
+                          selectColor = Colors.purple;
+                        });
+                      } else if (value == colorList.pink) {
+                        colPick = const Color.fromARGB(255, 244, 103, 150);
+                        setState(() {
+                          selectColor =
+                              const Color.fromARGB(255, 244, 103, 150);
+                        });
                       }
                     },
                     itemBuilder: (BuildContext context) =>
@@ -115,8 +157,60 @@ class _AddNoteState extends State<AddNote> {
                               ),
                             ),
                           ),
+                          PopupMenuItem<colorList>(
+                            value: colorList.white,
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                border: Border(
+                                    top: BorderSide(
+                                        width: 1, color: Colors.black),
+                                    right: BorderSide(
+                                        width: 1, color: Colors.black),
+                                    bottom: BorderSide(
+                                        width: 1, color: Colors.black),
+                                    left: BorderSide(
+                                        width: 1, color: Colors.black)),
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                          PopupMenuItem<colorList>(
+                            value: colorList.cyan,
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              decoration: const BoxDecoration(
+                                color: Colors.cyan,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                          PopupMenuItem<colorList>(
+                            value: colorList.purple,
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              decoration: const BoxDecoration(
+                                color: Colors.purple,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                          PopupMenuItem<colorList>(
+                            value: colorList.pink,
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              decoration: const BoxDecoration(
+                                color: Color.fromARGB(255, 244, 103, 150),
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
                         ]),
-
                 TextButton(
                   onPressed: () {
                     final id = Localstore.instance.collection("notes").doc().id;
@@ -130,7 +224,7 @@ class _AddNoteState extends State<AddNote> {
                         data: body,
                         date: date,
                         priority: priority,
-                        color: colPick.toString());
+                        color: colPick.value.toString());
                     item.save();
                     count.channelCounter++;
 

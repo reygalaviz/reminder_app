@@ -75,6 +75,7 @@ class _AllNotesState extends State<AllNotes> {
                           fontWeight: FontWeight.bold,
                           color: Color.fromARGB(255, 0, 0, 0)),
                     ),
+                    tileColor: Color(int.parse(item.color)).withOpacity(1),
                     onTap: () {
                       id = item.id;
                       //make a map to handle this
