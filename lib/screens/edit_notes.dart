@@ -7,8 +7,6 @@ import 'dart:async';
 
 enum ColorList { blue, green, red, yellow, white, cyan, purple, pink, orange }
 
-Color selectColor = const Color.fromARGB(255, 180, 175, 175);
-
 class EditNote extends StatefulWidget {
   const EditNote({Key? key, required this.id}) : super(key: key);
   final String id;
@@ -20,11 +18,17 @@ class _EditNoteState extends State<EditNote> {
   final _db = Localstore.instance;
   final _items = <String, store.Notes>{};
   StreamSubscription<Map<String, dynamic>>? _subscription;
-  //var item;
+  // var item;
   DateFormat format = DateFormat("yyyy-MM-dd");
   final dCont = TextEditingController();
   final cCont = TextEditingController();
   Color colPick = Colors.white;
+  final formatter = DateFormat().add_jm();
+  String selectDate = "";
+  String title = "";
+  String body = "";
+  String daySelect = "";
+  Color selectColor = const Color.fromARGB(255, 180, 175, 174);
 
   @override
   void initState() {
@@ -42,19 +46,34 @@ class _EditNoteState extends State<EditNote> {
   @override
   Widget build(BuildContext context) {
     var item = _items[widget.id]!;
-    String selectDate = item.date;
-    String title = item.title;
-    String body = item.data;
+    if (selectDate == "") {
+      selectDate = item.date;
+    }
+    if (title == "") {
+      title = item.title;
+    }
+    if (body == "") {
+      body = item.data;
+    }
+    if (daySelect == "") {
+      daySelect = item.time;
+    }
+
     //DateTime? dateT = DateTime.now();
     dCont.text = selectDate;
-    String daySelect = item.time;
+
     cCont.text = daySelect;
+    //TimeOfDay timer = TimeOfDay.fromDateTime(formatter.parse(daySelect));
     colPick = Color(int.parse(item.color));
+    if (selectColor == const Color.fromARGB(255, 180, 175, 174)) {
+      selectColor = Color(int.parse(item.color));
+    }
+
     return LayoutBuilder(
         builder: (context, constraints) => SingleChildScrollView(
               reverse: true,
               child: SizedBox(
-                height: constraints.maxHeight * .8,
+                height: constraints.maxHeight * .95,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
                   child: Form(
@@ -75,7 +94,7 @@ class _EditNoteState extends State<EditNote> {
                           autofocus: true,
                         ),
                         TextFormField(
-                          maxLines: 3,
+                          maxLines: 2,
                           autocorrect: false,
                           enableSuggestions: false,
                           style:
@@ -84,10 +103,66 @@ class _EditNoteState extends State<EditNote> {
                           decoration: const InputDecoration(
                             hintText: 'Write Reminder body',
                             border: InputBorder.none,
+                            labelText: "Details",
                           ),
                           onChanged: (value) => body = value,
                           autofocus: false,
                         ),
+                        TextFormField(
+                          readOnly: true,
+                          maxLines: 1,
+                          autocorrect: false,
+                          controller: dCont,
+                          style:
+                              const TextStyle(decoration: TextDecoration.none),
+                          //initialValue: formatted,
+                          decoration: const InputDecoration(
+                              hintText: 'Date for the note',
+                              border: InputBorder.none,
+                              labelText: "Date"),
+                          onTap: () async {
+                            DateTime? dateT = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.parse(selectDate),
+                                firstDate: DateTime(2022),
+                                lastDate: DateTime(2025));
+                            String compForm = format.format(dateT!);
+                            selectDate = compForm;
+                            dCont.text = compForm;
+                          },
+                          autofocus: false,
+                        ),
+                        TextFormField(
+                          readOnly: true,
+                          maxLines: 1,
+                          autocorrect: false,
+                          enableSuggestions: false,
+                          controller: cCont,
+                          style:
+                              const TextStyle(decoration: TextDecoration.none),
+                          //initialValue: formatted,
+                          decoration: const InputDecoration(
+                              hintText: 'Time for the note',
+                              border: InputBorder.none,
+                              labelText: "Time"),
+                          onTap: () async {
+                            TimeOfDay? timeT = await showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay
+                                    .now()); // TimeOfDay.fromDateTime(DateTime.now()));
+
+                            if (!mounted) return;
+                            String timeString = timeT!.format(context);
+                            daySelect = timeString;
+                            cCont.text = timeString;
+                          },
+                          autofocus: false,
+                        ),
+                        // Row(children: [
+                        // Padding(
+                        //   padding: EdgeInsets.fromLTRB(
+                        //       constraints.maxWidth / 3, 0.0, 00.0, 0.0),
+                        // ),
                         PopupMenuButton<ColorList>(
                             icon: Icon(
                               Icons.color_lens,
@@ -257,56 +332,6 @@ class _EditNoteState extends State<EditNote> {
                                     ),
                                   ),
                                 ]),
-                        TextFormField(
-                          readOnly: true,
-                          maxLines: 1,
-                          autocorrect: false,
-                          controller: dCont,
-                          style:
-                              const TextStyle(decoration: TextDecoration.none),
-                          //initialValue: formatted,
-                          decoration: const InputDecoration(
-                              hintText: 'Date for the note',
-                              border: InputBorder.none,
-                              labelText: "Date"),
-                          onTap: () async {
-                            DateTime? dateT = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.parse(selectDate),
-                                firstDate: DateTime(2022),
-                                lastDate: DateTime(2025));
-                            String compForm = format.format(dateT!);
-                            selectDate = compForm;
-                            dCont.text = compForm;
-                          },
-                          autofocus: false,
-                        ),
-                        TextFormField(
-                          readOnly: true,
-                          maxLines: 1,
-                          autocorrect: false,
-                          enableSuggestions: false,
-                          controller: cCont,
-                          style:
-                              const TextStyle(decoration: TextDecoration.none),
-                          //initialValue: formatted,
-                          decoration: const InputDecoration(
-                              hintText: 'Time for the note',
-                              border: InputBorder.none,
-                              labelText: "Time"),
-                          onTap: () async {
-                            TimeOfDay? timeT = await showTimePicker(
-                                context: context,
-                                initialTime: TimeOfDay.fromDateTime(DateTime.parse(
-                                    daySelect))); // TimeOfDay.fromDateTime(DateTime.now()));
-
-                            if (!mounted) return;
-                            String timeString = timeT!.format(context);
-                            daySelect = timeString;
-                            cCont.text = timeString;
-                          },
-                          autofocus: false,
-                        ),
                         TextButton(
                           onPressed: () {
                             item.delete();
@@ -336,7 +361,8 @@ class _EditNoteState extends State<EditNote> {
                             );
                           },
                           child: const Text("Submit"),
-                        )
+                        ),
+                        //   ]),
                       ],
                     ),
                   ),

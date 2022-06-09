@@ -29,16 +29,22 @@ class _AddNoteState extends State<AddNote> {
 
   String title = '';
   String body = '';
+  String selectDate = "";
+  String daySelect = "";
   var generator = Random(5);
   @override
   Widget build(BuildContext context) {
-    String selectDate = format.format(DateTime.now()).toString();
-    String daySelect = TimeOfDay.now().toString();
+    if (selectDate == "") {
+      selectDate = format.format(DateTime.now()).toString();
+    }
+    if (daySelect == "") {
+      daySelect = TimeOfDay.now().format(context);
+    }
     return LayoutBuilder(
       builder: (context, constraints) => SingleChildScrollView(
         reverse: true,
         child: SizedBox(
-          height: constraints.maxHeight * .7,
+          height: constraints.maxHeight * .8,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
             child: Form(
@@ -278,13 +284,14 @@ class _AddNoteState extends State<AddNote> {
                     String timeString = timeT!.format(context);
                     daySelect = timeString;
                     cCont.text = timeString;
+                    print(daySelect);
                   },
                   autofocus: false,
                 ),
                 TextButton(
                   onPressed: () {
                     final id = Localstore.instance.collection("notes").doc().id;
-                    final date = DateTime.now().toIso8601String();
+
                     String priority = "high";
                     final item = store.Notes(
                         id: id,
