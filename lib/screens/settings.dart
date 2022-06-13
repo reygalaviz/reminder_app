@@ -17,12 +17,27 @@ class SettingsTab extends StatelessWidget {
                       style: TextStyle(fontSize: 20),
                     )),
                   ),
+                  const Divider(
+                    thickness: 1.0,
+                  ),
                   const SizedBox(height: 8),
+                  Container(
+                    margin: EdgeInsets.only(left: constraints.maxWidth * .04),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: const [
+                        Text(
+                          'Theme',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ],
+                    ),
+                  ),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
-                      color: Colors.grey[400],
-                      width: constraints.maxWidth * .9,
+                      color: Colors.white,
+                      width: constraints.maxWidth * .95,
                       height: constraints.maxHeight * .2,
                       child: Column(
                         children: [
@@ -42,8 +57,8 @@ class SettingsTab extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
-                      color: Colors.grey[400],
-                      width: constraints.maxWidth * .9,
+                      color: Colors.white,
+                      width: constraints.maxWidth * .95,
                       height: constraints.maxHeight * .2,
                       child: Column(),
                     ),
@@ -52,8 +67,8 @@ class SettingsTab extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
-                      color: Colors.grey[400],
-                      width: constraints.maxWidth * .9,
+                      color: Colors.white,
+                      width: constraints.maxWidth * .95,
                       height: constraints.maxHeight * .2,
                     ),
                   ),

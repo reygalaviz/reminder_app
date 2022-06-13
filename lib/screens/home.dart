@@ -61,9 +61,9 @@ class _HomeState extends State<Home> {
         body: PageView(
           controller: pageController,
           physics: const NeverScrollableScrollPhysics(),
-          children: [
-            const AllNotes(),
-            TableCalendar(),
+          children: const [
+            AllNotes(),
+            Table_Calendar(),
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -122,6 +122,7 @@ class _HomeState extends State<Home> {
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
+        backgroundColor: Colors.grey[100],
         builder: (context) {
           return const SettingsTab();
         });
