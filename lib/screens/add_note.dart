@@ -284,7 +284,6 @@ class _AddNoteState extends State<AddNote> {
                     String timeString = timeT!.format(context);
                     daySelect = timeString;
                     cCont.text = timeString;
-                    print(daySelect);
                   },
                   autofocus: false,
                 ),

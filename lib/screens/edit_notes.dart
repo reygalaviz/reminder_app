@@ -7,6 +7,7 @@ import 'dart:async';
 
 enum ColorList { blue, green, red, yellow, white, cyan, purple, pink, orange }
 
+//enum Priorities { low, medium, high}
 class EditNote extends StatefulWidget {
   const EditNote({Key? key, required this.id}) : super(key: key);
   final String id;
@@ -29,7 +30,7 @@ class _EditNoteState extends State<EditNote> {
   String body = "";
   String daySelect = "";
   Color selectColor = const Color.fromARGB(255, 180, 175, 174);
-
+  String priority = "low";
   @override
   void initState() {
     super.initState();
@@ -165,6 +166,7 @@ class _EditNoteState extends State<EditNote> {
                             padding: EdgeInsets.fromLTRB(
                                 constraints.maxWidth / 3, 0.0, 00.0, 0.0),
                           ),
+                          // PopupMenuButton<Priorities>(itemBuilder: itemBuilder)
                           PopupMenuButton<ColorList>(
                               icon: Icon(
                                 Icons.color_lens,
@@ -347,9 +349,7 @@ class _EditNoteState extends State<EditNote> {
                                   .collection("notes")
                                   .doc()
                                   .id;
-                              //  final date = DateTime.now().toIso8601String();
 
-                              String priority = "high";
                               final item1 = store.Notes(
                                   id: id,
                                   title: title,
