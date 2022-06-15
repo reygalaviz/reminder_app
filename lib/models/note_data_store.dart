@@ -41,7 +41,7 @@ class Notes {
   String title;
   String data;
   String date;
-  String time;
+  String? time;
   String priority;
   String color;
   Notes(
