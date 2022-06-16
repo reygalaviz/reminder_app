@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:reminder_app/themes/theme_model.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
+
+import '../models/notes_operation.dart';
+import '../themes/theme_model.dart';
 
 class SettingsTab extends StatelessWidget {
-  const SettingsTab({Key? key}) : super(key: key);
+  Widget buildDarkMode() {
+    return Consumer(
+        builder: (context, ThemeModel themeNotifier, child) => SwitchListTile(
+            title: Text('Change Theme'),
+            value: themeNotifier.isDark,
+            onChanged: (value) {
+              themeNotifier.isDark = value;
+            }));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,70 +24,39 @@ class SettingsTab extends StatelessWidget {
               height: constraints.maxHeight * .92,
               child: Column(
                 children: [
-                  const ListTile(
-                    title: Center(
+                  ListTile(
+                      leading: const Center(
+                          child: Expanded(
                         child: Text(
-                      'Settings',
-                      style: TextStyle(fontSize: 20),
-                    )),
-                  ),
+                          'Settings',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      )),
+                      trailing: Expanded(
+                        child: TextButton(
+                            child: const Text(
+                              'Done',
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.blue),
+                            ),
+                            onPressed: () => Navigator.pop(context)),
+                      )),
                   const Divider(
                     thickness: 1.0,
                   ),
+                  buildDarkMode(),
                   const SizedBox(height: 8),
-                  Container(
-                    margin: EdgeInsets.only(left: constraints.maxWidth * .04),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        Text(
-                          'Theme',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      ],
-                    ),
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      color: Colors.white,
-                      width: constraints.maxWidth * .95,
-                      height: constraints.maxHeight * .2,
-                      child: Column(
-                        children: [
-                          TextButton(
-                              onPressed: () {},
-                              child: const Text('Notifications')),
-                          TextButton(
-                              onPressed: () {}, child: const Text('Calendar')),
-                          TextButton(
-                              onPressed: () {},
-                              child: const Text('Notifications')),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      color: Colors.white,
-                      width: constraints.maxWidth * .95,
-                      height: constraints.maxHeight * .2,
-                      child: Column(),
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      color: Colors.white,
-                      width: constraints.maxWidth * .95,
-                      height: constraints.maxHeight * .2,
-                    ),
-                  ),
                 ],
               ),
             ));
   }
 }
+
+// SwitcherButton(
+//                             value: themeNotifier.isDark ? false : true,
+//                             onChange: (value) {
+//                               themeNotifier.isDark
+//                                   ? themeNotifier.isDark = false
+//                                   : themeNotifier.isDark = true;
+//                             },
+//                           ),

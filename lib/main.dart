@@ -1,4 +1,5 @@
 import 'package:provider/provider.dart';
+import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/screens/home.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -43,8 +44,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-    return ChangeNotifierProvider(
-        create: (_) => ThemeModel(),
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<NotesOperation>(
+              create: (_) => NotesOperation()),
+          ChangeNotifierProvider(
+            create: (_) => ThemeModel(),
+          )
+        ],
         child: Consumer(
           builder: (context, ThemeModel themeModel, child) => MaterialApp(
             builder: (context, child) => ResponsiveWrapper.builder(

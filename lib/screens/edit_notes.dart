@@ -57,7 +57,7 @@ class _EditNoteState extends State<EditNote> {
       body = item.data;
     }
     if (daySelect == "") {
-      daySelect = item.time;
+      daySelect = item.time!;
     }
 
     //DateTime? dateT = DateTime.now();
@@ -76,7 +76,7 @@ class _EditNoteState extends State<EditNote> {
         builder: (context, constraints) => SingleChildScrollView(
               reverse: true,
               child: SizedBox(
-                height: constraints.maxHeight * .95,
+                height: constraints.maxHeight * .90,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
                   child: Form(

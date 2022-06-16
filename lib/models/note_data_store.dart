@@ -1,8 +1,11 @@
+import 'dart:collection';
+
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:localstore/localstore.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 Future<String> get _localPath async {
   final directory = await getApplicationDocumentsDirectory();
@@ -41,7 +44,7 @@ class Notes {
   String title;
   String data;
   String date;
-  String time;
+  String? time;
   String priority;
   String color;
   Notes(
@@ -76,6 +79,15 @@ class Notes {
         color: map["color"]);
   }
 }
+
+int getHashCode(DateTime key) {
+  return key.day * 1000000 + key.month * 10000 + key.year;
+}
+
+final kEvents = LinkedHashMap<DateTime, List<Notes>>(
+  equals: isSameDay,
+  hashCode: getHashCode,
+);
 
 extension ExtNotes on Notes {
   Future save() async {

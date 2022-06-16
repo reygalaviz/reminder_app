@@ -11,10 +11,8 @@ import 'package:reminder_app/screens/all_notes.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
-
-import '../models/notes_operation.dart';
+import 'home.dart' as home;
 import 'all_notes.dart';
-import 'edit_notes.dart';
 
 String id = "No notes exist";
 bool res = false;
