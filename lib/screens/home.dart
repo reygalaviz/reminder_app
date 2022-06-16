@@ -282,3 +282,145 @@ class _Home2State extends State<Home2> {
         });
   }
 }
+
+class Home2 extends StatefulWidget {
+  const Home2({Key? key}) : super(key: key);
+
+  @override
+  State<Home2> createState() => _Home2State();
+}
+
+class _Home2State extends State<Home2> {
+  String body = "";
+
+  int _selectedIndex = 1;
+  int _selectedIndex2 = 0;
+  PageController pageController2 = PageController();
+
+  void onTapped(int index) {
+    setState(() {
+      if (_selectedIndex2 == 1) {
+        index = 0;
+        _selectedIndex2 = 0;
+        _selectedIndex = 1;
+      } else {
+        index = 1;
+        _selectedIndex2 = 1;
+        _selectedIndex = 0;
+      }
+    });
+
+    print(index);
+    pageController2.jumpToPage(index);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (context, ThemeModel themeNotifier, child) => Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).backgroundColor,
+          title: Text(
+            themeNotifier.isDark ? 'Dark Theme' : 'Light Theme',
+            style: TextStyle(color: Theme.of(context).primaryColor),
+          ),
+          actions: [
+            SwitcherButton(
+              value: themeNotifier.isDark ? false : true,
+              onChange: (value) {
+                themeNotifier.isDark
+                    ? themeNotifier.isDark = false
+                    : themeNotifier.isDark = true;
+              },
+            ),
+            const SizedBox(width: 20),
+            IconButton(
+                color: Theme.of(context).primaryColor,
+                onPressed: () => showSettingsModal(),
+                icon: const Icon(Icons.settings)),
+          ],
+        ),
+        resizeToAvoidBottomInset: false,
+        body: PageView(
+          controller: pageController2,
+          physics: const NeverScrollableScrollPhysics(),
+          children: const [
+            Table_Calendar(),
+            AllNotes(),
+          ],
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          elevation: 2,
+          onPressed: () {
+            return showTextboxKeyboard();
+          },
+          child: const Icon(Icons.add),
+        ),
+        bottomNavigationBar: Container(
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
+            boxShadow: [
+              BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              //change nav bar top radius
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
+            ),
+            child: BottomNavigationBar(
+              backgroundColor: Theme.of(context).backgroundColor,
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(CupertinoIcons.house,
+                      color: Theme.of(context).primaryColor),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(CupertinoIcons.calendar,
+                      color: Theme.of(context).primaryColor),
+                  label: 'Calendar',
+                ),
+              ],
+              currentIndex: _selectedIndex,
+              // selectedItemColor: Colors.white,
+              // unselectedItemColor: Color.fromARGB(255, 122, 122, 122),
+              onTap: onTapped,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void showSettingsModal() {
+    showModalBottomSheet(
+        context: context,
+        enableDrag: true,
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
+        backgroundColor: Colors.grey[100],
+        builder: (context) {
+          return const SettingsTab();
+        });
+  }
+
+  //keyboard textfield attachment
+  void showTextboxKeyboard() {
+    showModalBottomSheet(
+        enableDrag: false,
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
+        context: context,
+        builder: (context) {
+          return const AddNote();
+        });
+  }
+}
