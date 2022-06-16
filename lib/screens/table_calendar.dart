@@ -294,18 +294,30 @@ class Table_CalendarState extends State<Table_Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-      color: Theme.of(context).backgroundColor,
-      child: Column(children: [
-        calendar(),
-        eventTitle(),
-        const SizedBox(
-          height: 8.0,
+    return Dismissible(
+        key: UniqueKey(),
+        background: Container(
+          color: Colors.white30,
         ),
-        events(),
-      ]),
-    ));
+        onDismissed: (direct) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const home.Home()),
+          );
+        },
+        direction: DismissDirection.horizontal,
+        child: Scaffold(
+            body: Container(
+          color: Theme.of(context).backgroundColor,
+          child: Column(children: [
+            calendar(),
+            eventTitle(),
+            const SizedBox(
+              height: 8.0,
+            ),
+            events(),
+          ]),
+        )));
   }
 }
 
