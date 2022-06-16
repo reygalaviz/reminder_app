@@ -170,7 +170,6 @@ class _Home2State extends State<Home2> {
       }
     });
 
-    print(index);
     pageController2.jumpToPage(index);
   }
 

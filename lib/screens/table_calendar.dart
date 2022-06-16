@@ -43,6 +43,7 @@ class Table_Calendar extends StatefulWidget {
 }
 
 class Table_CalendarState extends State<Table_Calendar> {
+  @override
   void initState() {
     super.initState();
     _db.collection('notes').get().then((value) {
@@ -116,9 +117,8 @@ class Table_CalendarState extends State<Table_Calendar> {
     }
   }
 
+  @override
   void dispose() {
-    String troll = "hey rey this is a merge conflict";
-    print(troll);
     super.dispose();
   }
 
@@ -177,7 +177,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                 color: Colors.blue[200],
                 borderRadius: BorderRadius.circular(5.0)),
             selectedTextStyle: TextStyle(color: Theme.of(context).primaryColor),
-            weekendTextStyle: TextStyle(color: Colors.red),
+            weekendTextStyle: const TextStyle(color: Colors.red),
             todayTextStyle: TextStyle(
                 fontWeight: FontWeight.w200,
                 color: Theme.of(context).primaryColor)),

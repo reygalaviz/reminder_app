@@ -8,11 +8,9 @@ import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/main.dart' as count;
 import 'package:reminder_app/models/note_data_store.dart' as store;
 
-import 'dart:ui';
-
 enum ColorList { blue, green, red, yellow, white, cyan, purple, pink, orange }
 
-Color selectColor = Color.fromARGB(255, 180, 175, 175);
+Color selectColor = const Color.fromARGB(255, 180, 175, 175);
 
 class AddNote extends StatefulWidget {
   const AddNote({Key? key}) : super(key: key);
