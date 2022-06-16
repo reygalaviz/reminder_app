@@ -25,22 +25,13 @@ class SettingsTab extends StatelessWidget {
               child: Column(
                 children: [
                   ListTile(
-                      leading: const Center(
-                          child: Expanded(
-                        child: Text(
-                          'Settings',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      )),
-                      trailing: Expanded(
-                        child: TextButton(
-                            child: const Text(
-                              'Done',
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.blue),
-                            ),
-                            onPressed: () => Navigator.pop(context)),
-                      )),
+                    leading: Text('Settings',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.normal,
+                          color: Theme.of(context).primaryColor,
+                        )),
+                  ),
                   const Divider(
                     thickness: 1.0,
                   ),

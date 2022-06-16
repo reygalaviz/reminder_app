@@ -59,7 +59,7 @@ class ThemeModel extends ChangeNotifier {
           const BottomNavigationBarThemeData(backgroundColor: Colors.black),
       appBarTheme: const AppBarTheme(
           color: Colors.black, iconTheme: IconThemeData(color: Colors.white)),
-      scaffoldBackgroundColor: Colors.grey[800],
+      scaffoldBackgroundColor: Colors.grey[900],
       textTheme: const TextTheme(headline6: TextStyle(color: Colors.white)),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Colors.white, foregroundColor: Colors.black),
