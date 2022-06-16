@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
 import 'dart:async';
 import 'package:reminder_app/screens/edit_notes.dart';
+import 'package:http/http.dart';
 //import 'package:keyboard_attachable/keyboard_attachable.dart';
-import 'home.dart' as home;
 
 int initNumber = 0;
 String id = "No notes exist";
@@ -22,6 +24,8 @@ class _AllNotesState extends State<AllNotes> {
   final _db = Localstore.instance;
   final _items = <String, store.Notes>{};
   StreamSubscription<Map<String, dynamic>>? _subscription;
+  String formattedDate = DateFormat.MMMMEEEEd().format(DateTime.now());
+
   @override
   void initState() {
     super.initState();
@@ -35,66 +39,96 @@ class _AllNotesState extends State<AllNotes> {
     });
   }
 
+  Widget notesCard() {
+    return ListView.builder(
+        itemCount: _items.keys.length,
+        itemBuilder: (context, index) {
+          final key = _items.keys.elementAt(index);
+          final item = _items[key]!;
+          return Card(
+            child: ListTile(
+                title: Text(
+                  item.title,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black),
+                ),
+                subtitle: Text(
+                  '${item.date} ${item.time}',
+                  style: TextStyle(color: Colors.black),
+                ),
+                tileColor: Color(int.parse(item.color)).withOpacity(1),
+                onTap: () {
+                  id = item.id;
+
+                  showModalBottomSheet(
+                      enableDrag: false,
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20.0))),
+                      context: context,
+                      builder: (context) {
+                        return EditNote(id: id);
+                      });
+                },
+                trailing: IconButton(
+                  icon: const Icon(
+                    FontAwesomeIcons.trash,
+                    size: 20,
+                    color: Colors.black,
+                  ),
+                  onPressed: () async {
+                    await _showDialog(item);
+                    if (res == true) {
+                      setState(() {
+                        item.delete();
+                        _items.remove(item.id);
+                        res = false;
+                      });
+                    }
+                  },
+                )),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     initNumber = _items.keys.length;
-    return Dismissible(
-        key: UniqueKey(),
-        background: Container(
-          color: Colors.white30,
-        ),
-        onDismissed: (direct) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const home.Home2()),
-          );
-        },
-        direction: DismissDirection.horizontal,
-        child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: ListView.builder(
-                itemCount: _items.keys.length,
-                itemBuilder: (context, index) {
-                  final key = _items.keys.elementAt(index);
-                  final item = _items[key]!;
-                  return Card(
-                    child: ListTile(
-                        title: Text(
-                          item.title,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 0, 0, 0)),
-                        ),
-                        tileColor: Color(int.parse(item.color)).withOpacity(1),
-                        onTap: () {
-                          id = item.id;
-
-                          showModalBottomSheet(
-                              enableDrag: false,
-                              isScrollControlled: true,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(20.0))),
-                              context: context,
-                              builder: (context) {
-                                return EditNote(id: id);
-                              });
-                        },
-                        trailing: IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () async {
-                            await _showDialog(item);
-                            if (res == true) {
-                              setState(() {
-                                item.delete();
-                                _items.remove(item.id);
-                                res = false;
-                              });
-                            }
-                          },
-                        )),
-                  );
-                })));
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                'Today',
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 1.0,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: Text(
+                  formattedDate,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.normal),
+                ),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              Expanded(
+                child: notesCard(),
+              ),
+            ],
+          ),
+        ));
   }
 
   @override
