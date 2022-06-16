@@ -153,8 +153,8 @@ class Home2 extends StatefulWidget {
 class _Home2State extends State<Home2> {
   String body = "";
 
-  int _selectedIndex = 0;
-  int _selectedIndex2 = 1;
+  int _selectedIndex = 1;
+  int _selectedIndex2 = 0;
   PageController pageController2 = PageController();
 
   void onTapped(int index) {
