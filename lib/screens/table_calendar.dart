@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:reminder_app/models/color_data.dart';
 import 'package:reminder_app/models/note_data_store.dart';
 import 'package:reminder_app/screens/add_note.dart';
@@ -11,6 +12,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
 
+import '../models/notes_operation.dart';
 import 'all_notes.dart';
 import 'edit_notes.dart';
 
@@ -25,16 +27,13 @@ String title = "";
 String body = "";
 String daySelect = "";
 Color selectColor = const Color.fromARGB(255, 180, 175, 174);
-
-// Map<DateTime, List<Notes>>? _events;
-// late final ValueNotifier<List<Notes>> _selectedEvents;
-
 CalendarFormat format = CalendarFormat.month;
-List<Notes> _events = [];
-LinkedHashMap<DateTime, List<Notes>>? _groupedEvents;
+Map<DateTime, List<Notes>>? _events;
 DateTime _selectedDay = DateTime.now();
 DateTime _focusedDay = DateTime.now();
-DateFormat formatter = DateFormat("yyyy-MM-dd");
+
+// late final ValueNotifier<List<Notes>> _selectedEvents;
+//
 
 class Table_Calendar extends StatefulWidget {
   const Table_Calendar({Key? key}) : super(key: key);
@@ -44,68 +43,33 @@ class Table_Calendar extends StatefulWidget {
 }
 
 class Table_CalendarState extends State<Table_Calendar> {
-  void initState() {
-    super.initState();
-    _db.collection('notes').get().then((value) {
-      _subscription = _db.collection('notes').stream.listen((event) {
-        setState(() {
-          final item = store.Notes.fromMap(event);
-          _items.putIfAbsent(item.id, () => item);
-          _events.add(item);
-        });
-      });
-    });
-    // _selectedDay = DateTime.now();
-    // _selectedEvents = ValueNotifier(_getEventsFromDay(_selectedDay));
-  }
-
-  int getHashCode(DateTime key) {
-    return key.day * 1000000 + key.month * 10000 + key.year;
-  }
-
-  // Future addEvents() async {
-  //   await _db.collection('notes').get().then((events) {
-  //     final id = Localstore.instance.collection("notes").doc().id;
-  //     Color color = Color.fromARGB(199, 148, 84, 84);
-  //     String color1 = color.toString();
-  //     DateTime date = DateTime.now();
-
-  //     for (var i = 0; i < events!.length; i++) {
-  //       final id = Localstore.instance.collection("notes").doc().id;
-  //       String priority = "high";
-  //       final item1 = store.Notes(
-  //           id: id,
-  //           title: title,
-  //           data: body,
-  //           date: selectDate,
-  //           time: daySelect,
-  //           priority: priority,
-  //           color: colPick.value.toString());
-  //       item1.save();
+  // groupEvents(List<Notes> events) {
+  //   String dateString = "";
+  //   _groupedEvents = {};
+  //   DateTime date = DateTime.now();
+  //   for (var event in events) {
+  //     dateString = event.date;
+  //     date = DateTime.parse(dateString);
+  //     if (_groupedEvents?[date] == null) {
+  //       _groupedEvents?[date] = [];
+  //     } else {
+  //       _groupedEvents?[date]?.add(event);
   //     }
-  //     setState(() {
-  //       res = true;
-  //     });
-  //   });
-  //   groupEvents(_events);
+  //   }
   // }
 
-  groupEvents(List<Notes> events) {
-    String dateString = "";
-
-    _groupedEvents = LinkedHashMap(equals: isSameDay, hashCode: getHashCode);
-    DateTime date = DateTime.now();
-    for (var event in _events) {
-      dateString = event.date;
-      date = DateTime.parse(dateString);
-      // DateTime date = DateTime.utc().;
-      if (_groupedEvents![date] == null) _groupedEvents![date] = [];
-      _groupedEvents![date]?.add(event);
-    }
+  @override
+  void initState() {
+    super.initState();
+    _events = {};
   }
 
-  List<Notes> _getEventsFromDay(DateTime date) {
-    return _groupedEvents?[date] ?? [];
+  void dispose() {
+    super.dispose();
+  }
+
+  List<Notes> _getEventsForDay(DateTime day) {
+    return _events?[day] ?? [];
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -114,13 +78,8 @@ class Table_CalendarState extends State<Table_Calendar> {
         _focusedDay = focusedDay;
         _selectedDay = selectedDay;
       });
+      // _events.value = _getEventsForDay(selectedDay);
     }
-  }
-
-  void dispose() {
-    String troll = "hey rey this is a merge conflict";
-    print(troll);
-    super.dispose();
   }
 
   Widget calendar() {
@@ -128,14 +87,8 @@ class Table_CalendarState extends State<Table_Calendar> {
       margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
       width: double.infinity,
       decoration: BoxDecoration(
-          color: Colors.white,
           borderRadius: BorderRadius.circular(6.0),
-          boxShadow: const <BoxShadow>[
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 5,
-            )
-          ]),
+          boxShadow: const <BoxShadow>[]),
       child: TableCalendar<Notes>(
         focusedDay: _focusedDay,
         firstDay: DateTime(1990),
@@ -154,12 +107,10 @@ class Table_CalendarState extends State<Table_Calendar> {
           _focusedDay = focusedDay;
         },
         headerStyle: const HeaderStyle(
-          leftChevronIcon:
-              Icon(Icons.arrow_back_ios, size: 15, color: Colors.black),
-          rightChevronIcon:
-              Icon(Icons.arrow_forward_ios, size: 15, color: Colors.black),
+          leftChevronIcon: Icon(Icons.arrow_back_ios, size: 15),
+          rightChevronIcon: Icon(Icons.arrow_forward_ios, size: 15),
         ),
-        eventLoader: _getEventsFromDay,
+        eventLoader: _getEventsForDay,
         calendarStyle: CalendarStyle(
             canMarkersOverflow: true,
             isTodayHighlighted: true,
@@ -186,112 +137,6 @@ class Table_CalendarState extends State<Table_Calendar> {
     );
   }
 
-  Widget eventTitle() {
-    if (_items.keys.isEmpty) {
-      return Container(
-        padding: const EdgeInsets.fromLTRB(2, 20, 15, 15),
-        child: Text("No events",
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-            )),
-      );
-    }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          color: Colors.red,
-          child: Text(
-            "Events",
-            style: Theme.of(context).primaryTextTheme.headline6,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget events() {
-    return Expanded(
-      child: ListView.builder(
-          itemCount: _items.keys.length,
-          itemBuilder: (context, index) {
-            final key = _items.keys.elementAt(index);
-            final item = _items[key]!;
-            return Card(
-              child: ListTile(
-                  title: Text(
-                    item.title,
-                  ),
-                  tileColor: Color(int.parse(item.color)).withOpacity(1),
-                  onTap: () {
-                    id = item.id;
-                    //make a map to handle this
-                    showModalBottomSheet(
-                        enableDrag: false,
-                        isScrollControlled: true,
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(20.0))),
-                        context: context,
-                        builder: (context) {
-                          return EditNote(id: id);
-                        });
-                  },
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete),
-
-                    onPressed: () async {
-                      await _showDialog(item);
-                      if (res == true) {
-                        setState(() {
-                          item.delete();
-                          _items.remove(item.id);
-                          res = false;
-                        });
-                      }
-                    }, //Center(
-                    //  child: Text(
-                    //item.data,
-                  )),
-            );
-          }),
-    );
-  }
-
-  Future<bool?> _showDialog(final item) async {
-    return showDialog<bool>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Are you sure you want to delete?'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: const <Widget>[
-                Text('This is a permanent and data cannot be recovered again!'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                res = false;
-              },
-            ),
-            TextButton(
-                onPressed: () {
-                  res = true;
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Delete"))
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -299,11 +144,9 @@ class Table_CalendarState extends State<Table_Calendar> {
       color: Theme.of(context).backgroundColor,
       child: Column(children: [
         calendar(),
-        eventTitle(),
         const SizedBox(
           height: 8.0,
         ),
-        events(),
       ]),
     ));
   }
