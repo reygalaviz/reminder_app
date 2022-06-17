@@ -1,22 +1,13 @@
 import 'dart:math';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-// import 'package:image/image.dart';
-
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:localstore/localstore.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder_app/controllers/notifications.dart';
-//import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:reminder_app/main.dart' as count;
-import 'package:reminder_app/models/color_data.dart';
-import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:reminder_app/models/notes_operation.dart';
-import 'package:reminder_app/screens/table_calendar.dart' as cal;
-
-import '../models/note_data_store.dart';
 
 enum ColorList { blue, green, red, yellow, white, cyan, purple, pink, orange }
 
@@ -30,9 +21,6 @@ class AddNote extends StatefulWidget {
 }
 
 class _AddNoteState extends State<AddNote> {
-  final _db = Localstore.instance;
-  final _items = <String, store.Notes>{};
-  var item;
   DateFormat format = DateFormat("yyyy-MM-dd");
   final dCont = TextEditingController();
   final cCont = TextEditingController();
@@ -342,7 +330,7 @@ class _AddNoteState extends State<AddNote> {
       builder: (context, constraints) => SingleChildScrollView(
         reverse: true,
         child: SizedBox(
-          height: constraints.maxHeight * .60,
+          height: constraints.maxHeight * .65,
           child: Form(
             child: Padding(
               padding: EdgeInsets.all(constraints.maxHeight * .03),

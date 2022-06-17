@@ -5,8 +5,6 @@ import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
 import 'dart:async';
 import 'package:reminder_app/screens/edit_notes.dart';
-import 'package:http/http.dart';
-//import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'home.dart' as home;
 
 int initNumber = 0;
@@ -55,7 +53,7 @@ class _AllNotesState extends State<AllNotes> {
                 ),
                 subtitle: Text(
                   '${item.date} ${item.time}',
-                  style: TextStyle(color: Colors.black),
+                  style: const TextStyle(color: Colors.black),
                 ),
                 tileColor: Color(int.parse(item.color)).withOpacity(1),
                 onTap: () {

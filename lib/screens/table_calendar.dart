@@ -1,18 +1,13 @@
 import 'dart:async';
-import 'dart:collection';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:reminder_app/models/color_data.dart';
 import 'package:reminder_app/models/note_data_store.dart';
-import 'package:reminder_app/screens/add_note.dart';
-import 'package:reminder_app/screens/all_notes.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
 import 'home.dart' as home;
-import 'all_notes.dart';
+import 'package:reminder_app/Screens/cal_edit_note.dart';
 
 String id = "No notes exist";
 bool res = false;
@@ -132,6 +127,40 @@ class Table_CalendarState extends State<Table_Calendar> {
     }
   }
 
+  Future<bool?> _showDialog(final item) async {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Are you sure you want to delete?'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('This is a permanent and data cannot be recovered again!'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                res = false;
+              },
+            ),
+            TextButton(
+                onPressed: () {
+                  res = true;
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Delete"))
+          ],
+        );
+      },
+    );
+  }
+
   Widget calendar() {
     addEvents();
     return Container(
@@ -228,18 +257,50 @@ class Table_CalendarState extends State<Table_Calendar> {
                             if (item.date == day2) {
                               return Card(
                                   child: ListTile(
-                                title: Text(
-                                  item.title,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black),
-                                ),
-                                subtitle: Text(
-                                  '${item.date} ${item.time}',
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                tileColor: invisColor(item),
-                              ));
+                                      title: Text(
+                                        item.title,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
+                                      ),
+                                      subtitle: Text(
+                                        '${item.date} ${item.time}',
+                                        style: const TextStyle(
+                                            color: Colors.black),
+                                      ),
+                                      tileColor: invisColor(item),
+                                      onTap: () {
+                                        id = item.id;
+
+                                        showModalBottomSheet(
+                                            enableDrag: false,
+                                            isScrollControlled: true,
+                                            shape: const RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                        top: Radius.circular(
+                                                            20.0))),
+                                            context: context,
+                                            builder: (context) {
+                                              return EditNote(id: id);
+                                            });
+                                      },
+                                      trailing: IconButton(
+                                          icon: const Icon(
+                                            FontAwesomeIcons.trash,
+                                            size: 20,
+                                            color: Colors.black,
+                                          ),
+                                          onPressed: () async {
+                                            await _showDialog(item);
+                                            if (res == true) {
+                                              setState(() {
+                                                item.delete();
+                                                _items.remove(item.id);
+                                                res = false;
+                                              });
+                                            }
+                                          })));
                             } else {
                               return Container();
                             }

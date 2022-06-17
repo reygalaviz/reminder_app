@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
-
-import '../models/notes_operation.dart';
+//import '../models/notes_operation.dart';
 import '../themes/theme_model.dart';
 
 class SettingsTab extends StatelessWidget {
+  const SettingsTab({Key? key}) : super(key: key);
+
   Widget buildDarkMode() {
     return Consumer(
         builder: (context, ThemeModel themeNotifier, child) => SwitchListTile(
-            title: Text('Change Theme'),
+            title: const Text('Change Theme'),
             value: themeNotifier.isDark,
             onChanged: (value) {
               themeNotifier.isDark = value;

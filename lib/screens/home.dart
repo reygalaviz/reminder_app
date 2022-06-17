@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:reminder_app/screens/settings.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:reminder_app/screens/table_calendar.dart';
-import 'package:reminder_app/screens/clean_calendar.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -131,7 +130,7 @@ class _HomeState extends State<Home> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
         backgroundColor: Colors.grey[800],
         builder: (context) {
-          return SettingsTab();
+          return const SettingsTab();
         });
   }
 
@@ -264,7 +263,7 @@ class _Home2State extends State<Home2> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
         backgroundColor: Colors.white,
         builder: (context) {
-          return SettingsTab();
+          return const SettingsTab();
         });
   }
 

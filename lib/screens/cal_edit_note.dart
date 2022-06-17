@@ -331,7 +331,7 @@ class _EditNoteState extends State<EditNote> {
 
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const Home()),
+            MaterialPageRoute(builder: (context) => const Home2()),
           );
         },
         icon: const Icon(
@@ -412,9 +412,6 @@ class _EditNoteState extends State<EditNote> {
                           ),
                           Expanded(child: eventSubmit()),
                         ]),
-                        Padding(
-                          padding: EdgeInsets.all(constraints.maxHeight * .1),
-                        )
                       ],
                     ),
                   ),
