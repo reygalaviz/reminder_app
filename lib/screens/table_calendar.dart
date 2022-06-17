@@ -18,17 +18,6 @@ String id = "No notes exist";
 bool res = false;
 Color colPick = Colors.white;
 StreamSubscription<Map<String, dynamic>>? _subscription;
-final _db = Localstore.instance;
-final _items = <String, store.Notes>{};
-String selectDate = "";
-String title = "";
-String body = "";
-String daySelect = "";
-Color selectColor = const Color.fromARGB(255, 180, 175, 174);
-CalendarFormat format = CalendarFormat.month;
-Map<DateTime, List<Notes>>? _events;
-DateTime _selectedDay = DateTime.now();
-DateTime _focusedDay = DateTime.now();
 
 // late final ValueNotifier<List<Notes>> _selectedEvents;
 //
@@ -41,45 +30,65 @@ class Table_Calendar extends StatefulWidget {
 }
 
 class Table_CalendarState extends State<Table_Calendar> {
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _db.collection('notes').get().then((value) {
-  //     _subscription = _db.collection('notes').stream.listen((event) {
-  //       setState(() {
-  //         final item = store.Notes.fromMap(event);
-  //         _items.putIfAbsent(item.id, () => item);
-  //         _events.add(item);
-  //       });
-  //     });
-  //   });
-  //   // _selectedDay = DateTime.now();
-  //   // _selectedEvents = ValueNotifier(_getEventsFromDay(_selectedDay));
-  // }
+  final _db = Localstore.instance;
+  final _items = <String, store.Notes>{};
+  String selectDate = "";
+  String title = "";
+  String body = "";
+  String daySelect = "";
+  Color selectColor = const Color.fromARGB(255, 180, 175, 174);
+  CalendarFormat format = CalendarFormat.month;
+  final Map<DateTime, List<Notes>> _events = {};
+  DateTime? _selectedDay = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
+
+  List<DateTime> done = [];
+  //late final ValueNotifier<List<Notes>> _selectedEvents;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDay = DateTime.now();
+
+    _db.collection('notes').get().then((value) {
+      _subscription = _db.collection('notes').stream.listen((event) {
+        setState(() {
+          final item = store.Notes.fromMap(event);
+          _items.putIfAbsent(item.id, () => item);
+          final parsDate = DateTime.parse(item.date);
+          //parsDate.toUtc();
+
+          done.add(parsDate);
+
+          //so we have a parsdate map to hold every note occuring during that day
+        });
+      });
+    });
+    // _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+  }
 
   // int getHashCode(DateTime key) {
   //   return key.day * 1000000 + key.month * 10000 + key.year;
   // }
 
-  // Future addEvents() async {
-  //   await _db.collection('notes').get().then((events) {
-  //     final id = Localstore.instance.collection("notes").doc().id;
-  //     Color color = Color.fromARGB(199, 148, 84, 84);
-  //     String color1 = color.toString();
-  //     DateTime date = DateTime.now();
+  Future addEvents() async {
+    for (var value in done) {
+      List<Notes> list = [];
 
-  //     for (var i = 0; i < events!.length; i++) {
-  //       final id = Localstore.instance.collection("notes").doc().id;
-  //       String priority = "high";
-  //       final item1 = store.Notes(
-  //           id: id,
-  //           title: title,
-  //           data: body,
-  //           date: selectDate,
-  //           time: daySelect,
-  //           priority: priority,
-  //           color: colPick.value.toString());
-  //       item1.save();
+      _items.forEach((id, item) {
+        final parsDate = DateTime.parse(item.date);
+        if (parsDate == value) {
+          list.add(item);
+        }
+      });
+      // print(list);
+      setState(() {
+        _events.putIfAbsent(value, () => list);
+        //print(_events[value]);
+      });
+    }
+  }
+
   // groupEvents(List<Notes> events) {
   //   String dateString = "";
   //   _groupedEvents = {};
@@ -94,19 +103,23 @@ class Table_CalendarState extends State<Table_Calendar> {
   //     }
   //   }
   // }
-
   @override
-  void initState() {
-    super.initState();
-    _events = {};
-  }
-
   void dispose() {
     super.dispose();
   }
 
   List<Notes> _getEventsForDay(DateTime day) {
-    return _events?[day] ?? [];
+    //print(day);
+    DateFormat format = DateFormat("yyyy-MM-dd");
+    String day2 = format.format(day);
+
+    List<Notes>? list2;
+    //print(_events[DateTime.parse(day2)]);
+    list2 = _events[DateTime.parse(day2)] ?? [];
+    //print(_events.entries);
+
+    //list2 as List<Notes>;
+    return list2;
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -120,7 +133,9 @@ class Table_CalendarState extends State<Table_Calendar> {
   }
 
   Widget calendar() {
+    addEvents();
     return Container(
+      key: UniqueKey(),
       margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
       width: double.infinity,
       decoration: BoxDecoration(
@@ -136,9 +151,11 @@ class Table_CalendarState extends State<Table_Calendar> {
         onDaySelected: _onDaySelected,
         calendarFormat: format,
         onFormatChanged: (calformat) {
-          setState(() {
-            format = calformat;
-          });
+          if (calformat != format) {
+            setState(() {
+              calformat = format;
+            });
+          }
         },
         onPageChanged: (focusedDay) {
           _focusedDay = focusedDay;
@@ -174,6 +191,10 @@ class Table_CalendarState extends State<Table_Calendar> {
     );
   }
 
+  Color? invisColor(item) {
+    return Color(int.parse(item.color)).withOpacity(1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dismissible(
@@ -190,13 +211,39 @@ class Table_CalendarState extends State<Table_Calendar> {
         direction: DismissDirection.horizontal,
         child: Scaffold(
             body: Container(
-          color: Theme.of(context).backgroundColor,
-          child: Column(children: [
-            calendar(),
-            const SizedBox(
-              height: 8.0,
-            ),
-          ]),
-        )));
+                color: Theme.of(context).backgroundColor,
+                child: Column(children: [
+                  calendar(),
+                  const SizedBox(
+                    height: 8.0,
+                  ),
+                  Expanded(
+                      child: ListView.builder(
+                          itemCount: _items.keys.length,
+                          itemBuilder: (context, index) {
+                            final key = _items.keys.elementAt(index);
+                            final item = _items[key]!;
+                            DateFormat format = DateFormat("yyyy-MM-dd");
+                            String day2 = format.format(_selectedDay!);
+                            if (item.date == day2) {
+                              return Card(
+                                  child: ListTile(
+                                title: Text(
+                                  item.title,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                                subtitle: Text(
+                                  '${item.date} ${item.time}',
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                tileColor: invisColor(item),
+                              ));
+                            } else {
+                              return Container();
+                            }
+                          }))
+                ]))));
   }
 }
