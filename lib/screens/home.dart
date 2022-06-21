@@ -143,7 +143,7 @@ class _HomeState extends State<Home> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
         backgroundColor: Colors.grey[800],
         builder: (context) {
-          return SettingsTab();
+          return const SettingsTab();
         });
   }
 
@@ -219,7 +219,6 @@ class _Home2State extends State<Home2> {
       }
     });
 
-    print(index);
     pageController2.jumpToPage(index);
   }
 
@@ -317,7 +316,7 @@ class _Home2State extends State<Home2> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
         backgroundColor: Colors.white,
         builder: (context) {
-          return SettingsTab();
+          return const SettingsTab();
         });
   }
 

@@ -5,8 +5,7 @@ import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
 import 'dart:async';
 import 'package:reminder_app/screens/edit_notes.dart';
-import 'package:http/http.dart';
-//import 'package:keyboard_attachable/keyboard_attachable.dart';
+import 'home.dart' as home;
 
 int initNumber = 0;
 String id = "No notes exist";
@@ -54,7 +53,7 @@ class _AllNotesState extends State<AllNotes> {
                 ),
                 subtitle: Text(
                   '${item.date} ${item.time}',
-                  style: TextStyle(color: Colors.black),
+                  style: const TextStyle(color: Colors.black),
                 ),
                 tileColor: Color(int.parse(item.color)).withOpacity(1),
                 onTap: () {
@@ -95,40 +94,52 @@ class _AllNotesState extends State<AllNotes> {
   @override
   Widget build(BuildContext context) {
     initNumber = _items.keys.length;
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 10,
+    return Dismissible(
+        key: UniqueKey(),
+        background: Container(
+          color: Colors.white30,
+        ),
+        onDismissed: (direct) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const home.Home()),
+          );
+        },
+        direction: DismissDirection.horizontal,
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text(
+                    'Today',
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 1.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Text(
+                      formattedDate,
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.normal),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  Expanded(
+                    child: notesCard(),
+                  ),
+                ],
               ),
-              const Text(
-                'Today',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 1.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: Text(
-                  formattedDate,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.normal),
-                ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              Expanded(
-                child: notesCard(),
-              ),
-            ],
-          ),
-        ));
+            )));
   }
 
   @override

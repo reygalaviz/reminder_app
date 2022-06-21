@@ -3,7 +3,7 @@ import 'package:reminder_app/models/note_data_store.dart';
 import 'package:reminder_app/main.dart' as count;
 
 class NotesOperation extends ChangeNotifier {
-  List<Notes> _notes = <Notes>[];
+  final List<Notes> _notes = <Notes>[];
 
   List<Notes> get getNotes {
     return _notes;

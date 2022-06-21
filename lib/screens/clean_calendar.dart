@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_calendar/clean_calendar_event.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:reminder_app/models/note_data_store.dart';
 import 'package:reminder_app/models/notes_operation.dart';
-
-import 'all_notes.dart';
 
 class Clean_Calendar extends StatefulWidget {
   const Clean_Calendar({Key? key}) : super(key: key);
