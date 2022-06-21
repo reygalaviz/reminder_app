@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 // import 'package:flutter/rendering.dart';
 // import 'package:flutter/services.dart';
 //import 'package:reminder_app/models/datetime_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:localstore/localstore.dart';
+import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/screens/add_note.dart';
 import 'package:reminder_app/screens/all_notes.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +15,9 @@ import 'package:reminder_app/screens/settings.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:reminder_app/screens/table_calendar.dart';
 import 'package:reminder_app/screens/clean_calendar.dart';
+import 'package:reminder_app/models/note_data_store.dart' as store;
+
+import '../models/note_data_store.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -23,7 +30,7 @@ class _HomeState extends State<Home> {
   String body = "";
 
   int _selectedIndex = 0;
-
+  final _db = Localstore.instance;
   PageController pageController = PageController();
 
   void onTapped(int index) {
@@ -45,7 +52,12 @@ class _HomeState extends State<Home> {
         actions: [
           IconButton(
               color: Theme.of(context).primaryColor,
-              onPressed: () {},
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: MySearchDelegate(),
+                );
+              },
               icon: const Icon(FontAwesomeIcons.magnifyingGlass)),
           const SizedBox(width: 20),
           IconButton(
@@ -149,6 +161,37 @@ class _HomeState extends State<Home> {
   }
 }
 
+//search functions
+class MySearchDelegate extends SearchDelegate {
+  final _items = <String, store.Notes>{};
+
+  @override
+  Widget? buildLeading(BuildContext context) => IconButton(
+      onPressed: () => close(context, null), //close search bar
+      icon: const Icon(FontAwesomeIcons.arrowLeft));
+
+  @override
+  List<Widget>? buildActions(BuildContext context) => [
+        IconButton(
+            onPressed: () {
+              if (query.isEmpty) {
+                close(context, null);
+              } else {
+                query = '';
+              }
+            },
+            icon: const Icon(Icons.clear))
+      ];
+
+  @override
+  Widget buildResults(BuildContext context) => Center();
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return Container();
+  }
+}
+
 class Home2 extends StatefulWidget {
   const Home2({Key? key}) : super(key: key);
 
@@ -191,11 +234,20 @@ class _Home2State extends State<Home2> {
             style: TextStyle(color: Theme.of(context).primaryColor),
           ),
           actions: [
+            IconButton(
+                color: Theme.of(context).primaryColor,
+                onPressed: () {
+                  showSearch(
+                    context: context,
+                    delegate: MySearchDelegate(),
+                  );
+                },
+                icon: const Icon(FontAwesomeIcons.magnifyingGlass)),
             const SizedBox(width: 20),
             IconButton(
                 color: Theme.of(context).primaryColor,
                 onPressed: () => showSettingsModal(),
-                icon: const Icon(Icons.settings)),
+                icon: const Icon(FontAwesomeIcons.gear)),
           ],
         ),
         resizeToAvoidBottomInset: false,
