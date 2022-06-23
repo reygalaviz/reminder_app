@@ -180,74 +180,87 @@ class _Home2State extends State<Home2> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, ThemeModel themeNotifier, child) => Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).backgroundColor,
-          title: Text(
-            themeNotifier.isDark ? 'Dark Theme' : 'Light Theme',
-            style: TextStyle(color: Theme.of(context).primaryColor),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        title: Text(
+          'RemindMe',
+          style: TextStyle(color: Theme.of(context).primaryColor),
+        ),
+        actions: [
+          IconButton(
+              color: Theme.of(context).primaryColor,
+              onPressed: () {},
+              icon: const Icon(FontAwesomeIcons.magnifyingGlass)),
+          const SizedBox(width: 20),
+          IconButton(
+              color: Theme.of(context).primaryColor,
+              onPressed: () => showSettingsModal(),
+              icon: const Icon(FontAwesomeIcons.gear)),
+        ],
+      ),
+      resizeToAvoidBottomInset: false,
+      body: PageView(
+        controller: pageController2,
+        physics: const NeverScrollableScrollPhysics(),
+        children: const [
+          Table_Calendar(),
+          AllNotes(),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        elevation: 2,
+        onPressed: () {
+          return showTextboxKeyboard();
+        },
+        child: const Icon(FontAwesomeIcons.plus),
+      ),
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
           ),
-          actions: [
-            const SizedBox(width: 20),
-            IconButton(
-                color: Theme.of(context).primaryColor,
-                onPressed: () => showSettingsModal(),
-                icon: const Icon(Icons.settings)),
+          boxShadow: [
+            BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),
           ],
         ),
-        resizeToAvoidBottomInset: false,
-        body: PageView(
-          controller: pageController2,
-          physics: const NeverScrollableScrollPhysics(),
-          children: const [
-            Table_Calendar(),
-            AllNotes(),
-          ],
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          elevation: 2,
-          onPressed: () {
-            return showTextboxKeyboard();
-          },
-          child: const Icon(Icons.add),
-        ),
-        bottomNavigationBar: Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
-            ),
-            boxShadow: [
-              BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            //change nav bar top radius
+            topLeft: Radius.circular(20.0),
+            topRight: Radius.circular(20.0),
+          ),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            elevation: 0.0,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            backgroundColor:
+                Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                activeIcon: Icon(
+                  FontAwesomeIcons.house,
+                  color: Theme.of(context).primaryColor,
+                ),
+                icon: const Icon(FontAwesomeIcons.house, color: Colors.grey),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                activeIcon: Icon(
+                  FontAwesomeIcons.calendar,
+                  color: Theme.of(context).primaryColor,
+                ),
+                icon: const Icon(FontAwesomeIcons.calendar, color: Colors.grey),
+                label: 'Calendar',
+              ),
             ],
-          ),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-              //change nav bar top radius
-              topLeft: Radius.circular(20.0),
-              topRight: Radius.circular(20.0),
-            ),
-            child: BottomNavigationBar(
-              backgroundColor: Theme.of(context).backgroundColor,
-              items: <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.house,
-                      color: Theme.of(context).primaryColor),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.calendar,
-                      color: Theme.of(context).primaryColor),
-                  label: 'Calendar',
-                ),
-              ],
-              currentIndex: _selectedIndex,
-              // selectedItemColor: Colors.white,
-              // unselectedItemColor: Color.fromARGB(255, 122, 122, 122),
-              onTap: onTapped,
-            ),
+            currentIndex: _selectedIndex,
+            // selectedItemColor: Colors.white,
+            // unselectedItemColor: Colors.black,
+            onTap: onTapped,
           ),
         ),
       ),

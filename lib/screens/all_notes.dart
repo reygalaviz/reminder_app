@@ -6,6 +6,8 @@ import 'package:localstore/localstore.dart';
 import 'dart:async';
 import 'package:reminder_app/screens/edit_notes.dart';
 import 'home.dart' as home;
+import 'package:reminder_app/models/notif_data_store.dart';
+import 'package:reminder_app/controllers/notifications.dart';
 
 int initNumber = 0;
 String id = "No notes exist";
@@ -24,7 +26,7 @@ class _AllNotesState extends State<AllNotes> {
   final _items = <String, store.Notes>{};
   StreamSubscription<Map<String, dynamic>>? _subscription;
   String formattedDate = DateFormat.MMMMEEEEd().format(DateTime.now());
-
+  final _notifs = <String, Notifs>{};
   @override
   void initState() {
     super.initState();
@@ -36,6 +38,16 @@ class _AllNotesState extends State<AllNotes> {
         });
       });
     });
+    _db
+        .collection("notifs")
+        .doc()
+        .get()
+        .then((value) => _db.collection('notifs').stream.listen((event) {
+              setState(() {
+                final item = Notifs.fromMap(event);
+                _notifs.putIfAbsent(item.id, () => item);
+              });
+            }));
   }
 
   Widget notesCard() {
@@ -81,6 +93,8 @@ class _AllNotesState extends State<AllNotes> {
                     if (res == true) {
                       setState(() {
                         item.delete();
+                        String not = _notifs[item.id]!.id2;
+                        NotificationService().deleteNotif(not);
                         _items.remove(item.id);
                         res = false;
                       });
@@ -102,7 +116,7 @@ class _AllNotesState extends State<AllNotes> {
         onDismissed: (direct) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const home.Home()),
+            MaterialPageRoute(builder: (context) => const home.Home2()),
           );
         },
         direction: DismissDirection.horizontal,
@@ -173,6 +187,7 @@ class _AllNotesState extends State<AllNotes> {
             TextButton(
                 onPressed: () {
                   res = true;
+
                   Navigator.of(context).pop();
                 },
                 child: const Text("Delete"))

@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/main.dart' as count;
 import 'package:reminder_app/models/notes_operation.dart';
+import 'package:reminder_app/models/notif_data_store.dart';
+import 'package:reminder_app/models/notif_operations.dart';
 
 enum ColorList { blue, green, red, yellow, white, cyan, purple, pink, orange }
 
@@ -30,6 +32,8 @@ class _AddNoteState extends State<AddNote> {
   String body = '';
   String selectDate = "";
   String daySelect = "";
+  late DateTime scheduler = DateTime.now();
+  late DateTime scheduler2 = DateTime.now();
   DismissDirection direct = DismissDirection.endToStart;
   var generator = Random(5);
   final id = Localstore.instance.collection("notes").doc().id;
@@ -240,6 +244,7 @@ class _AddNoteState extends State<AddNote> {
                   firstDate: DateTime(2022),
                   lastDate: DateTime(2025));
               String compForm = format.format(dateT!);
+              dateT = scheduler;
               selectDate = compForm;
 
               dCont.text = compForm;
@@ -271,6 +276,8 @@ class _AddNoteState extends State<AddNote> {
               String timeString = timeT!.format(context);
               daySelect = timeString;
               cCont.text = timeString;
+              scheduler2 = DateTime(scheduler.year, scheduler.month,
+                  scheduler.day, timeT.hour, timeT.minute);
             },
             icon: const Icon(
               FontAwesomeIcons.clock,
@@ -286,6 +293,12 @@ class _AddNoteState extends State<AddNote> {
       backgroundColor: Colors.red,
       child: IconButton(
           onPressed: () {
+            Notifs notif = Notifs(
+              id: id,
+              id2: count.channelCounter.toString(),
+            );
+            notif.save();
+            print(notif);
             Provider.of<NotesOperation>(context, listen: false).addNewNote(
                 id,
                 title,
@@ -295,8 +308,16 @@ class _AddNoteState extends State<AddNote> {
                 priority,
                 colPick.value.toString());
 
-            NotificationService().displayNotification(
-                body: body, channel: count.channelCounter, title: title);
+            if (scheduler2.isAfter(DateTime.now())) {
+              NotificationService().displayScheduleNotif(
+                  body: body,
+                  channel: count.channelCounter,
+                  title: title,
+                  date: scheduler2);
+            } else {
+              NotificationService().displayNotification(
+                  body: body, channel: count.channelCounter, title: title);
+            }
             Navigator.pop(context);
           },
           icon: const Icon(
