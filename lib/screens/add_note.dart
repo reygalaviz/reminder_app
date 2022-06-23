@@ -238,13 +238,17 @@ class _AddNoteState extends State<AddNote> {
         prefixIconConstraints: const BoxConstraints(minWidth: 0),
         prefixIcon: IconButton(
             onPressed: () async {
-              DateTime? dateT = await showDatePicker(
+              final DateTime? dateT = await showDatePicker(
                   context: context,
                   initialDate: DateTime.now(),
-                  firstDate: DateTime(2022),
-                  lastDate: DateTime(2025));
+                  firstDate: DateTime(2022, 1, 1),
+                  lastDate: DateTime(2025, 12, 12));
               String compForm = format.format(dateT!);
-              dateT = scheduler;
+              setState(() {
+                scheduler = dateT;
+              });
+
+              print(dateT);
               selectDate = compForm;
 
               dCont.text = compForm;
@@ -298,7 +302,7 @@ class _AddNoteState extends State<AddNote> {
               id2: count.channelCounter.toString(),
             );
             notif.save();
-            print(notif);
+
             Provider.of<NotesOperation>(context, listen: false).addNewNote(
                 id,
                 title,
