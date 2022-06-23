@@ -78,6 +78,8 @@ class Notes {
         priority: map["priority"],
         color: map["color"]);
   }
+
+  toLowerCase() {}
 }
 
 int getHashCode(DateTime key) {
