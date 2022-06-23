@@ -105,14 +105,16 @@ class _EditNoteState extends State<EditNote> {
         prefixIconConstraints: const BoxConstraints(minWidth: 0),
         prefixIcon: IconButton(
             onPressed: () async {
-              DateTime? dateT = await showDatePicker(
+              final DateTime? dateT = await showDatePicker(
                   context: context,
                   initialDate: DateTime.parse(selectDate),
                   firstDate: DateTime(2022),
                   lastDate: DateTime(2025));
               String compForm = format.format(dateT!);
               selectDate = compForm;
-              dateT = scheduler;
+              setState(() {
+                scheduler = dateT;
+              });
 
               dCont.text = compForm;
             },
