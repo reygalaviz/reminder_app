@@ -34,16 +34,18 @@ class Table_CalendarState extends State<Table_Calendar> {
   Color selectColor = const Color.fromARGB(255, 180, 175, 174);
   CalendarFormat format = CalendarFormat.month;
   final Map<DateTime, List<Notes>> _events = {};
-  DateTime? _selectedDay = DateTime.now();
+  DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
-
   List<DateTime> done = [];
+
+  List<Notes> _selectedEvents = [];
   //late final ValueNotifier<List<Notes>> _selectedEvents;
 
   @override
   void initState() {
     super.initState();
     _selectedDay = DateTime.now();
+    _selectedEvents = [];
 
     _db.collection('notes').get().then((value) {
       _subscription = _db.collection('notes').stream.listen((event) {
@@ -122,6 +124,7 @@ class Table_CalendarState extends State<Table_Calendar> {
       setState(() {
         _focusedDay = focusedDay;
         _selectedDay = selectedDay;
+        _selectedEvents = _getEventsForDay(selectedDay);
       });
       // _events.value = _getEventsForDay(selectedDay);
     }
@@ -165,57 +168,88 @@ class Table_CalendarState extends State<Table_Calendar> {
     addEvents();
     return Container(
       key: UniqueKey(),
-      margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-      width: double.infinity,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6.0),
           boxShadow: const <BoxShadow>[]),
-      child: TableCalendar<Notes>(
-        focusedDay: _focusedDay,
-        firstDay: DateTime(1990),
-        lastDay: DateTime(3022),
-        selectedDayPredicate: (DateTime day) {
-          return isSameDay(_selectedDay, day);
-        },
-        onDaySelected: _onDaySelected,
-        calendarFormat: format,
-        onFormatChanged: (calformat) {
-          if (calformat != format) {
-            setState(() {
-              calformat = format;
-            });
-          }
-        },
-        onPageChanged: (focusedDay) {
-          _focusedDay = focusedDay;
-        },
-        headerStyle: const HeaderStyle(
-          leftChevronIcon: Icon(Icons.arrow_back_ios, size: 15),
-          rightChevronIcon: Icon(Icons.arrow_forward_ios, size: 15),
+      child: Card(
+        elevation: 2.0,
+        color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+        margin: const EdgeInsets.all(8.0),
+        child: TableCalendar<Notes>(
+          focusedDay: _focusedDay,
+          firstDay: DateTime(1990),
+          lastDay: DateTime(3022),
+          selectedDayPredicate: (DateTime day) {
+            return isSameDay(_selectedDay, day);
+          },
+          onDaySelected: _onDaySelected,
+          calendarFormat: format,
+          onFormatChanged: (CalendarFormat calformat) {
+            if (calformat != format) {
+              setState(() {
+                format = calformat;
+              });
+            }
+          },
+          onPageChanged: (focusedDay) {
+            _focusedDay = focusedDay;
+          },
+          eventLoader: _getEventsForDay,
+          headerStyle: const HeaderStyle(
+            formatButtonTextStyle:
+                TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+            formatButtonDecoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(8.0))),
+            titleTextStyle:
+                TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            leftChevronIcon: Icon(
+              Icons.arrow_back_ios,
+              size: 15,
+            ),
+            rightChevronIcon: Icon(Icons.arrow_forward_ios, size: 15),
+          ),
+          daysOfWeekStyle: const DaysOfWeekStyle(
+              weekdayStyle: TextStyle(fontWeight: FontWeight.bold)),
+          calendarStyle: CalendarStyle(
+              canMarkersOverflow: true,
+              isTodayHighlighted: true,
+              markersMaxCount: 4,
+              markerDecoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0))),
+              defaultDecoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(5.0)),
+              weekendDecoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(5.0)),
+              selectedDecoration: BoxDecoration(
+                  color: Colors.blue,
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(5.0)),
+              todayDecoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: const Color.fromARGB(255, 255, 171, 75),
+                  borderRadius: BorderRadius.circular(5.0)),
+              selectedTextStyle: const TextStyle(fontWeight: FontWeight.w600),
+              // weekendTextStyle: const TextStyle(color: Colors.red),
+              todayTextStyle: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).primaryColor)),
         ),
-        eventLoader: _getEventsForDay,
-        calendarStyle: CalendarStyle(
-            canMarkersOverflow: true,
-            isTodayHighlighted: true,
-            defaultDecoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(5.0)),
-            weekendDecoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(5.0)),
-            selectedDecoration: BoxDecoration(
-                color: Colors.blue,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(5.0)),
-            todayDecoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                color: Colors.blue[200],
-                borderRadius: BorderRadius.circular(5.0)),
-            selectedTextStyle: TextStyle(color: Theme.of(context).primaryColor),
-            weekendTextStyle: const TextStyle(color: Colors.red),
-            todayTextStyle: TextStyle(
-                fontWeight: FontWeight.w200,
-                color: Theme.of(context).primaryColor)),
+      ),
+    );
+  }
+
+  Widget eventTitle() {
+    String formattedDate = DateFormat.MMMMEEEEd().format(_selectedDay);
+    return LayoutBuilder(
+      builder: (context, constraints) => Container(
+        padding: EdgeInsets.only(left: constraints.maxWidth * .025),
+        child: Text(
+          formattedDate,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+        ),
       ),
     );
   }
@@ -241,70 +275,81 @@ class Table_CalendarState extends State<Table_Calendar> {
         child: Scaffold(
             body: Container(
                 color: Theme.of(context).backgroundColor,
-                child: Column(children: [
-                  calendar(),
-                  const SizedBox(
-                    height: 8.0,
-                  ),
-                  Expanded(
-                      child: ListView.builder(
-                          itemCount: _items.keys.length,
-                          itemBuilder: (context, index) {
-                            final key = _items.keys.elementAt(index);
-                            final item = _items[key]!;
-                            DateFormat format = DateFormat("yyyy-MM-dd");
-                            String day2 = format.format(_selectedDay!);
-                            if (item.date == day2) {
-                              return Card(
-                                  child: ListTile(
-                                      title: Text(
-                                        item.title,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black),
-                                      ),
-                                      subtitle: Text(
-                                        '${item.date} ${item.time}',
-                                        style: const TextStyle(
-                                            color: Colors.black),
-                                      ),
-                                      tileColor: invisColor(item),
-                                      onTap: () {
-                                        id = item.id;
-
-                                        showModalBottomSheet(
-                                            enableDrag: false,
-                                            isScrollControlled: true,
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.vertical(
-                                                        top: Radius.circular(
-                                                            20.0))),
-                                            context: context,
-                                            builder: (context) {
-                                              return EditNote(id: id);
-                                            });
-                                      },
-                                      trailing: IconButton(
-                                          icon: const Icon(
-                                            FontAwesomeIcons.trash,
-                                            size: 20,
-                                            color: Colors.black,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      calendar(),
+                      const SizedBox(
+                        height: 8.0,
+                      ),
+                      eventTitle(),
+                      const Divider(
+                        height: 15,
+                        thickness: 2.0,
+                        indent: 10.0,
+                        endIndent: 10.0,
+                      ),
+                      Expanded(
+                          child: ListView.builder(
+                              itemCount: _items.keys.length,
+                              itemBuilder: (context, index) {
+                                final key = _items.keys.elementAt(index);
+                                final item = _items[key]!;
+                                DateFormat format = DateFormat("yyyy-MM-dd");
+                                String day2 = format.format(_selectedDay);
+                                if (item.date == day2) {
+                                  return Card(
+                                      child: ListTile(
+                                          title: Text(
+                                            item.title,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black),
                                           ),
-                                          onPressed: () async {
-                                            await _showDialog(item);
-                                            if (res == true) {
-                                              setState(() {
-                                                item.delete();
-                                                _items.remove(item.id);
-                                                res = false;
-                                              });
-                                            }
-                                          })));
-                            } else {
-                              return Container();
-                            }
-                          }))
-                ]))));
+                                          subtitle: Text(
+                                            '${item.date} ${item.time}',
+                                            style: const TextStyle(
+                                                color: Colors.black),
+                                          ),
+                                          tileColor: invisColor(item),
+                                          onTap: () {
+                                            id = item.id;
+
+                                            showModalBottomSheet(
+                                                enableDrag: false,
+                                                isScrollControlled: true,
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.vertical(
+                                                                top: Radius
+                                                                    .circular(
+                                                                        20.0))),
+                                                context: context,
+                                                builder: (context) {
+                                                  return EditNote(id: id);
+                                                });
+                                          },
+                                          trailing: IconButton(
+                                              icon: const Icon(
+                                                FontAwesomeIcons.trash,
+                                                size: 20,
+                                                color: Colors.black,
+                                              ),
+                                              onPressed: () async {
+                                                await _showDialog(item);
+                                                if (res == true) {
+                                                  setState(() {
+                                                    item.delete();
+                                                    _items.remove(item.id);
+                                                    res = false;
+                                                  });
+                                                }
+                                              })));
+                                } else {
+                                  return Container();
+                                }
+                              }))
+                    ]))));
   }
 }

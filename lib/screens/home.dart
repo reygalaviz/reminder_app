@@ -10,7 +10,9 @@ import 'package:localstore/localstore.dart';
 import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/screens/add_note.dart';
 import 'package:reminder_app/screens/all_notes.dart';
+import 'package:localstore/localstore.dart';
 import 'package:provider/provider.dart';
+import 'package:reminder_app/screens/search_notes.dart';
 import 'package:reminder_app/screens/settings.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:reminder_app/screens/table_calendar.dart';
@@ -33,6 +35,23 @@ class _HomeState extends State<Home> {
   final _db = Localstore.instance;
   PageController pageController = PageController();
 
+  static List<Notes> itemList = [];
+  final db = Localstore.instance;
+  final items = <String, store.Notes>{};
+
+  StreamSubscription<Map<String, dynamic>>? _subscription;
+  @override
+  void initState() {
+    super.initState();
+    db.collection('notes').get().then((value) {
+      _subscription = db.collection('notes').stream.listen((event) {
+        final item = store.Notes.fromMap(event);
+        itemList.add(item);
+        //_items.putIfAbsent(item.id, () => item);
+      });
+    });
+  }
+
   void onTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -50,16 +69,7 @@ class _HomeState extends State<Home> {
           style: TextStyle(color: Theme.of(context).primaryColor),
         ),
         actions: [
-          IconButton(
-              color: Theme.of(context).primaryColor,
-              onPressed: () {
-                showSearch(
-                  context: context,
-                  delegate: MySearchDelegate(),
-                );
-              },
-              icon: const Icon(FontAwesomeIcons.magnifyingGlass)),
-          const SizedBox(width: 20),
+          SearchNote(),
           IconButton(
               color: Theme.of(context).primaryColor,
               onPressed: () => showSettingsModal(),
@@ -161,37 +171,6 @@ class _HomeState extends State<Home> {
   }
 }
 
-//search functions
-class MySearchDelegate extends SearchDelegate {
-  final _items = <String, store.Notes>{};
-
-  @override
-  Widget? buildLeading(BuildContext context) => IconButton(
-      onPressed: () => close(context, null), //close search bar
-      icon: const Icon(FontAwesomeIcons.arrowLeft));
-
-  @override
-  List<Widget>? buildActions(BuildContext context) => [
-        IconButton(
-            onPressed: () {
-              if (query.isEmpty) {
-                close(context, null);
-              } else {
-                query = '';
-              }
-            },
-            icon: const Icon(Icons.clear))
-      ];
-
-  @override
-  Widget buildResults(BuildContext context) => Center();
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    return Container();
-  }
-}
-
 class Home2 extends StatefulWidget {
   const Home2({Key? key}) : super(key: key);
 
@@ -225,58 +204,63 @@ class _Home2State extends State<Home2> {
   @override
   Widget build(BuildContext context) {
     return Consumer(
-        builder: (context, ThemeModel themeNotifier, child) => Scaffold(
-              appBar: AppBar(
-                backgroundColor: Theme.of(context).backgroundColor,
-                title: Text(
-                  themeNotifier.isDark ? 'Dark Theme' : 'Light Theme',
-                  style: TextStyle(color: Theme.of(context).primaryColor),
-                ),
-                actions: [
-                  IconButton(
-                      color: Theme.of(context).primaryColor,
-                      onPressed: () {
-                        showSearch(
-                          context: context,
-                          delegate: MySearchDelegate(),
-                        );
-                      },
-                      icon: const Icon(FontAwesomeIcons.magnifyingGlass)),
-                  const SizedBox(width: 20),
-                  IconButton(
-                      color: Theme.of(context).primaryColor,
-                      onPressed: () => showSettingsModal(),
-                      icon: const Icon(FontAwesomeIcons.gear)),
-                ],
-              ),
-              resizeToAvoidBottomInset: false,
-              body: PageView(
-                controller: pageController2,
-                physics: const NeverScrollableScrollPhysics(),
-                children: const [
-                  Table_Calendar(),
-                  AllNotes(),
-                ],
-              ),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
-              floatingActionButton: FloatingActionButton(
-                elevation: 2,
-                onPressed: () {
-                  return showTextboxKeyboard();
-                },
-                child: const Icon(FontAwesomeIcons.plus),
-              ),
-              bottomNavigationBar: Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black38, spreadRadius: 0, blurRadius: 10),
-                  ],
+
+      builder: (context, ThemeModel themeNotifier, child) => Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).backgroundColor,
+          title: Text(
+            themeNotifier.isDark ? 'Dark Theme' : 'Light Theme',
+            style: TextStyle(color: Theme.of(context).primaryColor),
+          ),
+          actions: [
+            SearchNote(),
+            IconButton(
+                color: Theme.of(context).primaryColor,
+                onPressed: () => showSettingsModal(),
+                icon: const Icon(FontAwesomeIcons.gear)),
+          ],
+        ),
+        resizeToAvoidBottomInset: false,
+        body: PageView(
+          controller: pageController2,
+          physics: const NeverScrollableScrollPhysics(),
+          children: const [
+            Table_Calendar(),
+            AllNotes(),
+          ],
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          elevation: 2,
+          onPressed: () {
+            return showTextboxKeyboard();
+          },
+          child: const Icon(Icons.add),
+        ),
+        bottomNavigationBar: Container(
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
+            boxShadow: [
+              BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              //change nav bar top radius
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
+            ),
+            child: BottomNavigationBar(
+              backgroundColor: Theme.of(context).backgroundColor,
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(CupertinoIcons.house,
+                      color: Theme.of(context).primaryColor),
+                  label: 'Home',
+
                 ),
                 child: ClipRRect(
                   borderRadius: const BorderRadius.only(

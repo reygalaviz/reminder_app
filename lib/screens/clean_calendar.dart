@@ -61,7 +61,7 @@ class _Clean_CalendarState extends State<Clean_Calendar> {
           builder: (context, NotesOperation data, child) {
         return ListView.builder(
           padding: const EdgeInsets.all(0.0),
-          itemCount: data.getNotes.length,
+          // itemCount: data.getNotes.length,
           itemBuilder: (context, index) {
             final NeatCleanCalendarEvent event = _selectedEvents[index];
             return ListTile(

@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:reminder_app/models/note_data_store.dart';
 import 'package:reminder_app/main.dart' as count;
+import 'package:reminder_app/models/note_data_store.dart' as store;
 
 class NotesOperation extends ChangeNotifier {
   final List<Notes> _notes = <Notes>[];
-
-  List<Notes> get getNotes {
-    return _notes;
-  }
+  final _items = <String, store.Notes>{};
 
   void addNewNote(String id, String title, String data, String date,
       String time, String priority, String color) {

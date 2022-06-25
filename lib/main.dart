@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:provider/provider.dart';
 import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/screens/home.dart';
@@ -13,7 +15,10 @@ import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:intl/date_symbol_data_local.dart';
 
+import 'models/note_data_store.dart';
+
 int channelCounter = 0;
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _configureLocalTimeZone();
