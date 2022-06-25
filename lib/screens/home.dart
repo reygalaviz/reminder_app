@@ -204,63 +204,49 @@ class _Home2State extends State<Home2> {
   @override
   Widget build(BuildContext context) {
     return Consumer(
-
-      builder: (context, ThemeModel themeNotifier, child) => Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).backgroundColor,
-          title: Text(
-            themeNotifier.isDark ? 'Dark Theme' : 'Light Theme',
-            style: TextStyle(color: Theme.of(context).primaryColor),
-          ),
-          actions: [
-            SearchNote(),
-            IconButton(
-                color: Theme.of(context).primaryColor,
-                onPressed: () => showSettingsModal(),
-                icon: const Icon(FontAwesomeIcons.gear)),
-          ],
-        ),
-        resizeToAvoidBottomInset: false,
-        body: PageView(
-          controller: pageController2,
-          physics: const NeverScrollableScrollPhysics(),
-          children: const [
-            Table_Calendar(),
-            AllNotes(),
-          ],
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          elevation: 2,
-          onPressed: () {
-            return showTextboxKeyboard();
-          },
-          child: const Icon(Icons.add),
-        ),
-        bottomNavigationBar: Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
-            ),
-            boxShadow: [
-              BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-              //change nav bar top radius
-              topLeft: Radius.circular(20.0),
-              topRight: Radius.circular(20.0),
-            ),
-            child: BottomNavigationBar(
-              backgroundColor: Theme.of(context).backgroundColor,
-              items: <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.house,
-                      color: Theme.of(context).primaryColor),
-                  label: 'Home',
-
+        builder: (context, ThemeModel themeNotifier, child) => Scaffold(
+              appBar: AppBar(
+                backgroundColor: Theme.of(context).backgroundColor,
+                title: Text(
+                  themeNotifier.isDark ? 'Dark Theme' : 'Light Theme',
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+                actions: [
+                  SearchNote(),
+                  IconButton(
+                      color: Theme.of(context).primaryColor,
+                      onPressed: () => showSettingsModal(),
+                      icon: const Icon(FontAwesomeIcons.gear)),
+                ],
+              ),
+              resizeToAvoidBottomInset: false,
+              body: PageView(
+                controller: pageController2,
+                physics: const NeverScrollableScrollPhysics(),
+                children: const [
+                  Table_Calendar(),
+                  AllNotes(),
+                ],
+              ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              floatingActionButton: FloatingActionButton(
+                elevation: 2,
+                onPressed: () {
+                  return showTextboxKeyboard();
+                },
+                child: const Icon(Icons.add),
+              ),
+              bottomNavigationBar: Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black38, spreadRadius: 0, blurRadius: 10),
+                  ],
                 ),
                 child: ClipRRect(
                   borderRadius: const BorderRadius.only(
