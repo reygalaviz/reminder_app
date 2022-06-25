@@ -1,10 +1,13 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 //import 'package:image/image.dart' as image;
 //import 'package:path_provider/path_provider.dart';
-//import 'package:reminder_app/screens/home.dart';
+//import 'package:reminder_app/screens/home.dart' as home;
 import 'package:rxdart/subjects.dart';
 //import 'package:http/http.dart' as http;
 import 'package:reminder_app/main.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
 String? selectedNotificationPayload;
 
@@ -77,6 +80,49 @@ class NotificationService {
     });
   }
 
+  void displayScheduleNotif(
+      {required String body,
+      required int channel,
+      required String title,
+      required DateTime date}) async {
+    tz.initializeTimeZones();
+    final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(timeZoneName));
+    tz.TZDateTime time = tz.TZDateTime.from(
+      date,
+      tz.local,
+    );
+    print(time);
+    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+        "Notif memo", //Required for Android 8.0 or after
+        "Notif memo", //Required for Android 8.0 or after
+        channelDescription:
+            "This is for notifications created by the app", //Required for Android 8.0 or after
+        importance: Importance.max,
+        priority: Priority.max);
+    var iOSPlatformChannelSpecifics = const IOSNotificationDetails(
+      presentAlert:
+          true, // Present an alert when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
+      presentBadge:
+          true, // Present the badge number when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
+      presentSound:
+          true, // Play a sound when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
+      sound: null, // Specifics the file path to play (only from iOS 10 onwards)
+      badgeNumber: 15, // The application's icon badge number
+      //attachments: List<IOSNotificationAttachment>?, (only from iOS 10 onwards)
+      subtitle: "Your note", //Secondary description  (only from iOS 10 onwards)
+      //threadIdentifier: String? (only from iOS 10 onwards)
+    );
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+    await notifsPlugin.zonedSchedule(
+        channel, title, body, time, platformChannelSpecifics,
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime);
+  }
+
   void displayNotification(
       {required String body,
       required int channel,
@@ -111,5 +157,9 @@ class NotificationService {
       platformChannelSpecifics,
       payload: body,
     );
+  }
+
+  void deleteNotif(String id) async {
+    notifsPlugin.cancel(int.parse(id));
   }
 }

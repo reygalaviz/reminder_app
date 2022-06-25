@@ -5,6 +5,9 @@ import 'package:localstore/localstore.dart';
 import 'package:reminder_app/screens/home.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
+import 'package:reminder_app/controllers/notifications.dart';
+import 'package:reminder_app/main.dart' as count;
+import 'package:reminder_app/models/notif_data_store.dart';
 
 enum ColorList { blue, green, red, yellow, white, cyan, purple, pink, orange }
 
@@ -19,6 +22,9 @@ class EditNote extends StatefulWidget {
 class _EditNoteState extends State<EditNote> {
   final _db = Localstore.instance;
   final _items = <String, store.Notes>{};
+  final _notifs = <String, Notifs>{};
+  late DateTime scheduler = DateTime.now();
+  late DateTime scheduler2 = DateTime.now();
   StreamSubscription<Map<String, dynamic>>? _subscription;
   // var item;
   DateFormat format = DateFormat("yyyy-MM-dd");
@@ -43,6 +49,16 @@ class _EditNoteState extends State<EditNote> {
         });
       });
     });
+    _db
+        .collection("notifs")
+        .doc(widget.id)
+        .get()
+        .then((value) => _db.collection('notifs').stream.listen((event) {
+              setState(() {
+                final item = Notifs.fromMap(event);
+                _notifs.putIfAbsent(item.id, () => item);
+              });
+            }));
   }
 
   Widget eventTitle() {
@@ -89,13 +105,16 @@ class _EditNoteState extends State<EditNote> {
         prefixIconConstraints: const BoxConstraints(minWidth: 0),
         prefixIcon: IconButton(
             onPressed: () async {
-              DateTime? dateT = await showDatePicker(
+              final DateTime? dateT = await showDatePicker(
                   context: context,
                   initialDate: DateTime.parse(selectDate),
                   firstDate: DateTime(2022),
                   lastDate: DateTime(2025));
               String compForm = format.format(dateT!);
               selectDate = compForm;
+              setState(() {
+                scheduler = dateT;
+              });
 
               dCont.text = compForm;
             },
@@ -125,6 +144,8 @@ class _EditNoteState extends State<EditNote> {
               String timeString = timeT!.format(context);
               daySelect = timeString;
               cCont.text = timeString;
+              scheduler2 = DateTime(scheduler.year, scheduler.month,
+                  scheduler.day, timeT.hour, timeT.minute);
             },
             icon: const Icon(
               FontAwesomeIcons.clock,
@@ -314,6 +335,19 @@ class _EditNoteState extends State<EditNote> {
       backgroundColor: Colors.red,
       child: IconButton(
         onPressed: () {
+          String ter = _notifs[widget.id]!.id2;
+          print(ter);
+          NotificationService().deleteNotif(ter);
+          if (scheduler2.isAfter(DateTime.now())) {
+            NotificationService().displayScheduleNotif(
+                body: body,
+                channel: count.channelCounter,
+                title: title,
+                date: scheduler2);
+          } else {
+            NotificationService().displayNotification(
+                body: body, channel: count.channelCounter, title: title);
+          }
           item.delete();
           _items.remove(item.id);
 
@@ -328,7 +362,11 @@ class _EditNoteState extends State<EditNote> {
               priority: priority,
               color: colPick.value.toString());
           item1.save();
-
+          Notifs notif1 = Notifs(
+            id: id,
+            id2: count.channelCounter.toString(),
+          );
+          notif1.save();
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const Home()),
@@ -355,7 +393,7 @@ class _EditNoteState extends State<EditNote> {
 
   @override
   Widget build(BuildContext context) {
-    var item = _items[widget.id]!;
+    final item = _items[widget.id]!;
     if (selectDate == "") {
       selectDate = item.date;
     }

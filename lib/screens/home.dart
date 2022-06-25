@@ -204,6 +204,7 @@ class _Home2State extends State<Home2> {
   @override
   Widget build(BuildContext context) {
     return Consumer(
+
       builder: (context, ThemeModel themeNotifier, child) => Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).backgroundColor,
@@ -259,22 +260,50 @@ class _Home2State extends State<Home2> {
                   icon: Icon(CupertinoIcons.house,
                       color: Theme.of(context).primaryColor),
                   label: 'Home',
+
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.calendar,
-                      color: Theme.of(context).primaryColor),
-                  label: 'Calendar',
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    //change nav bar top radius
+                    topLeft: Radius.circular(20.0),
+                    topRight: Radius.circular(20.0),
+                  ),
+                  child: BottomNavigationBar(
+                    type: BottomNavigationBarType.fixed,
+                    elevation: 0.0,
+                    showSelectedLabels: false,
+                    showUnselectedLabels: false,
+                    backgroundColor: Theme.of(context)
+                        .bottomNavigationBarTheme
+                        .backgroundColor,
+                    items: <BottomNavigationBarItem>[
+                      BottomNavigationBarItem(
+                        activeIcon: Icon(
+                          FontAwesomeIcons.house,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        icon: const Icon(FontAwesomeIcons.house,
+                            color: Colors.grey),
+                        label: 'Home',
+                      ),
+                      BottomNavigationBarItem(
+                        activeIcon: Icon(
+                          FontAwesomeIcons.calendar,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        icon: const Icon(FontAwesomeIcons.calendar,
+                            color: Colors.grey),
+                        label: 'Calendar',
+                      ),
+                    ],
+                    currentIndex: _selectedIndex,
+                    // selectedItemColor: Colors.white,
+                    // unselectedItemColor: Colors.black,
+                    onTap: onTapped,
+                  ),
                 ),
-              ],
-              currentIndex: _selectedIndex,
-              // selectedItemColor: Colors.white,
-              // unselectedItemColor: Color.fromARGB(255, 122, 122, 122),
-              onTap: onTapped,
-            ),
-          ),
-        ),
-      ),
-    );
+              ),
+            ));
   }
 
   void showSettingsModal() {
