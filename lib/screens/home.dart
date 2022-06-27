@@ -31,9 +31,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   String body = "";
 
-  int _selectedIndex = 0;
   final _db = Localstore.instance;
   PageController pageController = PageController();
+  int _selectedIndex = 0;
 
   static List<Notes> itemList = [];
   final db = Localstore.instance;
@@ -69,7 +69,7 @@ class _HomeState extends State<Home> {
           style: TextStyle(color: Theme.of(context).primaryColor),
         ),
         actions: [
-          SearchNote(),
+          const SearchNote(),
           IconButton(
               color: Theme.of(context).primaryColor,
               onPressed: () => showSettingsModal(),
@@ -77,9 +77,8 @@ class _HomeState extends State<Home> {
         ],
       ),
       resizeToAvoidBottomInset: false,
-      body: PageView(
-        controller: pageController,
-        physics: const NeverScrollableScrollPhysics(),
+      body: IndexedStack(
+        index: _selectedIndex,
         children: const [
           AllNotes(),
           Table_Calendar(),

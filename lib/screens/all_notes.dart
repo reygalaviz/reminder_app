@@ -1,10 +1,14 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
+import 'package:reminder_app/screens/checkbox.dart';
+import 'package:reminder_app/screens/completed_notes.dart';
 import 'dart:async';
 import 'package:reminder_app/screens/edit_notes.dart';
+import 'package:reminder_app/screens/over_due_notes.dart';
 import 'home.dart' as home;
 import 'package:reminder_app/models/notif_data_store.dart';
 import 'package:reminder_app/controllers/notifications.dart';
@@ -20,16 +24,18 @@ class AllNotes extends StatefulWidget {
   State<AllNotes> createState() => _AllNotesState();
 }
 
-class _AllNotesState extends State<AllNotes> {
+class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   String data = "No notes yet!";
   final _db = Localstore.instance;
   final _items = <String, store.Notes>{};
   StreamSubscription<Map<String, dynamic>>? _subscription;
   String formattedDate = DateFormat.MMMMEEEEd().format(DateTime.now());
   final _notifs = <String, Notifs>{};
+  late TabController _tabController = TabController(length: 3, vsync: this);
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 3, vsync: this);
     _db.collection('notes').get().then((value) {
       _subscription = _db.collection('notes').stream.listen((event) {
         setState(() {
@@ -51,13 +57,16 @@ class _AllNotesState extends State<AllNotes> {
   }
 
   Widget notesCard() {
-    return ListView.builder(
-        itemCount: _items.keys.length,
-        itemBuilder: (context, index) {
-          final key = _items.keys.elementAt(index);
-          final item = _items[key]!;
-          return Card(
-            child: ListTile(
+    return SizedBox(
+      height: 500,
+      child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: _items.keys.length,
+          itemBuilder: (context, index) {
+            final key = _items.keys.elementAt(index);
+            final item = _items[key]!;
+            return Card(
+              child: ListTile(
                 title: Text(
                   item.title,
                   style: const TextStyle(
@@ -82,32 +91,38 @@ class _AllNotesState extends State<AllNotes> {
                         return EditNote(id: id);
                       });
                 },
-                trailing: IconButton(
-                  icon: const Icon(
-                    FontAwesomeIcons.trash,
-                    size: 20,
-                    color: Colors.black,
+                trailing: Wrap(children: <Widget>[
+                  IconButton(
+                    icon: const Icon(
+                      FontAwesomeIcons.trash,
+                      size: 20,
+                      color: Colors.black,
+                    ),
+                    onPressed: () async {
+                      await _showDialog(item);
+                      if (res == true) {
+                        setState(() {
+                          item.delete();
+                          String not = _notifs[item.id]!.id2;
+                          NotificationService().deleteNotif(not);
+                          _items.remove(item.id);
+                          res = false;
+                        });
+                      }
+                    },
                   ),
-                  onPressed: () async {
-                    await _showDialog(item);
-                    if (res == true) {
-                      setState(() {
-                        item.delete();
-                        String not = _notifs[item.id]!.id2;
-                        NotificationService().deleteNotif(not);
-                        _items.remove(item.id);
-                        res = false;
-                      });
-                    }
-                  },
-                )),
-          );
-        });
+                  const CheckBoxNote()
+                ]),
+              ),
+            );
+          }),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     initNumber = _items.keys.length;
+
     return Dismissible(
         key: UniqueKey(),
         background: Container(
@@ -122,36 +137,70 @@ class _AllNotesState extends State<AllNotes> {
         direction: DismissDirection.horizontal,
         child: Scaffold(
             resizeToAvoidBottomInset: false,
-            body: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    'Today',
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 1.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: Text(
+            body: LayoutBuilder(
+              builder: (context, constraints) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      'Today',
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 3.0,
+                    ),
+                    Text(
                       formattedDate,
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.normal),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  Expanded(
-                    child: notesCard(),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.only(left: constraints.maxWidth * .01),
+                      child: TabBar(
+                          indicatorPadding: const EdgeInsets.only(right: 10),
+                          indicatorColor: Theme.of(context).primaryColor,
+                          indicatorSize: TabBarIndicatorSize.label,
+                          isScrollable: true,
+                          labelColor: Theme.of(context).primaryColor,
+                          labelPadding:
+                              const EdgeInsets.only(left: 0, right: 20),
+                          unselectedLabelColor: Colors.grey[600],
+                          controller: _tabController,
+                          labelStyle: const TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                          tabs: const [
+                            Tab(
+                              text: 'ToDo',
+                            ),
+                            Tab(text: 'Completed'),
+                            Tab(text: 'Overdue'),
+                          ]),
+                    ),
+                    Container(
+                        width: double.maxFinite,
+                        height: constraints.maxHeight * .77,
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: [
+                            notesCard(),
+                            Text('completed'),
+                            Text('overdue'),
+                          ],
+                        )),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                  ],
+                ),
               ),
             )));
   }

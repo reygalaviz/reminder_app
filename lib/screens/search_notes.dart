@@ -5,7 +5,10 @@ import 'package:localstore/localstore.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import '../models/note_data_store.dart';
 
-class MySearchDelegate extends SearchDelegate<Notes?> {
+final keySearch = GlobalKey<SearchNoteState>();
+final state = keySearch.currentState;
+
+class MySearchDelegate extends SearchDelegate {
   List<Notes> searchResults = <Notes>[];
 
   @override
@@ -27,9 +30,11 @@ class MySearchDelegate extends SearchDelegate<Notes?> {
       ];
 
   @override
-  Widget buildResults(BuildContext context) => Center(
-        child: Text(query),
-      );
+  Widget buildResults(BuildContext context) {
+    return Center(
+      child: Text(query),
+    );
+  }
 
   @override
   Widget buildSuggestions(BuildContext context) {
@@ -59,15 +64,15 @@ class MySearchDelegate extends SearchDelegate<Notes?> {
 }
 
 class SearchNote extends StatefulWidget {
+  const SearchNote({Key? key}) : super(key: key);
   @override
-  State<SearchNote> createState() => _SearchNoteState();
+  State<SearchNote> createState() => SearchNoteState();
 }
 
-class _SearchNoteState extends State<SearchNote> {
+class SearchNoteState extends State<SearchNote> {
   final _db = Localstore.instance;
   final _items = <String, store.Notes>{};
   StreamSubscription<Map<String, dynamic>>? _subscription;
-
   @override
   void initState() {
     super.initState();
@@ -79,15 +84,6 @@ class _SearchNoteState extends State<SearchNote> {
         });
       });
     });
-  }
-
-  getNotes() {
-    List<String> items = [];
-
-    for (var item in _items.keys) {
-      items.add(item);
-    }
-    return items;
   }
 
   @override
