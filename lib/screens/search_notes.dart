@@ -4,12 +4,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:localstore/localstore.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import '../models/note_data_store.dart';
+import 'all_notes.dart' as allNotes;
 
 final keySearch = GlobalKey<SearchNoteState>();
 final state = keySearch.currentState;
 
 class MySearchDelegate extends SearchDelegate {
-  List<Notes> searchResults = <Notes>[];
+  //List<Notes> searchResults = <Notes>[];
 
   @override
   Widget? buildLeading(BuildContext context) => IconButton(
@@ -38,8 +39,9 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<Notes> suggestions = searchResults.where((searchResult) {
-      final result = searchResult.toLowerCase();
+    print(allNotes.searchResults);
+    List<Notes> suggestions = allNotes.searchResults.where((searchResult) {
+      final result = searchResult.title.toLowerCase();
       final input = query.toLowerCase();
 
       return result.contains(input);

@@ -24,6 +24,7 @@ Future<void> main() async {
   await _configureLocalTimeZone();
   await NotificationService().init();
   var items = await store.db.collection('notes').get();
+
   if (items != null) {
     channelCounter = items.length;
   }

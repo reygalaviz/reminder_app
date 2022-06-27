@@ -9,13 +9,17 @@ import 'package:reminder_app/screens/completed_notes.dart';
 import 'dart:async';
 import 'package:reminder_app/screens/edit_notes.dart';
 import 'package:reminder_app/screens/over_due_notes.dart';
+import '../models/note_data_store.dart';
 import 'home.dart' as home;
+import 'package:reminder_app/models/notif_data_store.dart';
+import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/models/notif_data_store.dart';
 import 'package:reminder_app/controllers/notifications.dart';
 
 int initNumber = 0;
 String id = "No notes exist";
 bool res = false;
+List<Notes> searchResults = <Notes>[];
 
 class AllNotes extends StatefulWidget {
   const AllNotes({Key? key}) : super(key: key);
@@ -32,6 +36,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   String formattedDate = DateFormat.MMMMEEEEd().format(DateTime.now());
   final _notifs = <String, Notifs>{};
   late TabController _tabController = TabController(length: 3, vsync: this);
+
   @override
   void initState() {
     super.initState();
@@ -41,6 +46,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
         setState(() {
           final item = store.Notes.fromMap(event);
           _items.putIfAbsent(item.id, () => item);
+          searchResults.add(item);
         });
       });
     });
@@ -102,6 +108,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                       await _showDialog(item);
                       if (res == true) {
                         setState(() {
+                          searchResults.remove(item);
                           item.delete();
                           String not = _notifs[item.id]!.id2;
                           NotificationService().deleteNotif(not);

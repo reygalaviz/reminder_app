@@ -10,6 +10,7 @@ import 'package:reminder_app/main.dart' as count;
 import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/models/notif_data_store.dart';
 import 'package:reminder_app/models/notif_operations.dart';
+import 'all_notes.dart' as allNotes;
 
 Color col1 = const Color.fromARGB(255, 171, 222, 230);
 Color col2 = const Color.fromARGB(255, 203, 170, 203);
@@ -125,7 +126,7 @@ class _AddNoteState extends State<AddNote> {
           setState(() {
             selectColor = const Color.fromARGB(255, 245, 214, 196);
           });
-        } else if (value == ColorList.col3) {
+        } else if (value == ColorList.col4) {
           colPick = const Color.fromARGB(255, 222, 237, 213);
           setState(() {
             selectColor = const Color.fromARGB(255, 222, 237, 213);
@@ -217,10 +218,14 @@ class _AddNoteState extends State<AddNote> {
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   border: Border(
-                      top: BorderSide(width: 1, color: Colors.black),
-                      right: BorderSide(width: 1, color: Colors.black),
-                      bottom: BorderSide(width: 1, color: Colors.black),
-                      left: BorderSide(width: 1, color: Colors.black)),
+                      top: BorderSide(
+                          width: 1, color: Color.fromARGB(255, 46, 46, 46)),
+                      right: BorderSide(
+                          width: 1, color: Color.fromARGB(255, 46, 46, 46)),
+                      bottom: BorderSide(
+                          width: 1, color: Color.fromARGB(255, 46, 46, 46)),
+                      left: BorderSide(
+                          width: 1, color: Color.fromARGB(255, 46, 46, 46))),
                   shape: BoxShape.circle,
                 ),
               ),
