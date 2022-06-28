@@ -384,13 +384,14 @@ class _EditNoteState extends State<EditNote> {
           final id = Localstore.instance.collection("notes").doc().id;
 
           final item1 = store.Notes(
-              id: id,
-              title: title,
-              data: body,
-              date: selectDate,
-              time: daySelect,
-              priority: priority,
-              color: colPick.value.toString());
+            id: id,
+            title: title,
+            data: body,
+            date: selectDate,
+            time: daySelect,
+            priority: priority,
+            color: colPick.value.toString(),
+          );
           item1.save();
           allNotes.searchResults.add(item1);
           Notifs notif1 = Notifs(

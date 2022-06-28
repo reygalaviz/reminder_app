@@ -39,7 +39,6 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    print(allNotes.searchResults);
     List<Notes> suggestions = allNotes.searchResults.where((searchResult) {
       final result = searchResult.title.toLowerCase();
       final input = query.toLowerCase();
