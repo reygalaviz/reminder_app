@@ -16,7 +16,6 @@ import 'package:reminder_app/screens/search_notes.dart';
 import 'package:reminder_app/screens/settings.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:reminder_app/screens/table_calendar.dart';
-import 'package:reminder_app/screens/clean_calendar.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 
 import '../models/note_data_store.dart';
@@ -56,7 +55,11 @@ class _HomeState extends State<Home> {
     setState(() {
       _selectedIndex = index;
     });
-    pageController.jumpToPage(index);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (pageController.hasClients) {
+        pageController.jumpToPage(index);
+      }
+    });
   }
 
   @override
@@ -196,8 +199,11 @@ class _Home2State extends State<Home2> {
         _selectedIndex = 0;
       }
     });
-
-    pageController2.jumpToPage(index);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (pageController2.hasClients) {
+        pageController2.jumpToPage(index);
+      }
+    });
   }
 
   @override

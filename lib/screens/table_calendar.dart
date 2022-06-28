@@ -300,7 +300,13 @@ class Table_CalendarState extends State<Table_Calendar> {
                                 String day2 = format.format(_selectedDay);
                                 if (item.date == day2) {
                                   return Card(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
                                       child: ListTile(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
                                           title: Text(
                                             item.title,
                                             style: const TextStyle(

@@ -47,14 +47,16 @@ class Notes {
   String? time;
   String priority;
   String color;
-  Notes(
-      {required this.id,
-      required this.title,
-      required this.data,
-      required this.date,
-      required this.time,
-      required this.priority,
-      required this.color});
+
+  Notes({
+    required this.id,
+    required this.title,
+    required this.data,
+    required this.date,
+    required this.time,
+    required this.priority,
+    required this.color,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -70,13 +72,14 @@ class Notes {
 
   factory Notes.fromMap(Map<String, dynamic> map) {
     return Notes(
-        id: map['id'],
-        title: map['title'],
-        data: map['data'],
-        date: map['date'],
-        time: map['time'],
-        priority: map["priority"],
-        color: map["color"]);
+      id: map['id'],
+      title: map['title'],
+      data: map['data'],
+      date: map['date'],
+      time: map['time'],
+      priority: map["priority"],
+      color: map["color"],
+    );
   }
 
   toLowerCase() {}
