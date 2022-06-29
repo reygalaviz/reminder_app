@@ -17,9 +17,13 @@ import 'package:reminder_app/models/notif_data_store.dart';
 import 'package:reminder_app/controllers/notifications.dart';
 
 int initNumber = 0;
+final items = <String, store.Notes>{};
+final notifs = <String, Notifs>{};
 String id = "No notes exist";
 bool res = false;
 List<Notes> searchResults = <Notes>[];
+List<Notes> completed = <Notes>[];
+List<Notes> uncompleted = <Notes>[];
 
 class AllNotes extends StatefulWidget {
   const AllNotes({Key? key}) : super(key: key);
@@ -31,22 +35,33 @@ class AllNotes extends StatefulWidget {
 class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   String data = "No notes yet!";
   final _db = Localstore.instance;
-  final _items = <String, store.Notes>{};
+
   StreamSubscription<Map<String, dynamic>>? _subscription;
   String formattedDate = DateFormat.MMMMEEEEd().format(DateTime.now());
-  final _notifs = <String, Notifs>{};
+
   late TabController _tabController = TabController(length: 3, vsync: this);
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      uncompleted.clear();
+      completed.clear();
+      searchResults.clear();
+    });
+
     _tabController = TabController(length: 3, vsync: this);
     _db.collection('notes').get().then((value) {
       _subscription = _db.collection('notes').stream.listen((event) {
         setState(() {
           final item = store.Notes.fromMap(event);
-          _items.putIfAbsent(item.id, () => item);
-          searchResults.add(item);
+          items.putIfAbsent(item.id, () => item);
+          // searchResults.add(item);
+          // if (item.done == true) {
+          //   completed.add(item);
+          // } else {
+
+          // }
         });
       });
     });
@@ -57,20 +72,31 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
         .then((value) => _db.collection('notifs').stream.listen((event) {
               setState(() {
                 final item = Notifs.fromMap(event);
-                _notifs.putIfAbsent(item.id, () => item);
+                notifs.putIfAbsent(item.id, () => item);
               });
             }));
   }
 
   Widget notesCard() {
+    uncompleted.clear();
+    items.forEach((key, value) {
+      if (value.done == false) {
+        uncompleted.add(value);
+        print(uncompleted);
+      }
+    });
     return SizedBox(
       height: 500,
       child: ListView.builder(
           shrinkWrap: true,
-          itemCount: _items.keys.length,
+          itemCount: uncompleted.length,
+          // items.keys.length,
           itemBuilder: (context, index) {
-            final key = _items.keys.elementAt(index);
-            final item = _items[key]!;
+            // final key = items.keys.elementAt(index);
+            // final item = items[key]!;
+
+            final item = uncompleted[index];
+
             return Card(
               child: ListTile(
                 title: Text(
@@ -109,16 +135,18 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                       if (res == true) {
                         setState(() {
                           searchResults.remove(item);
+                          completed.remove(item);
+                          uncompleted.remove(item);
                           item.delete();
-                          String not = _notifs[item.id]!.id2;
+                          String not = notifs[item.id]!.id2;
                           NotificationService().deleteNotif(not);
-                          _items.remove(item.id);
+                          items.remove(item.id);
                           res = false;
                         });
                       }
                     },
                   ),
-                  const CheckBoxNote()
+                  CheckBoxNote(id: item.id)
                 ]),
               ),
             );
@@ -128,7 +156,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    initNumber = _items.keys.length;
+    initNumber = items.keys.length;
 
     return Dismissible(
         key: UniqueKey(),
@@ -192,7 +220,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                             Tab(text: 'Overdue'),
                           ]),
                     ),
-                    Container(
+                    SizedBox(
                         width: double.maxFinite,
                         height: constraints.maxHeight * .77,
                         child: TabBarView(

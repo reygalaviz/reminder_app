@@ -326,7 +326,8 @@ class _EditNoteState extends State<EditNote> {
               date: selectDate,
               time: daySelect,
               priority: priority,
-              color: colPick.value.toString());
+              color: colPick.value.toString(),
+              done: item.done);
           item1.save();
 
           Navigator.push(

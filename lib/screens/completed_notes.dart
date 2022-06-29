@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'all_notes.dart' as allNotes;
 
 class CompletedNotes extends StatefulWidget {
   const CompletedNotes({Key? key}) : super(key: key);

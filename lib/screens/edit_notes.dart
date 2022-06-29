@@ -47,7 +47,7 @@ class _EditNoteState extends State<EditNote> {
   String body = "";
   String daySelect = "";
   Color selectColor = const Color.fromARGB(255, 180, 175, 174);
-  String priority = "low";
+  String priority = "high";
   @override
   void initState() {
     super.initState();
@@ -365,7 +365,7 @@ class _EditNoteState extends State<EditNote> {
       child: IconButton(
         onPressed: () {
           String ter = _notifs[widget.id]!.id2;
-          print(ter);
+
           NotificationService().deleteNotif(ter);
           if (scheduler2.isAfter(DateTime.now())) {
             NotificationService().displayScheduleNotif(
@@ -377,6 +377,7 @@ class _EditNoteState extends State<EditNote> {
             NotificationService().displayNotification(
                 body: body, channel: count.channelCounter, title: title);
           }
+          bool bloop = item.done;
           item.delete();
           allNotes.searchResults.remove(item);
           _items.remove(item.id);
@@ -390,7 +391,8 @@ class _EditNoteState extends State<EditNote> {
               date: selectDate,
               time: daySelect,
               priority: priority,
-              color: colPick.value.toString());
+              color: colPick.value.toString(),
+              done: bloop);
           item1.save();
           allNotes.searchResults.add(item1);
           Notifs notif1 = Notifs(

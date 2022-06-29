@@ -17,11 +17,13 @@ class NotesOperation extends ChangeNotifier {
         date: date,
         time: time,
         priority: priority,
-        color: color);
-    allNotes.searchResults.add(note);
+        color: color,
+        done: false);
+    //allNotes.searchResults.add(note);
     note.save();
     count.channelCounter++;
     _notes.add(note);
+    //allNotes.uncompleted.add(note);
     notifyListeners();
   }
 
