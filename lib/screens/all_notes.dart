@@ -24,6 +24,7 @@ final notifs = <String, Notifs>{};
 String id = "No notes exist";
 bool res = false;
 List<Notes> searchResults = <Notes>[];
+List<String> notes = <String>[];
 
 List<Notes> uncompleted = <Notes>[];
 
@@ -56,6 +57,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
       _subscription = _db.collection('notes').stream.listen((event) {
         setState(() {
           final item = store.Notes.fromMap(event);
+
           items.putIfAbsent(item.id, () => item);
           // searchResults.add(item);
           // if (item.done == true) {
@@ -63,6 +65,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
           // } else {
 
           // }
+
         });
       });
     });
@@ -116,16 +119,10 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                 onTap: () {
                   id = item.id;
 
-                  showModalBottomSheet(
-                      enableDrag: false,
-                      isScrollControlled: true,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20.0))),
-                      context: context,
-                      builder: (context) {
-                        return EditNote(id: id);
-                      });
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditNote(id: id)));
                 },
                 trailing: Wrap(children: <Widget>[
                   IconButton(
@@ -144,7 +141,9 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                           item.delete();
                           String not = notifs[item.id]!.id2;
                           NotificationService().deleteNotif(not);
+
                           items.remove(item.id);
+
                           res = false;
                         });
                       }

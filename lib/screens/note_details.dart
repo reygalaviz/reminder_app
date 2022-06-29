@@ -8,27 +8,9 @@ class EventDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: <Widget>[
-          ListTile(
-            title: Text(
-              note.title,
-              style: Theme.of(context).primaryTextTheme.headline5,
-            ),
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          ListTile(
-            title: Text(note.data),
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-        ],
-      ),
-    );
+        appBar: AppBar(),
+        body: Column(
+          children: <Widget>[Text(note.title)],
+        ));
   }
 }
