@@ -83,7 +83,7 @@ class _EditNoteState extends State<EditNote> {
         border: InputBorder.none,
       ),
       onChanged: (value) => title = value,
-      autofocus: true,
+      autofocus: false,
     );
   }
 
@@ -111,27 +111,30 @@ class _EditNoteState extends State<EditNote> {
       controller: dCont,
       decoration: InputDecoration(
         border: InputBorder.none,
-        contentPadding: const EdgeInsets.only(left: 0),
-        prefixIconConstraints: const BoxConstraints(minWidth: 0),
-        prefixIcon: IconButton(
-            onPressed: () async {
-              final DateTime? dateT = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.parse(selectDate),
-                  firstDate: DateTime(2022),
-                  lastDate: DateTime(2025));
-              String compForm = format.format(dateT!);
-              selectDate = compForm;
-              setState(() {
-                scheduler = dateT;
-              });
+        // contentPadding: const EdgeInsets.only(left: 0),
+        // prefixIconConstraints: const BoxConstraints(minWidth: 0),
+        prefixIcon: Container(
+          padding: const EdgeInsets.all(0.0),
+          child: IconButton(
+              onPressed: () async {
+                final DateTime? dateT = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.parse(selectDate),
+                    firstDate: DateTime(2022),
+                    lastDate: DateTime(2025));
+                String compForm = format.format(dateT!);
+                selectDate = compForm;
+                setState(() {
+                  scheduler = dateT;
+                });
 
-              dCont.text = compForm;
-            },
-            icon: const Icon(
-              FontAwesomeIcons.calendar,
-              size: 20,
-            )),
+                dCont.text = compForm;
+              },
+              icon: const Icon(
+                FontAwesomeIcons.calendar,
+                size: 20,
+              )),
+        ),
       ),
     );
   }
@@ -451,46 +454,51 @@ class _EditNoteState extends State<EditNote> {
       selectColor = Color(int.parse(item.color));
     }
 
-    return LayoutBuilder(
-        builder: (context, constraints) => SingleChildScrollView(
-              reverse: true,
-              child: SizedBox(
-                height: constraints.maxHeight * .65,
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).backgroundColor,
+        title: Text(item.title),
+      ),
+      body: LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
+                reverse: true,
                 child: Form(
-                  child: Padding(
-                    padding: EdgeInsets.all(constraints.maxHeight * .03),
-                    child: Column(
-                      children: [
-                        eventTitle(),
-                        eventBody(),
-                        Row(children: [
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      eventTitle(),
+                      eventBody(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
                           Expanded(child: eventDate()),
                           const SizedBox(
                             width: 10,
                           ),
                           Expanded(child: eventTime()),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(child: eventColor()),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(child: eventRepeat()),
-                          const SizedBox(
-                            width: 200,
-                          ),
-                          Expanded(child: eventSubmit()),
-                        ]),
-                        Padding(
-                          padding: EdgeInsets.all(constraints.maxHeight * .1),
-                        )
-                      ],
-                    ),
+                        ],
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      eventColor(),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      eventRepeat(),
+                      const SizedBox(
+                        width: 200,
+                      ),
+                      Expanded(child: eventSubmit()),
+                      Padding(
+                        padding: EdgeInsets.all(constraints.maxHeight * .1),
+                      )
+                    ],
                   ),
                 ),
-              ),
-            ));
+              )),
+    );
   }
 
   @override

@@ -22,6 +22,7 @@ int initNumber = 0;
 String id = "No notes exist";
 bool res = false;
 List<Notes> searchResults = <Notes>[];
+List<String> notes = <String>[];
 
 class AllNotes extends StatefulWidget {
   const AllNotes({Key? key}) : super(key: key);
@@ -48,6 +49,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
           final item = store.Notes.fromMap(event);
           _items.putIfAbsent(item.id, () => item);
           searchResults.add(item);
+          notes.add(item.id);
         });
       });
     });
@@ -91,16 +93,10 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                 onTap: () {
                   id = item.id;
 
-                  showModalBottomSheet(
-                      enableDrag: false,
-                      isScrollControlled: true,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20.0))),
-                      context: context,
-                      builder: (context) {
-                        return EditNote(id: id);
-                      });
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditNote(id: id)));
                 },
                 trailing: Wrap(children: <Widget>[
                   IconButton(
@@ -117,6 +113,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                           String not = _notifs[item.id]!.id2;
                           NotificationService().deleteNotif(not);
                           _items.remove(item.id);
+                          searchResults.remove(item);
                           res = false;
                         });
                       }
