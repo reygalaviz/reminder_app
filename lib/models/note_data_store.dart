@@ -47,16 +47,16 @@ class Notes {
   String? time;
   String priority;
   String color;
-
-  Notes({
-    required this.id,
-    required this.title,
-    required this.data,
-    required this.date,
-    required this.time,
-    required this.priority,
-    required this.color,
-  });
+  bool done;
+  Notes(
+      {required this.id,
+      required this.title,
+      required this.data,
+      required this.date,
+      required this.time,
+      required this.priority,
+      required this.color,
+      required this.done});
 
   Map<String, dynamic> toMap() {
     return {
@@ -66,20 +66,21 @@ class Notes {
       'date': date,
       'time': time,
       'priority': priority,
-      'color': color
+      'color': color,
+      'done': done
     };
   }
 
   factory Notes.fromMap(Map<String, dynamic> map) {
     return Notes(
-      id: map['id'],
-      title: map['title'],
-      data: map['data'],
-      date: map['date'],
-      time: map['time'],
-      priority: map["priority"],
-      color: map["color"],
-    );
+        id: map['id'],
+        title: map['title'],
+        data: map['data'],
+        date: map['date'],
+        time: map['time'],
+        priority: map["priority"],
+        color: map["color"],
+        done: map["done"]);
   }
 
   toLowerCase() {}
@@ -116,6 +117,7 @@ void writeData(String title, String data, String date, String time,
     'date': date,
     'time': time,
     'priority': priority,
-    'color': color
+    'color': color,
+    'done': false
   });
 }
