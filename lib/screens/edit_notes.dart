@@ -385,7 +385,6 @@ class _EditNoteState extends State<EditNote> {
           final id = Localstore.instance.collection("notes").doc().id;
 
           final item1 = store.Notes(
-<<<<<<< HEAD
               id: id,
               title: title,
               data: body,
@@ -394,16 +393,6 @@ class _EditNoteState extends State<EditNote> {
               priority: priority,
               color: colPick.value.toString(),
               done: bloop);
-=======
-            id: id,
-            title: title,
-            data: body,
-            date: selectDate,
-            time: daySelect,
-            priority: priority,
-            color: colPick.value.toString(),
-          );
->>>>>>> b360b1b65c25895310cddf90fc36d28d4d1226b8
           item1.save();
           allNotes.searchResults.add(item1);
           Notifs notif1 = Notifs(

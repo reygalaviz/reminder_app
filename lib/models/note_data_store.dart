@@ -47,7 +47,6 @@ class Notes {
   String? time;
   String priority;
   String color;
-<<<<<<< HEAD
   bool done;
   Notes(
       {required this.id,
@@ -58,18 +57,6 @@ class Notes {
       required this.priority,
       required this.color,
       required this.done});
-=======
-
-  Notes({
-    required this.id,
-    required this.title,
-    required this.data,
-    required this.date,
-    required this.time,
-    required this.priority,
-    required this.color,
-  });
->>>>>>> b360b1b65c25895310cddf90fc36d28d4d1226b8
 
   Map<String, dynamic> toMap() {
     return {
@@ -86,7 +73,6 @@ class Notes {
 
   factory Notes.fromMap(Map<String, dynamic> map) {
     return Notes(
-<<<<<<< HEAD
         id: map['id'],
         title: map['title'],
         data: map['data'],
@@ -95,16 +81,6 @@ class Notes {
         priority: map["priority"],
         color: map["color"],
         done: map["done"]);
-=======
-      id: map['id'],
-      title: map['title'],
-      data: map['data'],
-      date: map['date'],
-      time: map['time'],
-      priority: map["priority"],
-      color: map["color"],
-    );
->>>>>>> b360b1b65c25895310cddf90fc36d28d4d1226b8
   }
 
   toLowerCase() {}

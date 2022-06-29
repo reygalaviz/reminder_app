@@ -24,7 +24,7 @@ final notifs = <String, Notifs>{};
 String id = "No notes exist";
 bool res = false;
 List<Notes> searchResults = <Notes>[];
-List<Notes> completed = <Notes>[];
+
 List<Notes> uncompleted = <Notes>[];
 
 class AllNotes extends StatefulWidget {
@@ -47,7 +47,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
     super.initState();
     setState(() {
       uncompleted.clear();
-      completed.clear();
+
       searchResults.clear();
     });
 
@@ -83,7 +83,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
     items.forEach((key, value) {
       if (value.done == false) {
         uncompleted.add(value);
-        print(uncompleted);
       }
     });
     return SizedBox(
@@ -139,12 +138,9 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                       await _showDialog(item);
                       if (res == true) {
                         setState(() {
-<<<<<<< HEAD
                           searchResults.remove(item);
-                          completed.remove(item);
+
                           uncompleted.remove(item);
-=======
->>>>>>> b360b1b65c25895310cddf90fc36d28d4d1226b8
                           item.delete();
                           String not = notifs[item.id]!.id2;
                           NotificationService().deleteNotif(not);
@@ -235,7 +231,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                           controller: _tabController,
                           children: [
                             notesCard(),
-                            Text('completed'),
+                            const CompletedNotes(),
                             Text('overdue'),
                           ],
                         )),

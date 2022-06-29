@@ -12,7 +12,6 @@ class NotesOperation extends ChangeNotifier {
   void addNewNote(String id, String title, String data, String date,
       String time, String priority, String color) {
     Notes note = Notes(
-<<<<<<< HEAD
         id: id,
         title: title,
         data: data,
@@ -22,17 +21,6 @@ class NotesOperation extends ChangeNotifier {
         color: color,
         done: false);
     //allNotes.searchResults.add(note);
-=======
-      id: id,
-      title: title,
-      data: data,
-      date: date,
-      time: time,
-      priority: priority,
-      color: color,
-    );
-    allNotes.searchResults.add(note);
->>>>>>> b360b1b65c25895310cddf90fc36d28d4d1226b8
     note.save();
     count.channelCounter++;
     _notes.add(note);

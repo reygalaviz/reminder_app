@@ -57,7 +57,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
   //           }));
   // }
 
-  bool? value = false;
+  bool? val = false;
   @override
   Widget build(BuildContext context) {
     return Checkbox(
@@ -66,12 +66,12 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
         checkColor: Colors.green,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0))),
-        value: value,
+        value: val,
         onChanged: (value) {
           setState(() {
-            store.Notes co = all.items[widget.id]!;
-            int ind = allNotes.searchResults.indexOf(co);
-            var item = allNotes.searchResults[ind];
+            store.Notes item = all.items[widget.id]!;
+            // int ind = allNotes.searchResults.indexOf(co);
+            // var item = allNotes.searchResults[ind];
             if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
               colPick = Color(int.parse(item.color));
             }
@@ -90,15 +90,17 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
             bool boop = item.done;
             if (item.done == true) {
               boop = false;
-              allNotes.completed.remove(item);
+              val = true;
+              // allNotes.completed.remove(item);
             } else {
               boop = true;
-              allNotes.uncompleted.remove(item);
+              val = false;
+              // allNotes.uncompleted.remove(item);
             }
             String ter = all.notifs[widget.id]!.id2;
 
             NotificationService().deleteNotif(ter);
-            this.value = value;
+
             final id = Localstore.instance.collection("notes").doc().id;
             item.delete();
             allNotes.searchResults.remove(item);
@@ -118,11 +120,11 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
               id2: count.channelCounter.toString(),
             );
             notif1.save();
-            if (boop == true) {
-              allNotes.completed.add(item1);
-            } else {
-              allNotes.uncompleted.add(item1);
-            }
+            // if (boop == true) {
+            //   allNotes.completed.add(item1);
+            // } else {
+            //   allNotes.uncompleted.add(item1);
+            // }
           });
         });
   }
