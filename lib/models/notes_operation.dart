@@ -3,14 +3,16 @@ import 'package:reminder_app/models/note_data_store.dart';
 import 'package:reminder_app/main.dart' as count;
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:reminder_app/Screens/all_notes.dart' as allNotes;
+import 'package:reminder_app/screens/all_notes.dart';
+import 'package:reminder_app/screens/checkbox.dart';
 
 class NotesOperation extends ChangeNotifier {
   final List<Notes> _notes = <Notes>[];
-  final _items = <String, store.Notes>{};
 
   void addNewNote(String id, String title, String data, String date,
       String time, String priority, String color) {
     Notes note = Notes(
+<<<<<<< HEAD
         id: id,
         title: title,
         data: data,
@@ -20,6 +22,17 @@ class NotesOperation extends ChangeNotifier {
         color: color,
         done: false);
     //allNotes.searchResults.add(note);
+=======
+      id: id,
+      title: title,
+      data: data,
+      date: date,
+      time: time,
+      priority: priority,
+      color: color,
+    );
+    allNotes.searchResults.add(note);
+>>>>>>> b360b1b65c25895310cddf90fc36d28d4d1226b8
     note.save();
     count.channelCounter++;
     _notes.add(note);
@@ -33,13 +46,3 @@ class NotesOperation extends ChangeNotifier {
     notifyListeners();
   }
 }
-// void addToCal() {
-// if (dCont.text.isEmpty && cCont.text.isEmpty) {
-//       return;
-//     } else if (cCont.text.isNotEmpty && dCont.text.isNotEmpty ) {
-//       return;
-//     } else {
-      
-//     }
-// }
-

@@ -61,6 +61,8 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
   @override
   Widget build(BuildContext context) {
     return Checkbox(
+        side: MaterialStateBorderSide.resolveWith(
+            (states) => const BorderSide(width: 2.0, color: Colors.black)),
         checkColor: Colors.green,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0))),

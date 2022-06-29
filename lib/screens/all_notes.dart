@@ -1,9 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:reminder_app/Screens/all_notes.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
+import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/screens/checkbox.dart';
 import 'package:reminder_app/screens/completed_notes.dart';
 import 'dart:async';
@@ -11,8 +15,6 @@ import 'package:reminder_app/screens/edit_notes.dart';
 import 'package:reminder_app/screens/over_due_notes.dart';
 import '../models/note_data_store.dart';
 import 'home.dart' as home;
-import 'package:reminder_app/models/notif_data_store.dart';
-import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/models/notif_data_store.dart';
 import 'package:reminder_app/controllers/notifications.dart';
 
@@ -40,7 +42,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   String formattedDate = DateFormat.MMMMEEEEd().format(DateTime.now());
 
   late TabController _tabController = TabController(length: 3, vsync: this);
-
   @override
   void initState() {
     super.initState();
@@ -98,7 +99,11 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
             final item = uncompleted[index];
 
             return Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
               child: ListTile(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
                 title: Text(
                   item.title,
                   style: const TextStyle(
@@ -134,9 +139,12 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                       await _showDialog(item);
                       if (res == true) {
                         setState(() {
+<<<<<<< HEAD
                           searchResults.remove(item);
                           completed.remove(item);
                           uncompleted.remove(item);
+=======
+>>>>>>> b360b1b65c25895310cddf90fc36d28d4d1226b8
                           item.delete();
                           String not = notifs[item.id]!.id2;
                           NotificationService().deleteNotif(not);
