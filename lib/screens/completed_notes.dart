@@ -12,6 +12,7 @@ import 'dart:async';
 import '../models/note_data_store.dart';
 import 'home.dart' as home;
 import 'package:reminder_app/models/notif_data_store.dart';
+import 'checkbox.dart';
 
 List<Notes> completed = <Notes>[];
 String id = "No notes exist";
@@ -109,7 +110,7 @@ class _CompletedNotesState extends State<CompletedNotes> {
                       }
                     },
                   ),
-                  //CheckBoxNote(id: item.id)
+                  CheckBoxNote2(id: item.id)
                 ]),
               ),
             );
