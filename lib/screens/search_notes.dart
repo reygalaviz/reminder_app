@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:localstore/localstore.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
+import 'package:reminder_app/screens/cal_edit_note.dart';
+import 'package:reminder_app/screens/table_calendar.dart';
 import '../models/note_data_store.dart';
 import 'all_notes.dart' as allNotes;
-
-final keySearch = GlobalKey<SearchNoteState>();
-final state = keySearch.currentState;
 
 class MySearchDelegate extends SearchDelegate {
   //List<Notes> searchResults = <Notes>[];
@@ -32,9 +31,7 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Center(
-      child: Text(query),
-    );
+    return Container();
   }
 
   @override
@@ -53,7 +50,11 @@ class MySearchDelegate extends SearchDelegate {
           child: ListTile(
             title: Text(suggestion.title),
             onTap: () {
-              query = suggestion.title;
+              close(context, suggestions[index]);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EditNote(id: suggestion.id)));
 
               showResults(context);
             },
