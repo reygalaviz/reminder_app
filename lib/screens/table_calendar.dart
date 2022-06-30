@@ -348,10 +348,11 @@ class Table_CalendarState extends State<Table_Calendar> {
                                                 await _showDialog(item);
                                                 if (res == true) {
                                                   setState(() {
-                                                    item.delete();
                                                     _items.remove(item.id);
                                                     res = false;
                                                     items.remove(item.id);
+                                                    item.delete();
+
                                                     Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
