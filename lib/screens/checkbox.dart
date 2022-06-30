@@ -67,7 +67,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0))),
         value: val,
-        onChanged: (value) {
+        onChanged: (val) {
           setState(() {
             store.Notes item = all.items[widget.id]!;
             // int ind = allNotes.searchResults.indexOf(co);
@@ -100,7 +100,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
             String ter = all.notifs[widget.id]!.id2;
 
             NotificationService().deleteNotif(ter);
-
+            allNotes.uncompleted.remove(item);
             final id = Localstore.instance.collection("notes").doc().id;
             item.delete();
             allNotes.searchResults.remove(item);

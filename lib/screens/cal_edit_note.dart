@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
+import 'package:reminder_app/screens/all_notes.dart';
+import 'package:reminder_app/screens/completed_notes.dart';
 import 'package:reminder_app/screens/home.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
@@ -314,7 +316,9 @@ class _EditNoteState extends State<EditNote> {
       backgroundColor: Colors.red,
       child: IconButton(
         onPressed: () {
+          items.remove(item.id);
           item.delete();
+
           _items.remove(item.id);
 
           final id = Localstore.instance.collection("notes").doc().id;

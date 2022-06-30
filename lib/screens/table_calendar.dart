@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:reminder_app/models/note_data_store.dart';
+import 'package:reminder_app/screens/all_notes.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
@@ -156,7 +157,7 @@ class Table_CalendarState extends State<Table_Calendar> {
             TextButton(
                 onPressed: () {
                   res = true;
-                  Navigator.of(context).pop();
+                  Navigator.pop(context);
                 },
                 child: const Text("Delete"))
           ],
@@ -350,6 +351,13 @@ class Table_CalendarState extends State<Table_Calendar> {
                                                     item.delete();
                                                     _items.remove(item.id);
                                                     res = false;
+                                                    items.remove(item.id);
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                const home
+                                                                    .Home2()));
                                                   });
                                                 }
                                               })));
