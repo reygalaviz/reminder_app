@@ -188,7 +188,6 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
   //             });
   //           }));
   // }
-
   bool? val = true;
   @override
   Widget build(BuildContext context) {
