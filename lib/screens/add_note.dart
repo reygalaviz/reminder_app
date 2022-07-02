@@ -381,6 +381,9 @@ class _AddNoteState extends State<AddNote> {
               NotificationService().displayNotification(
                   body: body, channel: count.channelCounter, title: title);
             }
+
+            selectColor = const Color.fromARGB(255, 180, 175, 175);
+
             Navigator.pop(context);
           },
           icon: const Icon(

@@ -259,6 +259,21 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
               id2: count.channelCounter.toString(),
             );
             notif1.save();
+
+            var scheduler = DateTime.parse(selectDate);
+            var timeT = DateTime.parse(daySelect);
+            DateTime scheduler2 = DateTime(scheduler.year, scheduler.month,
+                scheduler.day, timeT.hour, timeT.minute);
+            if (scheduler2.isAfter(DateTime.now())) {
+              NotificationService().displayScheduleNotif(
+                  body: body,
+                  channel: count.channelCounter,
+                  title: title,
+                  date: scheduler2);
+            } else {
+              NotificationService().displayNotification(
+                  body: body, channel: count.channelCounter, title: title);
+            }
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const Home()),
