@@ -325,21 +325,13 @@ class Table_CalendarState extends State<Table_Calendar> {
                                         tileColor: invisColor(item),
                                         onTap: () {
                                           id = item.id;
+                                          Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        EditNote(id: id)));
 
-                                          showModalBottomSheet(
-                                              enableDrag: false,
-                                              isScrollControlled: true,
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.vertical(
-                                                              top: Radius
-                                                                  .circular(
-                                                                      20.0))),
-                                              context: context,
-                                              builder: (context) {
-                                                return EditNote(id: id);
-                                              });
+                                          
                                         },
                                         trailing: Wrap(children: <Widget>[
                                           IconButton(
@@ -360,7 +352,6 @@ class Table_CalendarState extends State<Table_Calendar> {
                                                       notifs[item.id]!.id2;
                                                   NotificationService()
                                                       .deleteNotif(not);
-
                                                   items.remove(item.id);
 
                                                   res = false;
@@ -410,6 +401,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                                         //       }
                                         //     })));
                                       ));
+
                                 } else {
                                   return Container();
                                 }
