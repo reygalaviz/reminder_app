@@ -6,6 +6,8 @@ import 'package:reminder_app/screens/home.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 
+import 'package:reminder_app/screens/repeat_note.dart';
+
 enum ColorList { blue, green, red, yellow, white, cyan, purple, pink, orange }
 
 //enum Priorities { low, medium, high}
@@ -21,7 +23,7 @@ class _EditNoteState extends State<EditNote> {
   final _items = <String, store.Notes>{};
   StreamSubscription<Map<String, dynamic>>? _subscription;
   // var item;
-  DateFormat format = DateFormat("yyyy-MM-dd");
+  DateFormat format = DateFormat("EEEE, MMM d, yyyy");
   final dCont = TextEditingController();
   final cCont = TextEditingController();
   Color colPick = const Color.fromARGB(255, 255, 254, 254);
@@ -78,60 +80,87 @@ class _EditNoteState extends State<EditNote> {
   }
 
   Widget eventDate() {
-    return TextFormField(
-      readOnly: true,
-      autocorrect: false,
-      enableSuggestions: false,
-      controller: dCont,
-      decoration: InputDecoration(
-        border: InputBorder.none,
-        contentPadding: const EdgeInsets.only(left: 0),
-        prefixIconConstraints: const BoxConstraints(minWidth: 0),
-        prefixIcon: IconButton(
-            onPressed: () async {
-              DateTime? dateT = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.parse(selectDate),
-                  firstDate: DateTime(2022),
-                  lastDate: DateTime(2025));
-              String compForm = format.format(dateT!);
-              selectDate = compForm;
+    return ListTile(
+        leading: const Icon(FontAwesomeIcons.calendar),
+        title: Text(dCont.text),
+        onTap: () async {
+          DateTime? dateT = await showDatePicker(
+              context: context,
+              initialDate: DateTime.parse(selectDate),
+              firstDate: DateTime(2022),
+              lastDate: DateTime(2025));
+          String compForm = format.format(dateT!);
+          selectDate = compForm;
 
-              dCont.text = compForm;
-            },
-            icon: const Icon(
-              FontAwesomeIcons.calendar,
-              size: 20,
-            )),
-      ),
-    );
+          dCont.text = compForm;
+        }
+        // child: TextFormField(
+        //   readOnly: true,
+        //   autocorrect: false,
+        //   enableSuggestions: false,
+        //   controller: dCont,
+        //   decoration: InputDecoration(
+        //     border: InputBorder.none,
+        //     contentPadding: const EdgeInsets.only(left: 0),
+        //     prefixIconConstraints: const BoxConstraints(minWidth: 0),
+        //     prefixIcon: IconButton(
+        //         onPressed: () async {
+        //           DateTime? dateT = await showDatePicker(
+        //               context: context,
+        //               initialDate: DateTime.parse(selectDate),
+        //               firstDate: DateTime(2022),
+        //               lastDate: DateTime(2025));
+        //           String compForm = format.format(dateT!);
+        //           selectDate = compForm;
+
+        //           dCont.text = compForm;
+        //         },
+        //         icon: const Icon(
+        //           FontAwesomeIcons.calendar,
+        //           size: 20,
+        //         )),
+        //   ),
+        // ),
+        );
   }
 
   Widget eventTime() {
-    return TextFormField(
-        autofocus: false,
-        readOnly: true,
-        maxLines: 1,
-        autocorrect: false,
-        enableSuggestions: false,
-        controller: cCont,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          prefixIcon: IconButton(
-            onPressed: () async {
-              TimeOfDay? timeT = await showTimePicker(
-                  context: context, initialTime: TimeOfDay.now());
-              if (!mounted) return;
-              String timeString = timeT!.format(context);
-              daySelect = timeString;
-              cCont.text = timeString;
-            },
-            icon: const Icon(
-              FontAwesomeIcons.clock,
-              size: 20,
-            ),
-          ),
-        ));
+    return ListTile(
+      leading: const Icon(FontAwesomeIcons.clock),
+      title: Text(cCont.text),
+      onTap: () async {
+        TimeOfDay? timeT = await showTimePicker(
+            context: context, initialTime: TimeOfDay.now());
+        if (!mounted) return;
+        String timeString = timeT!.format(context);
+        daySelect = timeString;
+        cCont.text = timeString;
+      },
+      // child: TextFormField(
+      //     autofocus: false,
+      //     readOnly: true,
+      //     maxLines: 1,
+      //     autocorrect: false,
+      //     enableSuggestions: false,
+      //     controller: cCont,
+      //     decoration: InputDecoration(
+      //       border: InputBorder.none,
+      //       prefixIcon: IconButton(
+      //         onPressed: () async {
+      //           TimeOfDay? timeT = await showTimePicker(
+      //               context: context, initialTime: TimeOfDay.now());
+      //           if (!mounted) return;
+      //           String timeString = timeT!.format(context);
+      //           daySelect = timeString;
+      //           cCont.text = timeString;
+      //         },
+      //         icon: const Icon(
+      //           FontAwesomeIcons.clock,
+      //           size: 20,
+      //         ),
+      //       ),
+      //     )),
+    );
   }
 
   Widget eventColor() {
@@ -345,13 +374,21 @@ class _EditNoteState extends State<EditNote> {
   }
 
   Widget eventRepeat() {
-    return IconButton(
-        onPressed: () {},
-        icon: const Icon(
-          FontAwesomeIcons.repeat,
-          color: Colors.grey,
-          size: 20,
-        ));
+    return ListTile(
+      leading: const Icon(FontAwesomeIcons.repeat),
+      title: Text('Repeat'),
+      onTap: () {
+        showModalBottomSheet(
+            isScrollControlled: true,
+            shape: const RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.vertical(top: Radius.circular(20.0))),
+            context: context,
+            builder: (context) {
+              return const RepeatNote();
+            });
+      },
+    );
   }
 
   @override
@@ -386,34 +423,60 @@ class _EditNoteState extends State<EditNote> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).backgroundColor,
         title: Text(item.title),
+        actions: [
+          TextButton(
+              onPressed: () {
+                item.delete();
+                _items.remove(item.id);
+
+                final id = Localstore.instance.collection("notes").doc().id;
+
+                final item1 = store.Notes(
+                    id: id,
+                    title: title,
+                    data: body,
+                    date: selectDate,
+                    time: daySelect,
+                    priority: priority,
+                    color: colPick.value.toString(),
+                    done: item.done);
+                item1.save();
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Home2()),
+                );
+              },
+              child: const Text(
+                'Save',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.blue),
+              ))
+        ],
       ),
       body: LayoutBuilder(
-          builder: (context, constraints) => SingleChildScrollView(
-                reverse: true,
-                child: Form(
+          builder: (context, constraints) => Form(
+                child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      eventTitle(),
-                      eventBody(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(child: eventDate()),
-                          const SizedBox(
-                            width: 10,
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: SizedBox(
+                          height: constraints.maxHeight * 1,
+                          child: ListView(
+                            children: <Widget>[
+                              ListTile(title: eventTitle()),
+                              ListTile(title: eventBody()),
+                              eventDate(),
+                              eventTime(),
+                              eventColor(),
+                              eventRepeat()
+                            ],
                           ),
-                          Expanded(child: eventTime()),
-                        ],
+                        ),
                       ),
-                      eventColor(),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      eventRepeat(),
-                      const SizedBox(
-                        width: 200,
-                      ),
-                      eventSubmit(),
                     ],
                   ),
                 ),

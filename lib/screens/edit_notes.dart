@@ -8,6 +8,7 @@ import 'dart:async';
 import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/main.dart' as count;
 import 'package:reminder_app/models/notif_data_store.dart';
+import 'package:reminder_app/screens/repeat_note.dart';
 import 'all_notes.dart' as allNotes;
 
 Color col1 = const Color.fromARGB(255, 171, 222, 230);
@@ -83,7 +84,7 @@ class _EditNoteState extends State<EditNote> {
         border: InputBorder.none,
       ),
       onChanged: (value) => title = value,
-      autofocus: false,
+      autofocus: true,
     );
   }
 
@@ -104,68 +105,99 @@ class _EditNoteState extends State<EditNote> {
   }
 
   Widget eventDate() {
-    return TextFormField(
-      readOnly: true,
-      autocorrect: false,
-      enableSuggestions: false,
-      controller: dCont,
-      decoration: InputDecoration(
-        border: InputBorder.none,
-        // contentPadding: const EdgeInsets.only(left: 0),
-        // prefixIconConstraints: const BoxConstraints(minWidth: 0),
-        prefixIcon: Container(
-          padding: const EdgeInsets.all(0.0),
-          child: IconButton(
-              onPressed: () async {
-                final DateTime? dateT = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.parse(selectDate),
-                    firstDate: DateTime(2022),
-                    lastDate: DateTime(2025));
-                String compForm = format.format(dateT!);
-                selectDate = compForm;
-                setState(() {
-                  scheduler = dateT;
-                });
+    return ListTile(
+      leading: const Icon(FontAwesomeIcons.calendar),
+      title: Text(dCont.text),
+      onTap: () async {
+        final DateTime? dateT = await showDatePicker(
+            context: context,
+            initialDate: DateTime.parse(selectDate),
+            firstDate: DateTime(2022),
+            lastDate: DateTime(2025));
+        String compForm = format.format(dateT!);
+        selectDate = compForm;
+        setState(() {
+          scheduler = dateT;
+        });
 
-                dCont.text = compForm;
-              },
-              icon: const Icon(
-                FontAwesomeIcons.calendar,
-                size: 20,
-              )),
-        ),
-      ),
+        dCont.text = compForm;
+      },
+
+      // children:[ TextFormField(
+      //   readOnly: true,
+      //   autocorrect: false,
+      //   enableSuggestions: false,
+      //   controller: dCont,
+      //   decoration: InputDecoration(
+      //     border: InputBorder.none,
+      //     prefixIcon: Container(
+      //       padding: const EdgeInsets.all(0.0),
+      //       child: IconButton(
+      //           onPressed: () async {
+      //             final DateTime? dateT = await showDatePicker(
+      //                 context: context,
+      //                 initialDate: DateTime.parse(selectDate),
+      //                 firstDate: DateTime(2022),
+      //                 lastDate: DateTime(2025));
+      //             String compForm = format.format(dateT!);
+      //             selectDate = compForm;
+      //             setState(() {
+      //               scheduler = dateT;
+      //             });
+
+      //             dCont.text = compForm;
+      //           },
+      //           icon: const Icon(
+      //             FontAwesomeIcons.calendar,
+      //             size: 20,
+      //           )),
+      //     ),
+      //   ),
+      // ),]
     );
   }
 
   Widget eventTime() {
-    return TextFormField(
-        autofocus: false,
-        readOnly: true,
-        maxLines: 1,
-        autocorrect: false,
-        enableSuggestions: false,
-        controller: cCont,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          prefixIcon: IconButton(
-            onPressed: () async {
-              TimeOfDay? timeT = await showTimePicker(
-                  context: context, initialTime: TimeOfDay.now());
-              if (!mounted) return;
-              String timeString = timeT!.format(context);
-              daySelect = timeString;
-              cCont.text = timeString;
-              scheduler2 = DateTime(scheduler.year, scheduler.month,
-                  scheduler.day, timeT.hour, timeT.minute);
-            },
-            icon: const Icon(
-              FontAwesomeIcons.clock,
-              size: 20,
-            ),
-          ),
-        ));
+    return ListTile(
+      leading: const Icon(FontAwesomeIcons.clock),
+      title: Text(cCont.text),
+      onTap: () async {
+        TimeOfDay? timeT = await showTimePicker(
+            context: context, initialTime: TimeOfDay.now());
+        if (!mounted) return;
+        String timeString = timeT!.format(context);
+        daySelect = timeString;
+        cCont.text = timeString;
+        scheduler2 = DateTime(scheduler.year, scheduler.month, scheduler.day,
+            timeT.hour, timeT.minute);
+      },
+      // child: TextFormField(
+      //     autofocus: false,
+      //     readOnly: true,
+      //     maxLines: 1,
+      //     autocorrect: false,
+      //     enableSuggestions: false,
+      //     controller: cCont,
+      //     decoration: InputDecoration(
+      //       border: InputBorder.none,
+      //       prefixIcon: IconButton(
+      //         onPressed: () async {
+      //           TimeOfDay? timeT = await showTimePicker(
+      //               context: context, initialTime: TimeOfDay.now());
+      //           if (!mounted) return;
+      //           String timeString = timeT!.format(context);
+      //           daySelect = timeString;
+      //           cCont.text = timeString;
+      //           scheduler2 = DateTime(scheduler.year, scheduler.month,
+      //               scheduler.day, timeT.hour, timeT.minute);
+      //         },
+      //         icon: const Icon(
+      //           FontAwesomeIcons.clock,
+      //           size: 20,
+      //         ),
+      //       ),
+      //     )),
+    );
   }
 
   Widget eventColor() {
@@ -418,18 +450,26 @@ class _EditNoteState extends State<EditNote> {
   }
 
   Widget eventRepeat() {
-    return IconButton(
-        onPressed: () {},
-        icon: const Icon(
-          FontAwesomeIcons.repeat,
-          color: Colors.grey,
-          size: 20,
-        ));
+    return ListTile(
+      leading: const Icon(FontAwesomeIcons.repeat),
+      title: Text('Repeat'),
+      onTap: () {
+        showModalBottomSheet(
+            isScrollControlled: true,
+            shape: const RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.vertical(top: Radius.circular(20.0))),
+            context: context,
+            builder: (context) {
+              return const RepeatNote();
+            });
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final item = _items[widget.id]!;
+    var item = _items[widget.id]!;
     if (selectDate == "") {
       selectDate = item.date;
     }
@@ -460,41 +500,60 @@ class _EditNoteState extends State<EditNote> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).backgroundColor,
         title: Text(item.title),
+        actions: [
+          TextButton(
+              onPressed: () {
+                item.delete();
+                _items.remove(item.id);
+
+                final id = Localstore.instance.collection("notes").doc().id;
+
+                final item2 = store.Notes(
+                    id: id,
+                    title: title,
+                    data: body,
+                    date: selectDate,
+                    time: daySelect,
+                    priority: priority,
+                    color: colPick.value.toString(),
+                    done: item.done);
+                item2.save();
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Home()),
+                );
+              },
+              child: const Text(
+                'Save',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.blue),
+              ))
+        ],
       ),
       body: LayoutBuilder(
-          builder: (context, constraints) => SingleChildScrollView(
-                reverse: true,
-                child: Form(
+          builder: (context, constraints) => Form(
+                child: SingleChildScrollView(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      eventTitle(),
-                      eventBody(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(child: eventDate()),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(child: eventTime()),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      eventColor(),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      eventRepeat(),
-                      const SizedBox(
-                        width: 200,
-                      ),
-                      Expanded(child: eventSubmit()),
                       Padding(
-                        padding: EdgeInsets.all(constraints.maxHeight * .1),
-                      )
+                        padding: const EdgeInsets.all(10.0),
+                        child: SizedBox(
+                          height: constraints.maxHeight * 1,
+                          child: ListView(
+                            children: <Widget>[
+                              ListTile(title: eventTitle()),
+                              ListTile(title: eventBody()),
+                              eventDate(),
+                              eventTime(),
+                              eventColor(),
+                              eventRepeat(),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

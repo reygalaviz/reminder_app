@@ -322,20 +322,11 @@ class Table_CalendarState extends State<Table_Calendar> {
                                           onTap: () {
                                             id = item.id;
 
-                                            showModalBottomSheet(
-                                                enableDrag: false,
-                                                isScrollControlled: true,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.vertical(
-                                                                top: Radius
-                                                                    .circular(
-                                                                        20.0))),
-                                                context: context,
-                                                builder: (context) {
-                                                  return EditNote(id: id);
-                                                });
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        EditNote(id: id)));
                                           },
                                           trailing: IconButton(
                                               icon: const Icon(
