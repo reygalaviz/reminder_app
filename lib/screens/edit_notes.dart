@@ -10,6 +10,7 @@ import 'package:reminder_app/main.dart' as count;
 import 'package:reminder_app/models/notif_data_store.dart';
 import 'package:reminder_app/screens/repeat_note.dart';
 import 'all_notes.dart' as allNotes;
+import 'completed_notes.dart' as comp;
 
 Color col1 = const Color.fromARGB(255, 171, 222, 230);
 Color col2 = const Color.fromARGB(255, 203, 170, 203);
@@ -505,6 +506,9 @@ class _EditNoteState extends State<EditNote> {
               onPressed: () {
                 item.delete();
                 _items.remove(item.id);
+                comp.completed.remove(item);
+                allNotes.searchResults.remove(item);
+                allNotes.items.remove(item.id);
 
                 final id = Localstore.instance.collection("notes").doc().id;
 

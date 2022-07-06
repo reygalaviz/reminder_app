@@ -106,6 +106,7 @@ class _CompletedNotesState extends State<CompletedNotes> {
                           NotificationService().deleteNotif(not);
                           allNotes.items.remove(item.id);
                           res = false;
+                          
                         });
                       }
                     },
