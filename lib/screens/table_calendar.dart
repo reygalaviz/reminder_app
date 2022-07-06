@@ -3,11 +3,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:reminder_app/models/note_data_store.dart';
+import 'package:reminder_app/screens/all_notes.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
 import 'home.dart' as home;
 import 'package:reminder_app/Screens/cal_edit_note.dart';
+import 'package:reminder_app/screens/checkbox.dart';
+
+import 'package:reminder_app/controllers/notifications.dart';
 
 String id = "No notes exist";
 bool res = false;
@@ -156,7 +160,7 @@ class Table_CalendarState extends State<Table_Calendar> {
             TextButton(
                 onPressed: () {
                   res = true;
-                  Navigator.of(context).pop();
+                  Navigator.pop(context);
                 },
                 child: const Text("Delete"))
           ],
@@ -304,46 +308,100 @@ class Table_CalendarState extends State<Table_Calendar> {
                                           borderRadius:
                                               BorderRadius.circular(10)),
                                       child: ListTile(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          title: Text(
-                                            item.title,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black),
-                                          ),
-                                          subtitle: Text(
-                                            '${item.date} ${item.time}',
-                                            style: const TextStyle(
-                                                color: Colors.black),
-                                          ),
-                                          tileColor: invisColor(item),
-                                          onTap: () {
-                                            id = item.id;
-
-                                            Navigator.push(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        title: Text(
+                                          item.title,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
+                                        ),
+                                        subtitle: Text(
+                                          '${item.date} ${item.time}',
+                                          style: const TextStyle(
+                                              color: Colors.black),
+                                        ),
+                                        tileColor: invisColor(item),
+                                        onTap: () {
+                                          id = item.id;
+                                          Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         EditNote(id: id)));
-                                          },
-                                          trailing: IconButton(
-                                              icon: const Icon(
-                                                FontAwesomeIcons.trash,
-                                                size: 20,
-                                                color: Colors.black,
-                                              ),
-                                              onPressed: () async {
-                                                await _showDialog(item);
-                                                if (res == true) {
-                                                  setState(() {
-                                                    item.delete();
-                                                    _items.remove(item.id);
-                                                    res = false;
-                                                  });
-                                                }
-                                              })));
+
+                                          
+                                        },
+                                        trailing: Wrap(children: <Widget>[
+                                          IconButton(
+                                            icon: const Icon(
+                                              FontAwesomeIcons.trash,
+                                              size: 20,
+                                              color: Colors.black,
+                                            ),
+                                            onPressed: () async {
+                                              await _showDialog(item);
+                                              if (res == true) {
+                                                setState(() {
+                                                  searchResults.remove(item);
+
+                                                  uncompleted.remove(item);
+                                                  item.delete();
+                                                  String not =
+                                                      notifs[item.id]!.id2;
+                                                  NotificationService()
+                                                      .deleteNotif(not);
+                                                  items.remove(item.id);
+
+                                                  res = false;
+                                                });
+                                              }
+                                            },
+                                          ),
+                                          Checkbox(
+                                              side: MaterialStateBorderSide
+                                                  .resolveWith((states) =>
+                                                      const BorderSide(
+                                                          width: 2.0,
+                                                          color: Colors.black)),
+                                              checkColor: Colors.green,
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  10.0))),
+                                              value: item.done,
+                                              onChanged: (value) {})
+                                        ]),
+
+                                        //  IconButton(
+                                        //     icon: const Icon(
+                                        //       FontAwesomeIcons.trash,
+                                        //       size: 20,
+                                        //       color: Colors.black,
+                                        //     ),
+                                        //     onPressed: () async {
+                                        //       await _showDialog(item);
+                                        //       if (res == true) {
+                                        //         setState(() {
+                                        //           _items.remove(item.id);
+                                        //           res = false;
+                                        //           items.remove(item.id);
+                                        //           item.delete();
+
+                                        //           Navigator.push(
+                                        //               context,
+                                        //               MaterialPageRoute(
+                                        //                   builder: (context) =>
+                                        //                       const home
+                                        //                           .Home2()));
+                                        //         });
+                                        //       }
+                                        //     })));
+                                      ));
+
                                 } else {
                                   return Container();
                                 }

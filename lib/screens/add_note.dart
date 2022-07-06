@@ -9,8 +9,6 @@ import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/main.dart' as count;
 import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/models/notif_data_store.dart';
-import 'package:reminder_app/models/notif_operations.dart';
-import 'all_notes.dart' as allNotes;
 
 Color col1 = const Color.fromARGB(255, 171, 222, 230);
 Color col2 = const Color.fromARGB(255, 203, 170, 203);
@@ -307,7 +305,6 @@ class _AddNoteState extends State<AddNote> {
                 scheduler = dateT;
               });
 
-              print(dateT);
               selectDate = compForm;
 
               dCont.text = compForm;
@@ -381,6 +378,9 @@ class _AddNoteState extends State<AddNote> {
               NotificationService().displayNotification(
                   body: body, channel: count.channelCounter, title: title);
             }
+
+            selectColor = const Color.fromARGB(255, 180, 175, 175);
+
             Navigator.pop(context);
           },
           icon: const Icon(

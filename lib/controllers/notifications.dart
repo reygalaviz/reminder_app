@@ -92,7 +92,7 @@ class NotificationService {
       date,
       tz.local,
     );
-    print(time);
+
     var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
         "Notif memo", //Required for Android 8.0 or after
         "Notif memo", //Required for Android 8.0 or after

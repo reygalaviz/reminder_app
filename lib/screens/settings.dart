@@ -17,6 +17,10 @@ class SettingsTab extends StatelessWidget {
             }));
   }
 
+  Widget donate() {
+    return TextButton(onPressed: () {}, child: Container());
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -37,6 +41,7 @@ class SettingsTab extends StatelessWidget {
                   ),
                   buildDarkMode(),
                   const SizedBox(height: 8),
+                  donate()
                 ],
               ),
             ));

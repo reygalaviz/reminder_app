@@ -65,7 +65,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
           // } else {
 
           // }
-
         });
       });
     });
