@@ -76,16 +76,10 @@ class _CompletedNotesState extends State<CompletedNotes> {
                 onTap: () {
                   id = item.id;
 
-                  showModalBottomSheet(
-                      enableDrag: false,
-                      isScrollControlled: true,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20.0))),
-                      context: context,
-                      builder: (context) {
-                        return EditNote(id: id);
-                      });
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditNote(id: id)));
                 },
                 trailing: Wrap(children: <Widget>[
                   IconButton(
