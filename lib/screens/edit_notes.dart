@@ -504,7 +504,6 @@ class _EditNoteState extends State<EditNote> {
         actions: [
           TextButton(
               onPressed: () {
-                item.delete();
                 _items.remove(item.id);
                 comp.completed.remove(item);
                 allNotes.searchResults.remove(item);
@@ -521,7 +520,10 @@ class _EditNoteState extends State<EditNote> {
                     priority: priority,
                     color: colPick.value.toString(),
                     done: item.done);
+                item.delete();
                 item2.save();
+                //allNotes.items.putIfAbsent(item2.id, () => item2);
+                _items.putIfAbsent(item2.id, () => item2);
 
                 Navigator.push(
                   context,

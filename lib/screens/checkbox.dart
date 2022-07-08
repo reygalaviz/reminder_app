@@ -230,11 +230,13 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
               val = false;
               // allNotes.uncompleted.remove(item);
             }
-            var tert = all.notifs[widget.id]!;
-            String ter = tert.id2;
-            allNotes.notifs.remove(tert.id);
-            tert.delete();
-            NotificationService().deleteNotif(ter);
+            if (all.notifs[widget.id] != null) {
+              var tert = all.notifs[widget.id]!;
+              String ter = tert.id2;
+              allNotes.notifs.remove(tert.id);
+              tert.delete();
+              NotificationService().deleteNotif(ter);
+            }
             allNotes.uncompleted.remove(item);
             final id = Localstore.instance.collection("notes").doc().id;
             allNotes.searchResults.remove(item);
