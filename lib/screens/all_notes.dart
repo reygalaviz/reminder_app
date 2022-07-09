@@ -111,7 +111,10 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                       fontWeight: FontWeight.bold, color: Colors.black),
                 ),
                 subtitle: Text(
-                  '${item.date} ${item.time}',
+                  texter(item2: item),
+
+                  //'${item.date} ${item.time}',
+                  //item.data,
                   style: const TextStyle(color: Colors.black),
                 ),
                 tileColor: Color(int.parse(item.color)).withOpacity(1),
@@ -246,6 +249,15 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   void dispose() {
     if (_subscription != null) _subscription?.cancel();
     super.dispose();
+  }
+
+  String texter({required store.Notes item2}) {
+    print(item2.data);
+    if (item2.data == '') {
+      return '${item2.date} ${item2.time}';
+    } else {
+      return item2.data;
+    }
   }
 
   Future<bool?> _showDialog(final item) async {
