@@ -37,8 +37,8 @@ dependencies:
   flutter_advanced_switch: ^3.0.1
   table_calendar: ^3.0.6
   font_awesome_flutter: ^10.1.0
-  flutter_slidable: ^1.3.0
   drag_and_drop_lists: ^0.3.2+2
+  flutter_slidable: ^1.3.1
   
   
   

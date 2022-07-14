@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'all_notes.dart' as allNotes;
 import 'package:reminder_app/models/notif_data_store.dart';
 import 'package:reminder_app/controllers/notifications.dart';
@@ -60,52 +61,80 @@ class _CompletedNotesState extends State<CompletedNotes> {
             return Card(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
-              child: ListTile(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                title: Text(
-                  item.title,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.black),
-                ),
-                subtitle: Text(
-                  '${item.date} ${item.time}',
-                  style: const TextStyle(color: Colors.black),
-                ),
-                tileColor: Color(int.parse(item.color)).withOpacity(1),
-                onTap: () {
-                  id = item.id;
+              child: Slidable(
+                endActionPane: ActionPane(
+                  motion: ScrollMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (context) async {
+                        await _showDialog(item);
+                        if (res == true) {
+                          setState(() {
+                            allNotes.searchResults.remove(item);
+                            completed.remove(item);
 
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EditNote(id: id)));
-                },
-                trailing: Wrap(children: <Widget>[
-                  IconButton(
-                    icon: const Icon(
-                      FontAwesomeIcons.trash,
-                      size: 20,
-                      color: Colors.black,
+                            item.delete();
+                            String not = allNotes.notifs[item.id]!.id2;
+                            NotificationService().deleteNotif(not);
+                            allNotes.items.remove(item.id);
+                            res = false;
+                          });
+                        }
+                      },
+                      borderRadius: BorderRadius.circular(10),
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                      icon: FontAwesomeIcons.trash,
                     ),
-                    onPressed: () async {
-                      await _showDialog(item);
-                      if (res == true) {
-                        setState(() {
-                          allNotes.searchResults.remove(item);
-                          completed.remove(item);
-
-                          item.delete();
-                          String not = allNotes.notifs[item.id]!.id2;
-                          NotificationService().deleteNotif(not);
-                          allNotes.items.remove(item.id);
-                          res = false;
-                        });
-                      }
-                    },
+                  ],
+                ),
+                child: ListTile(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  title: Text(
+                    item.title,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.black),
                   ),
-                  CheckBoxNote2(id: item.id)
-                ]),
+                  subtitle: Text(
+                    '${item.date} ${item.time}',
+                    style: const TextStyle(color: Colors.black),
+                  ),
+                  tileColor: Color(int.parse(item.color)).withOpacity(1),
+                  onTap: () {
+                    id = item.id;
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditNote(id: id)));
+                  },
+                  trailing: Wrap(children: <Widget>[
+                    IconButton(
+                      icon: const Icon(
+                        FontAwesomeIcons.trash,
+                        size: 20,
+                        color: Colors.black,
+                      ),
+                      onPressed: () async {
+                        await _showDialog(item);
+                        if (res == true) {
+                          setState(() {
+                            allNotes.searchResults.remove(item);
+                            completed.remove(item);
+
+                            item.delete();
+                            String not = allNotes.notifs[item.id]!.id2;
+                            NotificationService().deleteNotif(not);
+                            allNotes.items.remove(item.id);
+                            res = false;
+                          });
+                        }
+                      },
+                    ),
+                    CheckBoxNote2(id: item.id)
+                  ]),
+                ),
               ),
             );
           }),
@@ -130,6 +159,7 @@ class _CompletedNotesState extends State<CompletedNotes> {
             TextButton(
               child: const Text('Cancel'),
               onPressed: () {
+                res = false;
                 Navigator.of(context).pop();
                 res = false;
               },
