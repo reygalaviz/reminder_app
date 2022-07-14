@@ -15,6 +15,7 @@ import 'package:reminder_app/controllers/notifications.dart';
 
 String id = "No notes exist";
 bool res = false;
+bool don = false;
 Color colPick = Colors.white;
 StreamSubscription<Map<String, dynamic>>? _subscription;
 
@@ -302,7 +303,8 @@ class Table_CalendarState extends State<Table_Calendar> {
                                 final item = _items[key]!;
                                 DateFormat format = DateFormat("yyyy-MM-dd");
                                 String day2 = format.format(_selectedDay);
-                                if (item.date == day2) {
+                                don = item.done;
+                                if (item.date == day2 && item.done == false) {
                                   return Card(
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -326,12 +328,10 @@ class Table_CalendarState extends State<Table_Calendar> {
                                         onTap: () {
                                           id = item.id;
                                           Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        EditNote(id: id)));
-
-                                          
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditNote(id: id)));
                                         },
                                         trailing: Wrap(children: <Widget>[
                                           IconButton(
@@ -372,36 +372,10 @@ class Table_CalendarState extends State<Table_Calendar> {
                                                           BorderRadius.all(
                                                               Radius.circular(
                                                                   10.0))),
-                                              value: item.done,
+                                              value: don,
                                               onChanged: (value) {})
                                         ]),
-
-                                        //  IconButton(
-                                        //     icon: const Icon(
-                                        //       FontAwesomeIcons.trash,
-                                        //       size: 20,
-                                        //       color: Colors.black,
-                                        //     ),
-                                        //     onPressed: () async {
-                                        //       await _showDialog(item);
-                                        //       if (res == true) {
-                                        //         setState(() {
-                                        //           _items.remove(item.id);
-                                        //           res = false;
-                                        //           items.remove(item.id);
-                                        //           item.delete();
-
-                                        //           Navigator.push(
-                                        //               context,
-                                        //               MaterialPageRoute(
-                                        //                   builder: (context) =>
-                                        //                       const home
-                                        //                           .Home2()));
-                                        //         });
-                                        //       }
-                                        //     })));
                                       ));
-
                                 } else {
                                   return Container();
                                 }
