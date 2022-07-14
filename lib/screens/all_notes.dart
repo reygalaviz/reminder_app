@@ -102,6 +102,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
             return Card(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
+
               child: Slidable(
                 endActionPane: ActionPane(
                   motion: ScrollMotion(),
@@ -112,9 +113,9 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                         if (res == true) {
                           setState(() {
                             searchResults.remove(item);
-
                             uncompleted.remove(item);
                             item.delete();
+                            
                             String not = notifs[item.id]!.id2;
                             NotificationService().deleteNotif(not);
 
@@ -250,6 +251,15 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   void dispose() {
     if (_subscription != null) _subscription?.cancel();
     super.dispose();
+  }
+
+  String texter({required store.Notes item2}) {
+    print(item2.data);
+    if (item2.data == '') {
+      return '${item2.date} ${item2.time}';
+    } else {
+      return item2.data;
+    }
   }
 
   Future<bool?> _showDialog(final item) async {

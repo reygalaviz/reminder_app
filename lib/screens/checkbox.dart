@@ -164,30 +164,6 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
   String daySelect = "";
   Color selectColor = const Color.fromARGB(255, 180, 175, 174);
   String priority = "high";
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _db.collection('notes').get().then((value) {
-  //     _subscription = _db.collection('notes').stream.listen((event) {
-  //       setState(() {
-  //         final item = store.Notes.fromMap(event);
-  //         print(item);
-  //         _items.putIfAbsent(item.id, () => item);
-  //       });
-  //     });
-  //   });
-  //   _db
-  //       .collection("notifs")
-  //       .doc(widget.id)
-  //       .get()
-  //       .then((value) => _db.collection('notifs').stream.listen((event) {
-  //             setState(() {
-  //               final item = Notifs.fromMap(event);
-  //               _notifs.putIfAbsent(item.id, () => item);
-  //             });
-  //           }));
-  // }
   bool? val = true;
   @override
   Widget build(BuildContext context) {
@@ -230,16 +206,17 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
               val = false;
               // allNotes.uncompleted.remove(item);
             }
-            var tert = all.notifs[widget.id]!;
-            String ter = tert.id2;
-            allNotes.notifs.remove(tert.id);
-            tert.delete();
-            NotificationService().deleteNotif(ter);
+            if (all.notifs[widget.id] != null) {
+              var tert = all.notifs[widget.id]!;
+              String ter = tert.id2;
+              allNotes.notifs.remove(tert.id);
+              tert.delete();
+              NotificationService().deleteNotif(ter);
+            }
             allNotes.uncompleted.remove(item);
             final id = Localstore.instance.collection("notes").doc().id;
             allNotes.searchResults.remove(item);
             allNotes.items.remove(item.id);
-
             item.delete();
 
             final item1 = store.Notes(
@@ -278,13 +255,7 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
               context,
               MaterialPageRoute(builder: (context) => const Home()),
             );
-            // if (boop == true) {
-            //   allNotes.completed.add(item1);
-            // } else {
-            //   allNotes.uncompleted.add(item1);
-            // }
           });
         });
   }
 }
-///////////
