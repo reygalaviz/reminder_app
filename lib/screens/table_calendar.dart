@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -309,72 +310,108 @@ class Table_CalendarState extends State<Table_Calendar> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10)),
-                                      child: ListTile(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        title: Text(
-                                          item.title,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black),
-                                        ),
-                                        subtitle: Text(
-                                          '${item.date} ${item.time}',
-                                          style: const TextStyle(
-                                              color: Colors.black),
-                                        ),
-                                        tileColor: invisColor(item),
-                                        onTap: () {
-                                          id = item.id;
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      EditNote(id: id)));
-                                        },
-                                        trailing: Wrap(children: <Widget>[
-                                          IconButton(
-                                            icon: const Icon(
-                                              FontAwesomeIcons.trash,
-                                              size: 20,
-                                              color: Colors.black,
+                                      child: Slidable(
+                                        endActionPane: ActionPane(
+                                          motion: ScrollMotion(),
+                                          children: [
+                                            SlidableAction(
+                                              onPressed: (context) async {
+                                                await _showDialog(item);
+                                                if (res == true) {
+                                                  setState(() {
+                                                    searchResults.remove(item);
+
+                                                    uncompleted.remove(item);
+                                                    item.delete();
+                                                    String not =
+                                                        notifs[item.id]!.id2;
+                                                    NotificationService()
+                                                        .deleteNotif(not);
+
+                                                    items.remove(item.id);
+
+                                                    res = false;
+                                                  });
+                                                }
+                                              },
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              backgroundColor: Colors.red,
+                                              foregroundColor: Colors.white,
+                                              icon: FontAwesomeIcons.trash,
                                             ),
-                                            onPressed: () async {
-                                              await _showDialog(item);
-                                              if (res == true) {
-                                                setState(() {
-                                                  searchResults.remove(item);
+                                          ],
+                                        ),
 
-                                                  uncompleted.remove(item);
-                                                  item.delete();
-                                                  String not =
-                                                      notifs[item.id]!.id2;
-                                                  NotificationService()
-                                                      .deleteNotif(not);
-                                                  items.remove(item.id);
-
-                                                  res = false;
-                                                });
-                                              }
-                                            },
+                                        child: ListTile(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          title: Text(
+                                            item.title,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black),
                                           ),
-                                          Checkbox(
-                                              side: MaterialStateBorderSide
-                                                  .resolveWith((states) =>
-                                                      const BorderSide(
-                                                          width: 2.0,
-                                                          color: Colors.black)),
-                                              checkColor: Colors.green,
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  10.0))),
-                                              value: don,
-                                              onChanged: (value) {})
-                                        ]),
+                                          subtitle: Text(
+                                            '${item.date} ${item.time}',
+                                            style: const TextStyle(
+                                                color: Colors.black),
+                                          ),
+                                          tileColor: invisColor(item),
+                                          onTap: () {
+                                            id = item.id;
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        EditNote(id: id)));
+                                          },
+                                          trailing: Wrap(children: <Widget>[
+                                            Checkbox(
+                                                side: MaterialStateBorderSide
+                                                    .resolveWith((states) =>
+                                                        const BorderSide(
+                                                            width: 2.0,
+                                                            color:
+                                                                Colors.black)),
+                                                checkColor: Colors.green,
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    10.0))),
+                                                value: item.done,
+                                                onChanged: (value) {})
+                                          ]),
+
+                                          //  IconButton(
+                                          //     icon: const Icon(
+                                          //       FontAwesomeIcons.trash,
+                                          //       size: 20,
+                                          //       color: Colors.black,
+                                          //     ),
+                                          //     onPressed: () async {
+                                          //       await _showDialog(item);
+                                          //       if (res == true) {
+                                          //         setState(() {
+                                          //           _items.remove(item.id);
+                                          //           res = false;
+                                          //           items.remove(item.id);
+                                          //           item.delete();
+
+                                          //           Navigator.push(
+                                          //               context,
+                                          //               MaterialPageRoute(
+                                          //                   builder: (context) =>
+                                          //                       const home
+                                          //                           .Home2()));
+                                          //         });
+                                          //       }
+                                          //     })));
+                                        ),
+
                                       ));
                                 } else {
                                   return Container();

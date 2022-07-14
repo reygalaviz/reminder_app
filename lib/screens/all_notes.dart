@@ -102,57 +102,59 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
             return Card(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
-              child: ListTile(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                title: Text(
-                  item.title,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.black),
-                ),
-                subtitle: Text(
-                  texter(item2: item),
 
-                  //'${item.date} ${item.time}',
-                  //item.data,
-                  style: const TextStyle(color: Colors.black),
-                ),
-                tileColor: Color(int.parse(item.color)).withOpacity(1),
-                onTap: () {
-                  id = item.id;
+              child: Slidable(
+                endActionPane: ActionPane(
+                  motion: ScrollMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (context) async {
+                        await _showDialog(item);
+                        if (res == true) {
+                          setState(() {
+                            searchResults.remove(item);
+                            uncompleted.remove(item);
+                            item.delete();
+                            
+                            String not = notifs[item.id]!.id2;
+                            NotificationService().deleteNotif(not);
 
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EditNote(id: id)));
-                },
-                trailing: Wrap(children: <Widget>[
-                  IconButton(
-                    icon: const Icon(
-                      FontAwesomeIcons.trash,
-                      size: 20,
-                      color: Colors.black,
+                            items.remove(item.id);
+
+                            res = false;
+                          });
+                        }
+                      },
+                      borderRadius: BorderRadius.circular(10),
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                      icon: FontAwesomeIcons.trash,
                     ),
-                    onPressed: () async {
-                      await _showDialog(item);
-                      if (res == true) {
-                        setState(() {
-                          searchResults.remove(item);
-
-                          uncompleted.remove(item);
-                          item.delete();
-                          String not = notifs[item.id]!.id2;
-                          NotificationService().deleteNotif(not);
-
-                          items.remove(item.id);
-
-                          res = false;
-                        });
-                      }
-                    },
+                  ],
+                ),
+                child: ListTile(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  title: Text(
+                    item.title,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.black),
                   ),
-                  CheckBoxNote(id: item.id)
-                ]),
+                  subtitle: Text(
+                    '${item.date} ${item.time}',
+                    style: const TextStyle(color: Colors.black),
+                  ),
+                  tileColor: Color(int.parse(item.color)).withOpacity(1),
+                  onTap: () {
+                    id = item.id;
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditNote(id: id)));
+                  },
+                  trailing: Wrap(children: <Widget>[CheckBoxNote(id: item.id)]),
+                ),
               ),
             );
           }),
