@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:reminder_app/themes/theme_shared_prefs.dart';
+import 'package:reminder_app/screens/settings.dart' as setting;
 
 // Color.fromARGB(255, 193, 92, 92)
+
 class ThemeModel extends ChangeNotifier {
   late bool _isDark;
+
   late ThemeSharedPreferences themeSharedPreferences;
   bool get isDark => _isDark;
 
   ThemeModel() {
     _isDark = false;
+
     themeSharedPreferences = ThemeSharedPreferences();
     getThemePreferences();
   }
 
   set isDark(bool value) {
     _isDark = value;
+
     themeSharedPreferences.setTheme(value);
     notifyListeners();
   }
@@ -35,6 +40,7 @@ class ThemeModel extends ChangeNotifier {
   }
 
   static ThemeData get lightTheme {
+    setting.col = Colors.white;
     return ThemeData(
       colorScheme: const ColorScheme.light(),
       primaryColor: Colors.black,
@@ -51,6 +57,7 @@ class ThemeModel extends ChangeNotifier {
   }
 
   static ThemeData get darkTheme {
+    setting.col = const Color.fromARGB(255, 88, 88, 88);
     return ThemeData(
       colorScheme: const ColorScheme.dark(),
       primaryColor: Colors.white,

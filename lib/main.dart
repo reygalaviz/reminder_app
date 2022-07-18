@@ -14,15 +14,22 @@ import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 //import 'package:reminder_app/themes/theme_shared_prefs.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:reminder_app/models/notif_option.dart';
 
 int channelCounter = 0;
+bool notifChoice = false;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _configureLocalTimeZone();
   await NotificationService().init();
   var items = await store.db.collection('notes').get();
-
+  try {
+    var nChoice = await store.db.collection('notifSetting').doc('1').get();
+  } catch (e) {
+    NotifSetting n = NotifSetting(id: '1', choice: notifChoice);
+    n.save();
+  }
   if (items != null) {
     channelCounter = items.length;
   }

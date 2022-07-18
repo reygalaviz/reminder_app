@@ -367,16 +367,17 @@ class _AddNoteState extends State<AddNote> {
                 daySelect,
                 priority,
                 colPick.value.toString());
-
-            if (scheduler2.isAfter(DateTime.now())) {
-              NotificationService().displayScheduleNotif(
-                  body: body,
-                  channel: count.channelCounter,
-                  title: title,
-                  date: scheduler2);
-            } else {
-              NotificationService().displayNotification(
-                  body: body, channel: count.channelCounter, title: title);
+            if (count.notifChoice == true) {
+              if (scheduler2.isAfter(DateTime.now())) {
+                NotificationService().displayScheduleNotif(
+                    body: body,
+                    channel: count.channelCounter,
+                    title: title,
+                    date: scheduler2);
+              } else {
+                NotificationService().displayNotification(
+                    body: body, channel: count.channelCounter, title: title);
+              }
             }
 
             selectColor = const Color.fromARGB(255, 180, 175, 175);

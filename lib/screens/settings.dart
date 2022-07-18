@@ -1,15 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:reminder_app/main.dart';
 import 'package:reminder_app/models/color_data.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:provider/provider.dart';
 //import '../models/notes_operation.dart';
 import '../themes/theme_model.dart';
+import 'package:reminder_app/models/notif_option.dart';
 
-class SettingsTab extends StatelessWidget {
+Color col = Colors.white;
+
+class SettingsTab extends StatefulWidget {
   const SettingsTab({Key? key}) : super(key: key);
 
+  @override
+  State<SettingsTab> createState() => _SettingsTabState();
+}
+
+class _SettingsTabState extends State<SettingsTab> {
   Widget donate() {
     return TextButton(onPressed: () {}, child: Container());
   }
@@ -18,7 +27,9 @@ class SettingsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
         builder: (context, constraints) => SizedBox(
-              height: constraints.maxHeight * .92,
+            height: constraints.maxHeight * .92,
+            child: Container(
+              color: col,
               child: Column(
                 children: [
                   Stack(
@@ -82,6 +93,7 @@ class SettingsTab extends StatelessWidget {
                                           CupertinoSwitch(
                                               value: themeNotifier.isDark,
                                               onChanged: (bool value) {
+                                                setState(() {});
                                                 themeNotifier.isDark =
                                                     !themeNotifier.isDark;
                                               }),
@@ -189,11 +201,26 @@ class SettingsTab extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text('Option'),
-                                  Icon(
-                                    FontAwesomeIcons.arrowRight,
-                                    size: 20,
+                                children: [
+                                  const Text('Enable/Disable'),
+                                  // Icon(
+                                  //   FontAwesomeIcons.arrowRight,
+                                  //   size: 20,
+                                  // ),
+                                  Transform.scale(
+                                    scale: .7,
+                                    child: CupertinoSwitch(
+                                        value: notifChoice,
+                                        onChanged: (bool value) {
+                                          setState(() {
+                                            notifChoice = !notifChoice;
+                                          });
+
+                                          NotifSetting n = NotifSetting(
+                                              id: '1', choice: value);
+
+                                          n.save();
+                                        }),
                                   )
                                 ],
                               ),
@@ -396,7 +423,7 @@ class SettingsTab extends StatelessWidget {
                   ),
                 ],
               ),
-            ));
+            )));
   }
 
   GestureDetector buildNotificationOption(BuildContext context, String title) {
