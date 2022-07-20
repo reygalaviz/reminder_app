@@ -7,6 +7,8 @@ import 'package:reminder_app/screens/completed_notes.dart';
 import 'package:reminder_app/screens/home.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
+import 'package:reminder_app/controllers/notifications.dart';
+import 'package:reminder_app/models/notif_data_store.dart';
 
 import 'package:reminder_app/screens/repeat_note.dart';
 
@@ -32,6 +34,7 @@ class _EditNoteState extends State<EditNote> {
   final formatter = DateFormat().add_jm();
   String selectDate = "";
   String title = "";
+  final _notifs = <String, Notifs>{};
   String body = "";
   String daySelect = "";
   Color selectColor = const Color.fromARGB(255, 180, 175, 174);
@@ -47,6 +50,16 @@ class _EditNoteState extends State<EditNote> {
         });
       });
     });
+    _db
+        .collection("notifs")
+        .doc(widget.id)
+        .get()
+        .then((value) => _db.collection('notifs').stream.listen((event) {
+              setState(() {
+                final item = Notifs.fromMap(event);
+                _notifs.putIfAbsent(item.id, () => item);
+              });
+            }));
   }
 
   Widget eventTitle() {
@@ -345,11 +358,6 @@ class _EditNoteState extends State<EditNote> {
       backgroundColor: Colors.red,
       child: IconButton(
         onPressed: () {
-          items.remove(item.id);
-          item.delete();
-
-          _items.remove(item.id);
-
           final id = Localstore.instance.collection("notes").doc().id;
 
           final item1 = store.Notes(
@@ -362,6 +370,7 @@ class _EditNoteState extends State<EditNote> {
               color: colPick.value.toString(),
               done: item.done);
           item1.save();
+          searchResults.clear();
 
           Navigator.push(
             context,
@@ -432,7 +441,13 @@ class _EditNoteState extends State<EditNote> {
               onPressed: () {
                 item.delete();
                 _items.remove(item.id);
+                setState(() {
+                  items.remove(item.id);
+                });
 
+                item.delete();
+                uncompleted.remove(item);
+                _items.remove(item.id);
                 final id = Localstore.instance.collection("notes").doc().id;
 
                 final item1 = store.Notes(
