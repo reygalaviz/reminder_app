@@ -448,6 +448,7 @@ class _EditNoteState extends State<EditNote> {
                 item.delete();
                 uncompleted.remove(item);
                 _items.remove(item.id);
+                searchResults.clear();
                 final id = Localstore.instance.collection("notes").doc().id;
 
                 final item1 = store.Notes(
