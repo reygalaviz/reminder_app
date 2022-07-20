@@ -56,10 +56,11 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
     _db.collection('notes').get().then((value) {
       _subscription = _db.collection('notes').stream.listen((event) {
         setState(() {
+          searchResults.clear();
           final item = store.Notes.fromMap(event);
-
-          items.putIfAbsent(item.id, () => item);
           // searchResults.add(item);
+          items.putIfAbsent(item.id, () => item);
+
           // if (item.done == true) {
           //   completed.add(item);
           // } else {
@@ -83,6 +84,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   Widget notesCard() {
     uncompleted.clear();
     items.forEach((key, value) {
+      searchResults.add(value);
       if (value.done == false) {
         uncompleted.add(value);
       }
