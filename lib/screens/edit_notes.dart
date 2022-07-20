@@ -525,10 +525,7 @@ class _EditNoteState extends State<EditNote> {
                 //allNotes.items.putIfAbsent(item2.id, () => item2);
                 _items.putIfAbsent(item2.id, () => item2);
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Home()),
-                );
+                Navigator.pop(context);
               },
               child: const Text(
                 'Save',
