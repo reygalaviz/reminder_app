@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:localstore/localstore.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
-import 'package:reminder_app/screens/cal_edit_note.dart';
+import 'package:reminder_app/screens/edit_notes.dart';
 import 'package:reminder_app/screens/table_calendar.dart';
 import '../models/note_data_store.dart';
 import 'all_notes.dart' as allNotes;
