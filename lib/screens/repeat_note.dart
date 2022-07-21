@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class RepeatNote extends StatefulWidget {
@@ -29,34 +26,34 @@ class _RepeatNoteState extends State<RepeatNote> {
                       children: [
                         ListTile(
                           leading: const Icon(FontAwesomeIcons.repeat),
-                          title: Text('Hourly'),
+                          title: const Text('Hourly'),
                           onTap: () {},
                         ),
                         ListTile(
                           leading: const Icon(FontAwesomeIcons.repeat),
-                          title: Text('Daily'),
+                          title: const Text('Daily'),
                           onTap: () {},
                         ),
                         ListTile(
                           leading: const Icon(FontAwesomeIcons.repeat),
-                          title: Text('Weekly'),
+                          title: const Text('Weekly'),
                           onTap: () {},
                         ),
                         ListTile(
                           leading: const Icon(FontAwesomeIcons.repeat),
-                          title: Text('Monthly'),
+                          title: const Text('Monthly'),
                           onTap: () {},
                         ),
                         ListTile(
                           leading: const Icon(FontAwesomeIcons.repeat),
-                          title: Text('Yearly'),
+                          title: const Text('Yearly'),
                           onTap: () {},
                         ),
                         ListTile(
                           leading: const Icon(FontAwesomeIcons.repeat),
-                          title: Text('Custom'),
+                          title: const Text('Custom'),
                           trailing: IconButton(
-                            icon: Icon(FontAwesomeIcons.arrowRight),
+                            icon: const Icon(FontAwesomeIcons.arrowRight),
                             onPressed: () {},
                           ),
                           onTap: () {},

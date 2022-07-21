@@ -1,18 +1,13 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:reminder_app/Screens/all_notes.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
-import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/screens/checkbox.dart';
 import 'package:reminder_app/screens/completed_notes.dart';
 import 'dart:async';
 import 'package:reminder_app/screens/edit_notes.dart';
-import 'package:reminder_app/screens/over_due_notes.dart';
 import '../models/note_data_store.dart';
 import 'home.dart' as home;
 import 'package:reminder_app/models/notif_data_store.dart';

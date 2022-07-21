@@ -4,9 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:localstore/localstore.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:reminder_app/screens/edit_notes.dart';
-import 'package:reminder_app/screens/table_calendar.dart';
 import '../models/note_data_store.dart';
-import 'all_notes.dart' as allNotes;
+import 'all_notes.dart' as all_notes;
 
 class MySearchDelegate extends SearchDelegate {
   //List<Notes> searchResults = <Notes>[];
@@ -36,14 +35,13 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    print(allNotes.searchResults);
-    List<Notes> suggestions = allNotes.searchResults.where((searchResult) {
+    List<Notes> suggestions = all_notes.searchResults.where((searchResult) {
       final result = searchResult.title.toLowerCase();
       final input = query.toLowerCase();
 
       return result.contains(input);
     }).toList();
-    print(suggestions);
+
     return ListView.builder(
       itemCount: suggestions.length,
       itemBuilder: (context, index) {

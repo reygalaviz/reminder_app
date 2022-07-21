@@ -1,16 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-// import 'package:flutter/rendering.dart';
-// import 'package:flutter/services.dart';
-//import 'package:reminder_app/models/datetime_data.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:localstore/localstore.dart';
-import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/screens/add_note.dart';
 import 'package:reminder_app/screens/all_notes.dart';
-import 'package:localstore/localstore.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder_app/screens/search_notes.dart';
 import 'package:reminder_app/screens/settings.dart';

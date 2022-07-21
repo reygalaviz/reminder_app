@@ -312,7 +312,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                                               BorderRadius.circular(10)),
                                       child: Slidable(
                                         endActionPane: ActionPane(
-                                          motion: ScrollMotion(),
+                                          motion: const ScrollMotion(),
                                           children: [
                                             SlidableAction(
                                               onPressed: (context) async {
@@ -353,7 +353,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                                                 color: Colors.black),
                                           ),
                                           subtitle: Text(
-                                            '${item.date} ${item.time}',
+                                            '${item.time}',
                                             style: const TextStyle(
                                                 color: Colors.black),
                                           ),

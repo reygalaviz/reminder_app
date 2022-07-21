@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'all_notes.dart' as allNotes;
-import 'package:reminder_app/models/notif_data_store.dart';
+import 'all_notes.dart' as all_notes;
 import 'package:reminder_app/controllers/notifications.dart';
 import '../models/note_data_store.dart';
 import 'package:reminder_app/screens/edit_notes.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
 import 'dart:async';
-import '../models/note_data_store.dart';
-import 'home.dart' as home;
-import 'package:reminder_app/models/notif_data_store.dart';
 import 'checkbox.dart';
 
 List<Notes> completed = <Notes>[];
@@ -31,7 +24,7 @@ class _CompletedNotesState extends State<CompletedNotes> {
   @override
   Widget build(BuildContext context) {
     completed.clear();
-    allNotes.items.forEach((key, value) {
+    all_notes.items.forEach((key, value) {
       if (value.done == true) {
         completed.add(value);
       }
@@ -63,20 +56,20 @@ class _CompletedNotesState extends State<CompletedNotes> {
                   borderRadius: BorderRadius.circular(10)),
               child: Slidable(
                 endActionPane: ActionPane(
-                  motion: ScrollMotion(),
+                  motion: const ScrollMotion(),
                   children: [
                     SlidableAction(
                       onPressed: (context) async {
                         await _showDialog(item);
                         if (res == true) {
                           setState(() {
-                            allNotes.searchResults.remove(item);
+                            all_notes.searchResults.remove(item);
                             completed.remove(item);
 
                             item.delete();
-                            String not = allNotes.notifs[item.id]!.id2;
+                            String not = all_notes.notifs[item.id]!.id2;
                             NotificationService().deleteNotif(not);
-                            allNotes.items.remove(item.id);
+                            all_notes.items.remove(item.id);
                             res = false;
                           });
                         }
@@ -120,13 +113,13 @@ class _CompletedNotesState extends State<CompletedNotes> {
                         await _showDialog(item);
                         if (res == true) {
                           setState(() {
-                            allNotes.searchResults.remove(item);
+                            all_notes.searchResults.remove(item);
                             completed.remove(item);
 
                             item.delete();
-                            String not = allNotes.notifs[item.id]!.id2;
+                            String not = all_notes.notifs[item.id]!.id2;
                             NotificationService().deleteNotif(not);
-                            allNotes.items.remove(item.id);
+                            all_notes.items.remove(item.id);
                             res = false;
                           });
                         }

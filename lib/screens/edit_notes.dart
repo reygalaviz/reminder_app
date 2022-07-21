@@ -455,7 +455,7 @@ class _EditNoteState extends State<EditNote> {
   Widget eventRepeat() {
     return ListTile(
       leading: const Icon(FontAwesomeIcons.repeat),
-      title: Text('Repeat'),
+      title: const Text('Repeat'),
       onTap: () {
         showModalBottomSheet(
             isScrollControlled: true,

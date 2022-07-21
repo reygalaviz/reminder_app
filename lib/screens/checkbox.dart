@@ -1,18 +1,14 @@
 // ignore_for_file: unused_field
 import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/main.dart' as count;
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'all_notes.dart' as all;
 import '../models/note_data_store.dart';
 import 'package:reminder_app/models/notif_data_store.dart';
-import 'all_notes.dart' as allNotes;
+import 'all_notes.dart' as all_notes;
 import 'package:localstore/localstore.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:reminder_app/Screens/home.dart';
-import 'completed_notes.dart';
 
 class CheckBoxNote extends StatefulWidget {
   const CheckBoxNote({Key? key, required this.id}) : super(key: key);
@@ -72,9 +68,6 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
         onChanged: (val) {
           setState(() {
             store.Notes item = all.items[widget.id]!;
-
-            // int ind = allNotes.searchResults.indexOf(co);
-            // var item = allNotes.searchResults[ind];
             if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
               colPick = Color(int.parse(item.color));
             }
@@ -95,21 +88,19 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
               boop = false;
 
               val = true;
-              // allNotes.completed.remove(item);
             } else {
               boop = true;
               val = false;
-              // allNotes.uncompleted.remove(item);
             }
             var tert = all.notifs[widget.id]!;
             String ter = tert.id2;
-            allNotes.notifs.remove(tert.id);
+            all_notes.notifs.remove(tert.id);
             tert.delete();
             NotificationService().deleteNotif(ter);
-            allNotes.uncompleted.remove(item);
+            all_notes.uncompleted.remove(item);
             final id = Localstore.instance.collection("notes").doc().id;
-            allNotes.searchResults.remove(item);
-            allNotes.items.remove(item.id);
+            all_notes.searchResults.remove(item);
+            all_notes.items.remove(item.id);
 
             item.delete();
 
@@ -124,7 +115,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                 done: boop);
             item1.save();
 
-            allNotes.searchResults.add(item1);
+            all_notes.searchResults.add(item1);
             Notifs notif1 = Notifs(
               id: id,
               id2: count.channelCounter.toString(),
@@ -134,11 +125,6 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
               context,
               MaterialPageRoute(builder: (context) => const Home()),
             );
-            // if (boop == true) {
-            //   allNotes.completed.add(item1);
-            // } else {
-            //   allNotes.uncompleted.add(item1);
-            // }
           });
         });
   }
@@ -178,8 +164,6 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
           setState(() {
             store.Notes item = all.items[widget.id]!;
 
-            // int ind = allNotes.searchResults.indexOf(co);
-            // var item = allNotes.searchResults[ind];
             if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
               colPick = Color(int.parse(item.color));
             }
@@ -200,23 +184,21 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
               boop = false;
 
               val = true;
-              // allNotes.completed.remove(item);
             } else {
               boop = true;
               val = false;
-              // allNotes.uncompleted.remove(item);
             }
             if (all.notifs[widget.id] != null) {
               var tert = all.notifs[widget.id]!;
               String ter = tert.id2;
-              allNotes.notifs.remove(tert.id);
+              all_notes.notifs.remove(tert.id);
               tert.delete();
               NotificationService().deleteNotif(ter);
             }
-            allNotes.uncompleted.remove(item);
+            all_notes.uncompleted.remove(item);
             final id = Localstore.instance.collection("notes").doc().id;
-            allNotes.searchResults.remove(item);
-            allNotes.items.remove(item.id);
+            all_notes.searchResults.remove(item);
+            all_notes.items.remove(item.id);
             item.delete();
 
             final item1 = store.Notes(
@@ -230,7 +212,7 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
                 done: boop);
             item1.save();
 
-            allNotes.searchResults.add(item1);
+            all_notes.searchResults.add(item1);
             Notifs notif1 = Notifs(
               id: id,
               id2: count.channelCounter.toString(),
