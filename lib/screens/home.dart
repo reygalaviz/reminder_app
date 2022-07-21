@@ -153,7 +153,6 @@ class _HomeState extends State<Home> {
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
-        backgroundColor: Colors.grey[800],
         builder: (context) {
           return const SettingsTab();
         });

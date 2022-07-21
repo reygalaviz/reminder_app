@@ -57,7 +57,7 @@ class ThemeModel extends ChangeNotifier {
   }
 
   static ThemeData get darkTheme {
-    setting.col = const Color.fromARGB(255, 88, 88, 88);
+    setting.col = Color.fromARGB(255, 48, 48, 48);
     return ThemeData(
       colorScheme: const ColorScheme.dark(),
       primaryColor: Colors.white,

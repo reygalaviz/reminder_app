@@ -440,14 +440,15 @@ class _EditNoteState extends State<EditNote> {
           TextButton(
               onPressed: () {
                 item.delete();
-                _items.remove(item.id);
+                //_items.remove(item.id);
                 setState(() {
                   items.remove(item.id);
+                  _items.remove(item.id);
                 });
 
                 item.delete();
                 uncompleted.remove(item);
-                _items.remove(item.id);
+
                 searchResults.clear();
                 final id = Localstore.instance.collection("notes").doc().id;
 
@@ -462,10 +463,8 @@ class _EditNoteState extends State<EditNote> {
                     done: item.done);
                 item1.save();
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Home2()),
-                );
+                _items.putIfAbsent(item1.id, () => item1);
+                Navigator.pop(context);
               },
               child: const Text(
                 'Save',
