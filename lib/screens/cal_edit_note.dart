@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/models/notif_data_store.dart';
-
+import 'package:reminder_app/screens/table_calendar.dart' as table;
 import 'package:reminder_app/screens/repeat_note.dart';
 
 enum ColorList { blue, green, red, yellow, white, cyan, purple, pink, orange }
@@ -448,7 +448,7 @@ class _EditNoteState extends State<EditNote> {
 
                 item.delete();
                 uncompleted.remove(item);
-
+                table.items1.remove(item.id);
                 searchResults.clear();
                 final id = Localstore.instance.collection("notes").doc().id;
 

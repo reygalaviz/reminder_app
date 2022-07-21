@@ -19,7 +19,7 @@ bool res = false;
 bool don = false;
 Color colPick = Colors.white;
 StreamSubscription<Map<String, dynamic>>? _subscription;
-
+final items1 = <String, store.Notes>{};
 // late final ValueNotifier<List<Notes>> _selectedEvents;
 //
 
@@ -32,7 +32,7 @@ class Table_Calendar extends StatefulWidget {
 
 class Table_CalendarState extends State<Table_Calendar> {
   final _db = Localstore.instance;
-  final _items = <String, store.Notes>{};
+
   String selectDate = "";
   String title = "";
   String body = "";
@@ -58,7 +58,7 @@ class Table_CalendarState extends State<Table_Calendar> {
       _subscription = _db.collection('notes').stream.listen((event) {
         setState(() {
           final item = store.Notes.fromMap(event);
-          _items.putIfAbsent(item.id, () => item);
+          items1.putIfAbsent(item.id, () => item);
           final parsDate = DateTime.parse(item.date);
           //parsDate.toUtc();
 
@@ -79,7 +79,7 @@ class Table_CalendarState extends State<Table_Calendar> {
     for (var value in done) {
       List<Notes> list = [];
 
-      _items.forEach((id, item) {
+      items1.forEach((id, item) {
         final parsDate = DateTime.parse(item.date);
         if (parsDate == value) {
           list.add(item);
@@ -298,10 +298,10 @@ class Table_CalendarState extends State<Table_Calendar> {
                       ),
                       Expanded(
                           child: ListView.builder(
-                              itemCount: _items.keys.length,
+                              itemCount: items1.keys.length,
                               itemBuilder: (context, index) {
-                                final key = _items.keys.elementAt(index);
-                                final item = _items[key]!;
+                                final key = items1.keys.elementAt(index);
+                                final item = items1[key]!;
                                 DateFormat format = DateFormat("yyyy-MM-dd");
                                 String day2 = format.format(_selectedDay);
                                 don = item.done;
@@ -342,7 +342,6 @@ class Table_CalendarState extends State<Table_Calendar> {
                                             ),
                                           ],
                                         ),
-
                                         child: ListTile(
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
@@ -385,33 +384,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                                                 value: item.done,
                                                 onChanged: (value) {})
                                           ]),
-
-                                          //  IconButton(
-                                          //     icon: const Icon(
-                                          //       FontAwesomeIcons.trash,
-                                          //       size: 20,
-                                          //       color: Colors.black,
-                                          //     ),
-                                          //     onPressed: () async {
-                                          //       await _showDialog(item);
-                                          //       if (res == true) {
-                                          //         setState(() {
-                                          //           _items.remove(item.id);
-                                          //           res = false;
-                                          //           items.remove(item.id);
-                                          //           item.delete();
-
-                                          //           Navigator.push(
-                                          //               context,
-                                          //               MaterialPageRoute(
-                                          //                   builder: (context) =>
-                                          //                       const home
-                                          //                           .Home2()));
-                                          //         });
-                                          //       }
-                                          //     })));
                                         ),
-
                                       ));
                                 } else {
                                   return Container();
