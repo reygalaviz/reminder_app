@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:reminder_app/main.dart';
-import 'package:reminder_app/models/color_data.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:provider/provider.dart';
 //import '../models/notes_operation.dart';

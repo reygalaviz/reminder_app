@@ -209,7 +209,7 @@ class _Home2State extends State<Home2> {
                   style: TextStyle(color: Theme.of(context).primaryColor),
                 ),
                 actions: [
-                  SearchNote(),
+                  const SearchNote(),
                   IconButton(
                       color: Theme.of(context).primaryColor,
                       onPressed: () => showSettingsModal(),

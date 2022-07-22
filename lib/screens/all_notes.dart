@@ -103,7 +103,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                   borderRadius: BorderRadius.circular(10)),
               child: Slidable(
                 endActionPane: ActionPane(
-                  motion: ScrollMotion(),
+                  motion: const ScrollMotion(),
                   children: [
                     SlidableAction(
                       onPressed: (context) async {
@@ -252,7 +252,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   }
 
   String texter({required store.Notes item2}) {
-    print(item2.data);
     if (item2.data == '') {
       return '${item2.date} ${item2.time}';
     } else {
