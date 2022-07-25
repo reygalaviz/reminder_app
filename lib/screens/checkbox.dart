@@ -60,90 +60,84 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
   @override
   Widget build(BuildContext context) {
     return Transform.scale(
-      scale: 1.5,
-      child: Checkbox(
-          fillColor: MaterialStateProperty.resolveWith<Color>((states) {
-            if (states.contains(MaterialState.disabled)) {
-              return Colors.green.withOpacity(.82);
-            }
-
-            return Colors.green;
-          }),
-          side: MaterialStateBorderSide.resolveWith(
-              (states) => const BorderSide(width: .5, color: Colors.black)),
-          checkColor: colPick,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5.0))),
-          value: val,
-          onChanged: (val) {
-            setState(() {
-              store.Notes item = all.items[widget.id]!;
-              if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
-                colPick = Color(int.parse(item.color));
-              }
-              if (selectDate == "") {
-                selectDate = item.date;
-              }
-              if (title == "") {
-                title = item.title;
-              }
-              if (body == "") {
-                body = item.data;
-              }
-              if (daySelect == "") {
-                daySelect = item.time!;
-              }
-              bool boop = item.done;
-              if (item.done == true) {
-                boop = false;
-
-                val = true;
-              } else {
-                boop = true;
-                val = false;
+        scale: 1.5,
+        child: Checkbox(
+            fillColor: MaterialStateProperty.resolveWith<Color>((states) {
+              if (states.contains(MaterialState.disabled)) {
+                return Colors.green.withOpacity(.82);
               }
 
-            
-            if (all.notifs[widget.id] != null) {
+              return Colors.green;
+            }),
+            side: MaterialStateBorderSide.resolveWith(
+                (states) => const BorderSide(width: .5, color: Colors.black)),
+            checkColor: colPick,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            value: val,
+            onChanged: (val) {
+              setState(() {
+                store.Notes item = all.items[widget.id]!;
+                if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
+                  colPick = Color(int.parse(item.color));
+                }
+                if (selectDate == "") {
+                  selectDate = item.date;
+                }
+                if (title == "") {
+                  title = item.title;
+                }
+                if (body == "") {
+                  body = item.data;
+                }
+                if (daySelect == "") {
+                  daySelect = item.time!;
+                }
+                bool boop = item.done;
+                if (item.done == true) {
+                  boop = false;
 
-              var tert = all.notifs[widget.id]!;
-              String ter = tert.id2;
-              all_notes.notifs.remove(tert.id);
-              tert.delete();
-              NotificationService().deleteNotif(ter);
+                  val = true;
+                } else {
+                  boop = true;
+                  val = false;
+                }
 
-            }
-            items1.remove(item.id);
-            all_notes.uncompleted.remove(item);
-            final id = Localstore.instance.collection("notes").doc().id;
-            all_notes.searchResults.remove(item);
-            all_notes.items.remove(item.id);
+                if (all.notifs[widget.id] != null) {
+                  var tert = all.notifs[widget.id]!;
+                  String ter = tert.id2;
+                  all_notes.notifs.remove(tert.id);
+                  tert.delete();
+                  NotificationService().deleteNotif(ter);
+                }
+                items1.remove(item.id);
+                all_notes.uncompleted.remove(item);
+                final id = Localstore.instance.collection("notes").doc().id;
+                all_notes.searchResults.remove(item);
+                all_notes.items.remove(item.id);
 
-            item.delete();
+                item.delete();
 
-            final item1 = store.Notes(
-                id: id,
-                title: title,
-                data: body,
-                date: selectDate,
-                time: daySelect,
-                priority: priority,
-                color: colPick.value.toString(),
-                done: boop);
-            item1.save();
+                final item1 = store.Notes(
+                    id: id,
+                    title: title,
+                    data: body,
+                    date: selectDate,
+                    time: daySelect,
+                    priority: priority,
+                    color: colPick.value.toString(),
+                    done: boop);
+                item1.save();
 
-            all_notes.searchResults.add(item1);
+                all_notes.searchResults.add(item1);
 
-            Notifs notif1 = Notifs(
-              id: id,
-              id2: count.channelCounter.toString(),
-            );
-            notif1.save();
-            
-            );
-          });
-        });
-
+                Notifs notif1 = Notifs(
+                  id: id,
+                  id2: count.channelCounter.toString(),
+                );
+                notif1.save();
+              });
+            }));
   }
 }
 
@@ -170,7 +164,6 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
   bool? val = true;
   @override
   Widget build(BuildContext context) {
-
     return Transform.scale(
       scale: 1.5,
       child: Checkbox(
@@ -180,7 +173,6 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
           fillColor: MaterialStateProperty.resolveWith<Color>((states) {
             if (states.contains(MaterialState.disabled)) {
               return Colors.green.withOpacity(.82);
-
             }
             return Colors.green;
           }),
