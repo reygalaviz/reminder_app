@@ -9,6 +9,7 @@ import 'all_notes.dart' as all_notes;
 import 'package:localstore/localstore.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:reminder_app/Screens/home.dart';
+import 'package:reminder_app/screens/table_calendar.dart';
 
 class CheckBoxNote extends StatefulWidget {
   const CheckBoxNote({Key? key, required this.id}) : super(key: key);
@@ -99,7 +100,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
               tert.delete();
               NotificationService().deleteNotif(ter);
             }
-
+            items1.remove(item.id);
             all_notes.uncompleted.remove(item);
             final id = Localstore.instance.collection("notes").doc().id;
             all_notes.searchResults.remove(item);

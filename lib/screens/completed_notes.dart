@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:reminder_app/screens/table_calendar.dart';
 import 'all_notes.dart' as all_notes;
 import 'package:reminder_app/controllers/notifications.dart';
 import '../models/note_data_store.dart';
@@ -65,7 +66,7 @@ class _CompletedNotesState extends State<CompletedNotes> {
                           setState(() {
                             all_notes.searchResults.remove(item);
                             completed.remove(item);
-
+                            items1.remove(item.id);
                             item.delete();
                             String not = all_notes.notifs[item.id]!.id2;
                             NotificationService().deleteNotif(not);
