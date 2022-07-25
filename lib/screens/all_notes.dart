@@ -37,7 +37,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   StreamSubscription<Map<String, dynamic>>? _subscription;
   String formattedDate = DateFormat.MMMMEEEEd().format(DateTime.now());
 
-  late TabController _tabController = TabController(length: 3, vsync: this);
+  late TabController _tabController = TabController(length: 2, vsync: this);
   @override
   void initState() {
     super.initState();
@@ -47,7 +47,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
       searchResults.clear();
     });
 
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     _db.collection('notes').get().then((value) {
       _subscription = _db.collection('notes').stream.listen((event) {
         setState(() {
@@ -103,7 +103,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                   borderRadius: BorderRadius.circular(10)),
               child: Slidable(
                 endActionPane: ActionPane(
-                  motion: ScrollMotion(),
+                  motion: const ScrollMotion(),
                   children: [
                     SlidableAction(
                       onPressed: (context) async {
@@ -222,7 +222,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                               text: 'ToDo',
                             ),
                             Tab(text: 'Completed'),
-                            Tab(text: 'Overdue'),
                           ]),
                     ),
                     SizedBox(
@@ -233,7 +232,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                           children: [
                             notesCard(),
                             const CompletedNotes(),
-                            Text('overdue'),
                           ],
                         )),
                     const SizedBox(
@@ -252,7 +250,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   }
 
   String texter({required store.Notes item2}) {
-    print(item2.data);
     if (item2.data == '') {
       return '${item2.date} ${item2.time}';
     } else {

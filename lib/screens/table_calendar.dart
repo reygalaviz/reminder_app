@@ -10,8 +10,6 @@ import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
 import 'home.dart' as home;
 import 'package:reminder_app/Screens/cal_edit_note.dart';
-import 'package:reminder_app/screens/checkbox.dart';
-
 import 'package:reminder_app/controllers/notifications.dart';
 
 String id = "No notes exist";
@@ -93,20 +91,6 @@ class Table_CalendarState extends State<Table_Calendar> {
     }
   }
 
-  // groupEvents(List<Notes> events) {
-  //   String dateString = "";
-  //   _groupedEvents = {};
-  //   DateTime date = DateTime.now();
-  //   for (var event in events) {
-  //     dateString = event.date;
-  //     date = DateTime.parse(dateString);
-  //     if (_groupedEvents?[date] == null) {
-  //       _groupedEvents?[date] = [];
-  //     } else {
-  //       _groupedEvents?[date]?.add(event);
-  //     }
-  //   }
-  // }
   @override
   void dispose() {
     super.dispose();
