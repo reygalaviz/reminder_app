@@ -351,22 +351,38 @@ class Table_CalendarState extends State<Table_Calendar> {
                                                         EditNote(id: id)));
                                           },
                                           trailing: Wrap(children: <Widget>[
-                                            Checkbox(
-                                                side: MaterialStateBorderSide
-                                                    .resolveWith((states) =>
-                                                        const BorderSide(
-                                                            width: 2.0,
-                                                            color:
-                                                                Colors.black)),
-                                                checkColor: Colors.green,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    10.0))),
-                                                value: item.done,
-                                                onChanged: (value) {})
+                                            Transform.scale(
+                                              scale: 1.5,
+                                              child: Checkbox(
+                                                  fillColor:
+                                                      MaterialStateProperty
+                                                          .resolveWith<Color>(
+                                                              (states) {
+                                                    if (states.contains(
+                                                        MaterialState
+                                                            .disabled)) {
+                                                      return Colors.green
+                                                          .withOpacity(.82);
+                                                    }
+                                                    return Colors.green;
+                                                  }),
+                                                  side: MaterialStateBorderSide
+                                                      .resolveWith((states) =>
+                                                          const BorderSide(
+                                                              width: .5,
+                                                              color: Colors
+                                                                  .black)),
+                                                  checkColor: colPick,
+                                                  shape:
+                                                      const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          5.0))),
+                                                  value: item.done,
+                                                  onChanged: (value) {}),
+                                            )
                                           ]),
                                         ),
                                       ));

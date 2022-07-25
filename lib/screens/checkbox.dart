@@ -59,46 +59,59 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
   bool? val = false;
   @override
   Widget build(BuildContext context) {
-    return Checkbox(
-        side: MaterialStateBorderSide.resolveWith(
-            (states) => const BorderSide(width: 2.0, color: Colors.black)),
-        checkColor: Colors.green,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0))),
-        value: val,
-        onChanged: (val) {
-          setState(() {
-            store.Notes item = all.items[widget.id]!;
-            if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
-              colPick = Color(int.parse(item.color));
+    return Transform.scale(
+      scale: 1.5,
+      child: Checkbox(
+          fillColor: MaterialStateProperty.resolveWith<Color>((states) {
+            if (states.contains(MaterialState.disabled)) {
+              return Colors.green.withOpacity(.82);
             }
-            if (selectDate == "") {
-              selectDate = item.date;
-            }
-            if (title == "") {
-              title = item.title;
-            }
-            if (body == "") {
-              body = item.data;
-            }
-            if (daySelect == "") {
-              daySelect = item.time!;
-            }
-            bool boop = item.done;
-            if (item.done == true) {
-              boop = false;
 
-              val = true;
-            } else {
-              boop = true;
-              val = false;
-            }
+            return Colors.green;
+          }),
+          side: MaterialStateBorderSide.resolveWith(
+              (states) => const BorderSide(width: .5, color: Colors.black)),
+          checkColor: colPick,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0))),
+          value: val,
+          onChanged: (val) {
+            setState(() {
+              store.Notes item = all.items[widget.id]!;
+              if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
+                colPick = Color(int.parse(item.color));
+              }
+              if (selectDate == "") {
+                selectDate = item.date;
+              }
+              if (title == "") {
+                title = item.title;
+              }
+              if (body == "") {
+                body = item.data;
+              }
+              if (daySelect == "") {
+                daySelect = item.time!;
+              }
+              bool boop = item.done;
+              if (item.done == true) {
+                boop = false;
+
+                val = true;
+              } else {
+                boop = true;
+                val = false;
+              }
+
+            
             if (all.notifs[widget.id] != null) {
+
               var tert = all.notifs[widget.id]!;
               String ter = tert.id2;
               all_notes.notifs.remove(tert.id);
               tert.delete();
               NotificationService().deleteNotif(ter);
+
             }
             items1.remove(item.id);
             all_notes.uncompleted.remove(item);
@@ -126,12 +139,11 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
               id2: count.channelCounter.toString(),
             );
             notif1.save();
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Home()),
+            
             );
           });
         });
+
   }
 }
 
@@ -158,92 +170,102 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
   bool? val = true;
   @override
   Widget build(BuildContext context) {
-    return Checkbox(
-        side: MaterialStateBorderSide.resolveWith(
-            (states) => const BorderSide(width: 2.0, color: Colors.black)),
-        checkColor: Colors.green,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0))),
-        value: val,
-        onChanged: (val) {
-          setState(() {
-            print(all.items);
-            store.Notes item = all.items[widget.id]!;
 
-            if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
-              colPick = Color(int.parse(item.color));
-            }
-            if (selectDate == "") {
-              selectDate = item.date;
-            }
-            if (title == "") {
-              title = item.title;
-            }
-            if (body == "") {
-              body = item.data;
-            }
-            if (daySelect == "") {
-              daySelect = item.time!;
-            }
-            bool boop = item.done;
-            if (item.done == true) {
-              boop = false;
+    return Transform.scale(
+      scale: 1.5,
+      child: Checkbox(
+          side: MaterialStateBorderSide.resolveWith(
+              (states) => const BorderSide(width: .5, color: Colors.black)),
+          checkColor: colPick,
+          fillColor: MaterialStateProperty.resolveWith<Color>((states) {
+            if (states.contains(MaterialState.disabled)) {
+              return Colors.green.withOpacity(.82);
 
-              val = true;
-            } else {
-              boop = true;
-              val = false;
             }
-            if (all.notifs[widget.id] != null) {
-              var tert = all.notifs[widget.id]!;
-              String ter = tert.id2;
-              all_notes.notifs.remove(tert.id);
-              tert.delete();
-              NotificationService().deleteNotif(ter);
-            }
-            all_notes.uncompleted.remove(item);
-            final id = Localstore.instance.collection("notes").doc().id;
-            all_notes.searchResults.remove(item);
-            all_notes.items.remove(item.id);
-            item.delete();
+            return Colors.green;
+          }),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0))),
+          value: val,
+          onChanged: (val) {
+            setState(() {
+              store.Notes item = all.items[widget.id]!;
 
-            final item1 = store.Notes(
-                id: id,
-                title: title,
-                data: body,
-                date: selectDate,
-                time: daySelect,
-                priority: priority,
-                color: colPick.value.toString(),
-                done: boop);
-            item1.save();
+              if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
+                colPick = Color(int.parse(item.color));
+              }
+              if (selectDate == "") {
+                selectDate = item.date;
+              }
+              if (title == "") {
+                title = item.title;
+              }
+              if (body == "") {
+                body = item.data;
+              }
+              if (daySelect == "") {
+                daySelect = item.time!;
+              }
+              bool boop = item.done;
+              if (item.done == true) {
+                boop = false;
 
-            all_notes.searchResults.add(item1);
-            Notifs notif1 = Notifs(
-              id: id,
-              id2: count.channelCounter.toString(),
-            );
-            notif1.save();
+                val = true;
+              } else {
+                boop = true;
+                val = false;
+              }
+              if (all.notifs[widget.id] != null) {
+                var tert = all.notifs[widget.id]!;
+                String ter = tert.id2;
+                all_notes.notifs.remove(tert.id);
+                tert.delete();
+                NotificationService().deleteNotif(ter);
+              }
+              all_notes.uncompleted.remove(item);
+              final id = Localstore.instance.collection("notes").doc().id;
+              all_notes.searchResults.remove(item);
+              all_notes.items.remove(item.id);
+              item.delete();
 
-            var scheduler = DateTime.parse(selectDate);
-            var timeT = DateTime.parse(daySelect);
-            DateTime scheduler2 = DateTime(scheduler.year, scheduler.month,
-                scheduler.day, timeT.hour, timeT.minute);
-            if (scheduler2.isAfter(DateTime.now())) {
-              NotificationService().displayScheduleNotif(
-                  body: body,
-                  channel: count.channelCounter,
+              final item1 = store.Notes(
+                  id: id,
                   title: title,
-                  date: scheduler2);
-            } else {
-              NotificationService().displayNotification(
-                  body: body, channel: count.channelCounter, title: title);
-            }
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Home()),
-            );
-          });
-        });
+                  data: body,
+                  date: selectDate,
+                  time: daySelect,
+                  priority: priority,
+                  color: colPick.value.toString(),
+                  done: boop);
+              item1.save();
+
+              all_notes.searchResults.add(item1);
+              Notifs notif1 = Notifs(
+                id: id,
+                id2: count.channelCounter.toString(),
+              );
+              notif1.save();
+
+              var scheduler = DateTime.parse(selectDate);
+              var timeT = DateTime.parse(daySelect);
+              DateTime scheduler2 = DateTime(scheduler.year, scheduler.month,
+                  scheduler.day, timeT.hour, timeT.minute);
+              if (scheduler2.isAfter(DateTime.now())) {
+                NotificationService().displayScheduleNotif(
+                    body: body,
+                    channel: count.channelCounter,
+                    title: title,
+                    date: scheduler2);
+              } else {
+                NotificationService().displayNotification(
+                    body: body, channel: count.channelCounter, title: title);
+              }
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Home()),
+              );
+            });
+          }),
+    );
   }
 }
