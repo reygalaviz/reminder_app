@@ -102,31 +102,8 @@ class _CompletedNotesState extends State<CompletedNotes> {
                         MaterialPageRoute(
                             builder: (context) => EditNote(id: id)));
                   },
-                  trailing: Wrap(children: <Widget>[
-                    IconButton(
-                      icon: const Icon(
-                        FontAwesomeIcons.trash,
-                        size: 20,
-                        color: Colors.black,
-                      ),
-                      onPressed: () async {
-                        await _showDialog(item);
-                        if (res == true) {
-                          setState(() {
-                            all_notes.searchResults.remove(item);
-                            completed.remove(item);
-
-                            item.delete();
-                            String not = all_notes.notifs[item.id]!.id2;
-                            NotificationService().deleteNotif(not);
-                            all_notes.items.remove(item.id);
-                            res = false;
-                          });
-                        }
-                      },
-                    ),
-                    CheckBoxNote2(id: item.id)
-                  ]),
+                  trailing:
+                      Wrap(children: <Widget>[CheckBoxNote2(id: item.id)]),
                 ),
               ),
             );
