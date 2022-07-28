@@ -21,6 +21,8 @@ Color col8 = const Color.fromARGB(255, 116, 154, 214);
 
 enum ColorList { col1, col2, col3, col4, white, col5, col6, col7, col8 }
 
+enum select { oneTime, daily, weekly, monthly, yearly }
+
 Color selectColor = const Color.fromARGB(255, 180, 175, 175);
 
 class AddNote extends StatefulWidget {
@@ -393,13 +395,40 @@ class _AddNoteState extends State<AddNote> {
   }
 
   Widget eventRepeat() {
-    return IconButton(
-        onPressed: () {},
-        icon: const Icon(
-          FontAwesomeIcons.repeat,
-          color: Colors.grey,
-          size: 20,
-        ));
+    return PopupMenuButton<select>(
+        icon: Material(
+          // type: MaterialType.transparency,
+          child: Ink(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey, width: 1.5),
+              color: const Color.fromARGB(255, 95, 100, 103),
+              shape: BoxShape.circle,
+            ),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(10.0),
+              radius: 100.0,
+            ),
+          ),
+        ),
+        onSelected: (value) {
+          if (value == select.daily) {
+          } else if (value == select.monthly) {
+          } else if (value == select.weekly) {
+          } else if (value == select.yearly) {
+          } else if (value == select.oneTime) {}
+        },
+        itemBuilder: (BuildContext context) => <PopupMenuEntry<select>>[
+              const PopupMenuItem<select>(
+                  value: select.oneTime, child: Text("One-Time")),
+              const PopupMenuItem<select>(
+                  value: select.daily, child: Text("Daily")),
+              const PopupMenuItem<select>(
+                  value: select.weekly, child: Text("Weekly")),
+              const PopupMenuItem<select>(
+                  value: select.monthly, child: Text("Monthly")),
+              const PopupMenuItem<select>(
+                  value: select.yearly, child: Text("Yearly")),
+            ]);
   }
 
   @override
@@ -453,26 +482,7 @@ class _AddNoteState extends State<AddNote> {
                   const SizedBox(
                     width: 10,
                   ),
-                  Expanded(
-                      child:
-                          //IconButton(
-                          //   onPressed: eventColorTest,
-                          //   icon: Material(
-                          //     // type: MaterialType.transparency,
-                          //     child: Ink(
-                          //       decoration: BoxDecoration(
-                          //         border: Border.all(color: Colors.grey, width: 1.5),
-                          //         color: selectColor,
-                          //         shape: BoxShape.circle,
-                          //       ),
-                          //       child: InkWell(
-                          //         borderRadius: BorderRadius.circular(10.0),
-                          //         radius: 100.0,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // )),
-                          eventColor()),
+                  Expanded(child: eventColor()),
                   const SizedBox(
                     width: 10,
                   ),
