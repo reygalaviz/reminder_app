@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -384,13 +383,14 @@ class _AddNoteState extends State<AddNote> {
               reeeeee.save();
               // for (var i = 1; i <= 365; i++) {
               Provider.of<NotesOperation>(context, listen: false).addNewNote(
-                  id2,
-                  title,
-                  body,
-                  selectDate,
-                  daySelect,
-                  priority,
-                  colPick.value.toString());
+                id2,
+                title,
+                body,
+                selectDate,
+                daySelect,
+                priority,
+                colPick.value.toString(),
+              );
 
               //   id2 = Localstore.instance.collection("notes").doc().id;
               //   scheduler = DateTime(
