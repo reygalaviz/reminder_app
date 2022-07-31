@@ -268,6 +268,9 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
           title: const Text('Are you sure you want to delete?'),
           content: SingleChildScrollView(
             child: ListBody(
@@ -278,7 +281,8 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child: Text('Cancel',
+                  style: TextStyle(color: Theme.of(context).primaryColor)),
               onPressed: () {
                 Navigator.of(context).pop();
                 res = false;
@@ -290,7 +294,10 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
                   Navigator.of(context).pop();
                 },
-                child: const Text("Delete"))
+                child: const Text(
+                  "Delete",
+                  style: TextStyle(color: Colors.red),
+                ))
           ],
         );
       },

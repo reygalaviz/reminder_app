@@ -476,11 +476,12 @@ class _AddNoteState extends State<AddNote> {
     return LayoutBuilder(
       builder: (context, constraints) => SingleChildScrollView(
         reverse: true,
-        child: SizedBox(
-          height: constraints.maxHeight * .63,
-          child: Form(
-            child: Padding(
-              padding: EdgeInsets.all(constraints.maxHeight * .03),
+        child: Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: Padding(
+            padding: EdgeInsets.all(constraints.maxWidth * .04),
+            child: Form(
               child: Column(children: [
                 TextFormField(
                   maxLines: 2,
