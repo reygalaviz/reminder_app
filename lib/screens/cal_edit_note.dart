@@ -417,7 +417,7 @@ class _EditNoteState extends State<EditNote> {
       body = item.data;
     }
     if (daySelect == "") {
-      daySelect = item.time!;
+      daySelect = item.time;
     }
 
     //DateTime? dateT = DateTime.now();

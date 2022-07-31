@@ -11,6 +11,7 @@ import 'package:localstore/localstore.dart';
 import 'home.dart' as home;
 import 'package:reminder_app/Screens/cal_edit_note.dart';
 import 'package:reminder_app/controllers/notifications.dart';
+import 'package:reminder_app/models/repeat_store.dart';
 
 String id = "No notes exist";
 bool res = false;
@@ -30,7 +31,8 @@ class Table_Calendar extends StatefulWidget {
 
 class Table_CalendarState extends State<Table_Calendar> {
   final _db = Localstore.instance;
-
+  DateFormat format2 = DateFormat("yyyy-MM-dd");
+  final items3 = <String, Repeat>{};
   String selectDate = "";
   String title = "";
   String body = "";
@@ -66,6 +68,13 @@ class Table_CalendarState extends State<Table_Calendar> {
         });
       });
     });
+    _db.collection('repeat').get().then((value) =>
+        _subscription = _db.collection('repeat').stream.listen((event) {
+          setState(() {
+            final item = Repeat.fromMap(event);
+            items3.putIfAbsent(item.id, () => item);
+          });
+        }));
     // _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
 
@@ -82,7 +91,29 @@ class Table_CalendarState extends State<Table_Calendar> {
         if (parsDate == value) {
           list.add(item);
         }
+        if (items3.containsKey(id)) {
+          Repeat? rex = items3[id];
+          if (rex?.option == "Daily") {
+            for (var i = 1; i <= 365; i++) {
+              Notes note = Notes(
+                  id: id,
+                  title: title,
+                  data: item.data,
+                  date: item.date,
+                  time: item.time,
+                  priority: item.priority,
+                  color: item.color,
+                  done: item.done);
+              DateTime g = DateTime.parse(item.date);
+
+              DateTime h = DateTime(g.year, g.month, g.day + 1);
+              selectDate = format2.format(h);
+              list.add(note);
+            }
+          }
+        }
       });
+
       // print(list);
       setState(() {
         _events.putIfAbsent(value, () => list);

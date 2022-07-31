@@ -9,6 +9,7 @@ import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/main.dart' as count;
 import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/models/notif_data_store.dart';
+import 'package:reminder_app/models/repeat_store.dart';
 
 Color col1 = const Color.fromARGB(255, 171, 222, 230);
 Color col2 = const Color.fromARGB(255, 203, 170, 203);
@@ -21,7 +22,7 @@ Color col8 = const Color.fromARGB(255, 116, 154, 214);
 
 enum ColorList { col1, col2, col3, col4, white, col5, col6, col7, col8 }
 
-enum select { oneTime, daily, weekly, monthly, yearly }
+enum Select { oneTime, daily, weekly, monthly, yearly }
 
 Color selectColor = const Color.fromARGB(255, 180, 175, 175);
 
@@ -37,32 +38,18 @@ class _AddNoteState extends State<AddNote> {
   final dCont = TextEditingController();
   final cCont = TextEditingController();
   Color colPick = Colors.white;
-
+  String repeat = "One-Time";
   String title = '';
   String body = '';
   String selectDate = "";
   String daySelect = "";
+
   late DateTime scheduler = DateTime.now();
   late DateTime scheduler2 = DateTime.now();
   DismissDirection direct = DismissDirection.endToStart;
   var generator = Random(5);
   final id = Localstore.instance.collection("notes").doc().id;
   String priority = 'high';
-
-  // void _addEvent() async {
-  //   Notes item = Notes(
-  //       id: id,
-  //       title: title,
-  //       data: body,
-  //       date: selectDate,
-  //       time: daySelect,
-  //       priority: priority,
-  //       color: colPick.value.toString());
-
-  //   item.save();
-  //   count.channelCounter++;
-  // }
-
   Widget eventColorTest() {
     return Row(
       children: [
@@ -355,36 +342,73 @@ class _AddNoteState extends State<AddNote> {
       backgroundColor: Colors.red,
       child: IconButton(
           onPressed: () {
-            Notifs notif = Notifs(
-              id: id,
-              id2: count.channelCounter.toString(),
-            );
-            notif.save();
+            if (repeat == "One-Time") {
+              Notifs notif = Notifs(
+                id: id,
+                id2: count.channelCounter.toString(),
+              );
+              notif.save();
 
-            Provider.of<NotesOperation>(context, listen: false).addNewNote(
-                id,
-                title,
-                body,
-                selectDate,
-                daySelect,
-                priority,
-                colPick.value.toString());
-            if (count.notifChoice == true) {
-              if (scheduler2.isAfter(DateTime.now())) {
-                NotificationService().displayScheduleNotif(
+              Provider.of<NotesOperation>(context, listen: false).addNewNote(
+                  id,
+                  title,
+                  body,
+                  selectDate,
+                  daySelect,
+                  priority,
+                  colPick.value.toString());
+              if (count.notifChoice == true) {
+                if (scheduler2.isAfter(DateTime.now())) {
+                  NotificationService().displayScheduleNotif(
+                      body: body,
+                      channel: count.channelCounter,
+                      title: title,
+                      date: scheduler2);
+                } else {
+                  NotificationService().displayNotification(
+                      body: body, channel: count.channelCounter, title: title);
+                }
+              }
+
+              selectColor = const Color.fromARGB(255, 180, 175, 175);
+
+              Navigator.pop(context);
+            } else if (repeat == "Daily") {
+              String id2 = Localstore.instance.collection("notes").doc().id;
+              Notifs notif = Notifs(
+                id: id2,
+                id2: count.channelCounter.toString(),
+              );
+              notif.save();
+              Repeat reeeeee = Repeat(id: id2, option: "Daily");
+              reeeeee.save();
+              // for (var i = 1; i <= 365; i++) {
+              Provider.of<NotesOperation>(context, listen: false).addNewNote(
+                  id2,
+                  title,
+                  body,
+                  selectDate,
+                  daySelect,
+                  priority,
+                  colPick.value.toString());
+
+              //   id2 = Localstore.instance.collection("notes").doc().id;
+              //   scheduler = DateTime(
+              //       scheduler.year, scheduler.month, scheduler.day + 1);
+              //   selectDate = format.format(scheduler);
+              // }
+              if (count.notifChoice == true) {
+                NotificationService().scheduleNotificationDaily(
                     body: body,
                     channel: count.channelCounter,
                     title: title,
                     date: scheduler2);
-              } else {
-                NotificationService().displayNotification(
-                    body: body, channel: count.channelCounter, title: title);
               }
+
+              selectColor = const Color.fromARGB(255, 180, 175, 175);
+
+              Navigator.pop(context);
             }
-
-            selectColor = const Color.fromARGB(255, 180, 175, 175);
-
-            Navigator.pop(context);
           },
           icon: const Icon(
             FontAwesomeIcons.arrowUp,
@@ -395,39 +419,48 @@ class _AddNoteState extends State<AddNote> {
   }
 
   Widget eventRepeat() {
-    return PopupMenuButton<select>(
-        icon: Material(
-          // type: MaterialType.transparency,
-          child: Ink(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey, width: 1.5),
-              color: const Color.fromARGB(255, 95, 100, 103),
-              shape: BoxShape.circle,
-            ),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(10.0),
-              radius: 100.0,
-            ),
-          ),
-        ),
+    return PopupMenuButton<Select>(
+        icon: Text(repeat),
+
+        //Material(
+
+        // type: MaterialType.transparency,
+        // child: Ink(
+        //   decoration: BoxDecoration(
+        //     border: Border.all(color: Colors.grey, width: 1.5),
+        //     color: const Color.fromARGB(255, 95, 100, 103),
+        //     shape: BoxShape.circle,
+        //   ),
+        //   child: InkWell(
+        //     borderRadius: BorderRadius.circular(10.0),
+        //     radius: 100.0,
+        //   ),
+        // ),
+
         onSelected: (value) {
-          if (value == select.daily) {
-          } else if (value == select.monthly) {
-          } else if (value == select.weekly) {
-          } else if (value == select.yearly) {
-          } else if (value == select.oneTime) {}
+          if (value == Select.daily) {
+            repeat = "Daily";
+          } else if (value == Select.monthly) {
+            repeat = "Monthly";
+          } else if (value == Select.weekly) {
+            repeat = "Weekly";
+          } else if (value == Select.yearly) {
+            repeat = "Yearly";
+          } else if (value == Select.oneTime) {
+            repeat = "One-Time";
+          }
         },
-        itemBuilder: (BuildContext context) => <PopupMenuEntry<select>>[
-              const PopupMenuItem<select>(
-                  value: select.oneTime, child: Text("One-Time")),
-              const PopupMenuItem<select>(
-                  value: select.daily, child: Text("Daily")),
-              const PopupMenuItem<select>(
-                  value: select.weekly, child: Text("Weekly")),
-              const PopupMenuItem<select>(
-                  value: select.monthly, child: Text("Monthly")),
-              const PopupMenuItem<select>(
-                  value: select.yearly, child: Text("Yearly")),
+        itemBuilder: (BuildContext context) => <PopupMenuEntry<Select>>[
+              const PopupMenuItem<Select>(
+                  value: Select.oneTime, child: Text("One-Time")),
+              const PopupMenuItem<Select>(
+                  value: Select.daily, child: Text("Daily")),
+              const PopupMenuItem<Select>(
+                  value: Select.weekly, child: Text("Weekly")),
+              const PopupMenuItem<Select>(
+                  value: Select.monthly, child: Text("Monthly")),
+              const PopupMenuItem<Select>(
+                  value: Select.yearly, child: Text("Yearly")),
             ]);
   }
 
@@ -486,9 +519,10 @@ class _AddNoteState extends State<AddNote> {
                   const SizedBox(
                     width: 10,
                   ),
-                  Expanded(child: eventRepeat()),
+                  // Expanded(child:
+                  SizedBox(width: 80, child: eventRepeat()),
                   const SizedBox(
-                    width: 200,
+                    width: 150,
                   ),
                   Expanded(child: eventSub()),
                 ]),

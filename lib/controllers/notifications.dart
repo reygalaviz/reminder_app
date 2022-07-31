@@ -98,8 +98,8 @@ class NotificationService {
         "Notif memo", //Required for Android 8.0 or after
         channelDescription:
             "This is for notifications created by the app", //Required for Android 8.0 or after
-        importance: Importance.max,
-        priority: Priority.max);
+        importance: Importance.high,
+        priority: Priority.high);
     var iOSPlatformChannelSpecifics = const IOSNotificationDetails(
       presentAlert:
           true, // Present an alert when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
@@ -132,8 +132,8 @@ class NotificationService {
         "Notif memo", //Required for Android 8.0 or after
         channelDescription:
             "This is for notifications created by the app", //Required for Android 8.0 or after
-        importance: Importance.min,
-        priority: Priority.low);
+        importance: Importance.high,
+        priority: Priority.high);
     var iOSPlatformChannelSpecifics = const IOSNotificationDetails(
       presentAlert:
           false, // Present an alert when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
@@ -157,6 +157,54 @@ class NotificationService {
       platformChannelSpecifics,
       payload: body,
     );
+  }
+
+  void scheduleNotificationDaily(
+      {required String body,
+      required int channel,
+      required String title,
+      required DateTime date}) async {
+    tz.initializeTimeZones();
+    final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(timeZoneName));
+    tz.TZDateTime time = tz.TZDateTime.from(
+      date,
+      tz.local,
+    );
+
+    if (time.isBefore(DateTime.now())) {
+      time = time.add(const Duration(days: 1));
+    }
+
+    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+        "Notif memo", //Required for Android 8.0 or after
+        "Notif memo", //Required for Android 8.0 or after
+        channelDescription:
+            "This is for notifications created by the app", //Required for Android 8.0 or after
+        importance: Importance.high,
+        priority: Priority.high);
+    var iOSPlatformChannelSpecifics = const IOSNotificationDetails(
+      presentAlert:
+          true, // Present an alert when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
+      presentBadge:
+          true, // Present the badge number when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
+      presentSound:
+          true, // Play a sound when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
+      sound: null, // Specifics the file path to play (only from iOS 10 onwards)
+      badgeNumber: 15, // The application's icon badge number
+      //attachments: List<IOSNotificationAttachment>?, (only from iOS 10 onwards)
+      subtitle: "Your note", //Secondary description  (only from iOS 10 onwards)
+      //threadIdentifier: String? (only from iOS 10 onwards)
+    );
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+    await notifsPlugin.zonedSchedule(
+        channel, title, body, time, platformChannelSpecifics,
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time);
   }
 
   void deleteNotif(String id) async {

@@ -91,7 +91,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                   body = item.data;
                 }
                 if (daySelect == "") {
-                  daySelect = item.time!;
+                  daySelect = item.time;
                 }
                 bool boop = item.done;
                 if (item.done == true) {
@@ -196,7 +196,7 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
                 body = item.data;
               }
               if (daySelect == "") {
-                daySelect = item.time!;
+                daySelect = item.time;
               }
               bool boop = item.done;
               if (item.done == true) {

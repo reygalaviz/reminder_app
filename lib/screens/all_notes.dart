@@ -78,12 +78,17 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
   Widget notesCard() {
     uncompleted.clear();
+    List<String> comp = <String>[];
     items.forEach((key, value) {
       if (!searchResults.contains(value)) {
         searchResults.add(value);
       }
       if (value.done == false) {
-        uncompleted.add(value);
+        if (!comp.contains(value.title)) {
+          comp.add(value.title);
+
+          uncompleted.add(value);
+        }
       }
     });
     return SizedBox(
