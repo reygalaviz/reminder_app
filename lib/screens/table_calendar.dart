@@ -11,6 +11,7 @@ import 'package:localstore/localstore.dart';
 import 'home.dart' as home;
 import 'package:reminder_app/Screens/cal_edit_note.dart';
 import 'package:reminder_app/controllers/notifications.dart';
+import 'package:reminder_app/screens/checkbox.dart';
 
 String id = "No notes exist";
 bool res = false;
@@ -127,6 +128,9 @@ class Table_CalendarState extends State<Table_Calendar> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
           title: const Text('Are you sure you want to delete?'),
           content: SingleChildScrollView(
             child: ListBody(
@@ -137,7 +141,8 @@ class Table_CalendarState extends State<Table_Calendar> {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child: Text('Cancel',
+                  style: TextStyle(color: Theme.of(context).primaryColor)),
               onPressed: () {
                 Navigator.of(context).pop();
                 res = false;
@@ -148,7 +153,8 @@ class Table_CalendarState extends State<Table_Calendar> {
                   res = true;
                   Navigator.pop(context);
                 },
-                child: const Text("Delete"))
+                child:
+                    const Text("Delete", style: TextStyle(color: Colors.red)))
           ],
         );
       },
@@ -351,38 +357,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                                                         EditNote(id: id)));
                                           },
                                           trailing: Wrap(children: <Widget>[
-                                            Transform.scale(
-                                              scale: 1.5,
-                                              child: Checkbox(
-                                                  fillColor:
-                                                      MaterialStateProperty
-                                                          .resolveWith<Color>(
-                                                              (states) {
-                                                    if (states.contains(
-                                                        MaterialState
-                                                            .disabled)) {
-                                                      return Colors.green
-                                                          .withOpacity(.82);
-                                                    }
-                                                    return Colors.green;
-                                                  }),
-                                                  side: MaterialStateBorderSide
-                                                      .resolveWith((states) =>
-                                                          const BorderSide(
-                                                              width: .5,
-                                                              color: Colors
-                                                                  .black)),
-                                                  checkColor: colPick,
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          5.0))),
-                                                  value: item.done,
-                                                  onChanged: (value) {}),
-                                            )
+                                            CheckBoxNote(id: item.id)
                                           ]),
                                         ),
                                       ));
