@@ -483,7 +483,7 @@ class _EditNoteState extends State<EditNote> {
       body = item.data;
     }
     if (daySelect == "") {
-      daySelect = item.time!;
+      daySelect = item.time;
     }
 
     //DateTime? dateT = DateTime.now();
@@ -510,7 +510,7 @@ class _EditNoteState extends State<EditNote> {
                 comp.completed.remove(item);
                 allNotes.searchResults.remove(item);
                 allNotes.items.remove(item.id);
-                table.items1.remove(item.id);
+                table.items1.remove(item);
                 final id = Localstore.instance.collection("notes").doc().id;
 
                 final item2 = store.Notes(

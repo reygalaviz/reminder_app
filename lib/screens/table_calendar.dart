@@ -12,13 +12,16 @@ import 'home.dart' as home;
 import 'package:reminder_app/Screens/cal_edit_note.dart';
 import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/screens/checkbox.dart';
+import 'package:reminder_app/models/repeat_store.dart';
+
 
 String id = "No notes exist";
 bool res = false;
 bool don = false;
 Color colPick = Colors.white;
 StreamSubscription<Map<String, dynamic>>? _subscription;
-final items1 = <String, store.Notes>{};
+//final items1 = <String, store.Notes>{};
+List<Notes> items1 = [];
 // late final ValueNotifier<List<Notes>> _selectedEvents;
 //
 
@@ -31,7 +34,8 @@ class Table_Calendar extends StatefulWidget {
 
 class Table_CalendarState extends State<Table_Calendar> {
   final _db = Localstore.instance;
-
+  DateFormat format2 = DateFormat("yyyy-MM-dd");
+  final items3 = <String, Repeat>{};
   String selectDate = "";
   String title = "";
   String body = "";
@@ -50,23 +54,58 @@ class Table_CalendarState extends State<Table_Calendar> {
   @override
   void initState() {
     super.initState();
+
     _selectedDay = DateTime.now();
     _selectedEvents = [];
-
+    _db.collection('repeat').get().then((value) =>
+        _subscription = _db.collection('repeat').stream.listen((event) {
+          setState(() {
+            final item = Repeat.fromMap(event);
+            items3.putIfAbsent(item.id, () => item);
+          });
+        }));
+    items1.clear();
     _db.collection('notes').get().then((value) {
       _subscription = _db.collection('notes').stream.listen((event) {
         setState(() {
           final item = store.Notes.fromMap(event);
-          items1.putIfAbsent(item.id, () => item);
+
+          //items1.putIfAbsent(item.id, () => item);
+          if (!items1.contains(item)) {
+            items1.add(item);
+          }
           final parsDate = DateTime.parse(item.date);
           //parsDate.toUtc();
 
           done.add(parsDate);
+          if (items3.containsKey(item.id)) {
+            Repeat? rex = items3[item.id];
+            if (rex?.option == "Daily") {
+              var selectDate2 = item.date;
+              for (var i = 1; i <= 100; i++) {
+                DateTime g = DateTime.parse(selectDate2);
 
-          //so we have a parsdate map to hold every note occuring during that day
+                DateTime h = DateTime(g.year, g.month, g.day + 1);
+                selectDate2 = format2.format(h);
+                Notes note = Notes(
+                    id: id,
+                    title: item.title,
+                    data: item.data,
+                    date: selectDate2,
+                    time: item.time,
+                    priority: item.priority,
+                    color: item.color,
+                    done: item.done);
+                items1.add(note);
+                done.add(h);
+              }
+            }
+            //so we have a parsdate map to hold every note occuring during that day
+          }
         });
       });
     });
+
     // _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
 
@@ -78,16 +117,15 @@ class Table_CalendarState extends State<Table_Calendar> {
     for (var value in done) {
       List<Notes> list = [];
 
-      items1.forEach((id, item) {
-        final parsDate = DateTime.parse(item.date);
+      for (var ite in items1) {
+        final parsDate = DateTime.parse(ite.date);
         if (parsDate == value) {
-          list.add(item);
+          list.add(ite);
         }
-      });
-      // print(list);
+      }
+
       setState(() {
         _events.putIfAbsent(value, () => list);
-        //print(_events[value]);
       });
     }
   }
@@ -98,16 +136,13 @@ class Table_CalendarState extends State<Table_Calendar> {
   }
 
   List<Notes> _getEventsForDay(DateTime day) {
-    //print(day);
     DateFormat format = DateFormat("yyyy-MM-dd");
     String day2 = format.format(day);
 
     List<Notes>? list2;
-    //print(_events[DateTime.parse(day2)]);
-    list2 = _events[DateTime.parse(day2)] ?? [];
-    //print(_events.entries);
 
-    //list2 as List<Notes>;
+    list2 = _events[DateTime.parse(day2)] ?? [];
+
     return list2;
   }
 
@@ -118,7 +153,6 @@ class Table_CalendarState extends State<Table_Calendar> {
         _selectedDay = selectedDay;
         _selectedEvents = _getEventsForDay(selectedDay);
       });
-      // _events.value = _getEventsForDay(selectedDay);
     }
   }
 
@@ -288,10 +322,10 @@ class Table_CalendarState extends State<Table_Calendar> {
                       ),
                       Expanded(
                           child: ListView.builder(
-                              itemCount: items1.keys.length,
+                              itemCount: items1.length,
                               itemBuilder: (context, index) {
-                                final key = items1.keys.elementAt(index);
-                                final item = items1[key]!;
+                                final item = items1.elementAt(index);
+                                // final item = items1[key]!;
                                 DateFormat format = DateFormat("yyyy-MM-dd");
                                 String day2 = format.format(_selectedDay);
                                 don = item.done;

@@ -91,7 +91,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                   body = item.data;
                 }
                 if (daySelect == "") {
-                  daySelect = item.time!;
+                  daySelect = item.time;
                 }
                 bool boop = item.done;
                 if (item.done == true) {
@@ -110,7 +110,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                   tert.delete();
                   NotificationService().deleteNotif(ter);
                 }
-                items1.remove(item.id);
+                items1.remove(item);
                 all_notes.uncompleted.remove(item);
                 final id = Localstore.instance.collection("notes").doc().id;
                 all_notes.searchResults.remove(item);
@@ -196,7 +196,7 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
                 body = item.data;
               }
               if (daySelect == "") {
-                daySelect = item.time!;
+                daySelect = item.time;
               }
               bool boop = item.done;
               if (item.done == true) {

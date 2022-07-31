@@ -66,7 +66,7 @@ class _CompletedNotesState extends State<CompletedNotes> {
                           setState(() {
                             all_notes.searchResults.remove(item);
                             completed.remove(item);
-                            items1.remove(item.id);
+                            items1.remove(item);
                             item.delete();
                             String not = all_notes.notifs[item.id]!.id2;
                             NotificationService().deleteNotif(not);
