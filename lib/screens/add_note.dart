@@ -477,7 +477,7 @@ class _AddNoteState extends State<AddNote> {
       builder: (context, constraints) => SingleChildScrollView(
         reverse: true,
         child: SizedBox(
-          height: constraints.maxHeight * .60,
+          height: constraints.maxHeight * .63,
           child: Form(
             child: Padding(
               padding: EdgeInsets.all(constraints.maxHeight * .03),
