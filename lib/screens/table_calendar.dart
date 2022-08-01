@@ -74,8 +74,10 @@ class Table_CalendarState extends State<Table_Calendar> {
           }
           final parsDate = DateTime.parse(item.date);
           //parsDate.toUtc();
+          if (done.contains(parsDate)) {
+            done.add(parsDate);
+          }
 
-          done.add(parsDate);
           if (items3.containsKey(item.id)) {
             Repeat? rex = items3[item.id];
             if (rex?.option == "Daily") {
@@ -95,7 +97,9 @@ class Table_CalendarState extends State<Table_Calendar> {
                     color: item.color,
                     done: item.done);
                 items1.add(note);
-                done.add(h);
+                if (!done.contains(h)) {
+                  done.add(h);
+                }
               }
             }
             //so we have a parsdate map to hold every note occuring during that day
@@ -290,6 +294,10 @@ class Table_CalendarState extends State<Table_Calendar> {
           color: Colors.white30,
         ),
         onDismissed: (direct) {
+          setState(() {
+            items1.clear();
+          });
+
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const home.Home()),

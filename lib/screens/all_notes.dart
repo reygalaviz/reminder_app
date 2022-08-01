@@ -12,6 +12,7 @@ import '../models/note_data_store.dart';
 import 'home.dart' as home;
 import 'package:reminder_app/models/notif_data_store.dart';
 import 'package:reminder_app/controllers/notifications.dart';
+import 'table_calendar.dart';
 
 int initNumber = 0;
 final items = <String, store.Notes>{};
@@ -174,6 +175,10 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
           color: Colors.white30,
         ),
         onDismissed: (direct) {
+          setState(() {
+            items1.clear();
+          });
+
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const home.Home2()),
