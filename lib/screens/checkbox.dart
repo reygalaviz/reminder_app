@@ -218,6 +218,7 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
               final id = Localstore.instance.collection("notes").doc().id;
               all_notes.searchResults.remove(item);
               all_notes.items.remove(item.id);
+              items1.remove(item);
               item.delete();
 
               final item1 = store.Notes(
