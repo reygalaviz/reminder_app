@@ -387,7 +387,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                                                 color: Colors.black),
                                           ),
                                           subtitle: Text(
-                                            '${item.time}',
+                                            item.time,
                                             style: const TextStyle(
                                                 color: Colors.black),
                                           ),
