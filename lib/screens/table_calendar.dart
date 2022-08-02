@@ -14,7 +14,6 @@ import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/screens/checkbox.dart';
 import 'package:reminder_app/models/repeat_store.dart';
 
-
 String id = "No notes exist";
 bool res = false;
 bool don = false;
@@ -35,6 +34,7 @@ class Table_Calendar extends StatefulWidget {
 class Table_CalendarState extends State<Table_Calendar> {
   final _db = Localstore.instance;
   DateFormat format2 = DateFormat("yyyy-MM-dd");
+
   final items3 = <String, Repeat>{};
   String selectDate = "";
   String title = "";
@@ -337,6 +337,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                                 DateFormat format = DateFormat("yyyy-MM-dd");
                                 String day2 = format.format(_selectedDay);
                                 don = item.done;
+                                String id5 = item.id;
                                 if (item.date == day2 && item.done == false) {
                                   return Card(
                                       shape: RoundedRectangleBorder(
@@ -352,6 +353,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                                                 if (res == true) {
                                                   setState(() {
                                                     searchResults.remove(item);
+                                                    print(item.id);
 
                                                     uncompleted.remove(item);
                                                     item.delete();
@@ -391,15 +393,16 @@ class Table_CalendarState extends State<Table_Calendar> {
                                           ),
                                           tileColor: invisColor(item),
                                           onTap: () {
-                                            id = item.id;
+                                            print(id5);
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        EditNote(id: id)));
+                                                        EditNote(id: id5)));
+                                            items1.clear();
                                           },
                                           trailing: Wrap(children: <Widget>[
-                                            CheckBoxNote(id: item.id)
+                                            CheckBoxNote(id: id5)
                                           ]),
                                         ),
                                       ));
