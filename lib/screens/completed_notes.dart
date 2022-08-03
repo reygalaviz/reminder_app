@@ -75,7 +75,9 @@ class _CompletedNotesState extends State<CompletedNotes> {
                           });
                         }
                       },
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(10.0),
+                          bottomRight: Radius.circular(10.0)),
                       backgroundColor: Colors.red,
                       foregroundColor: Colors.white,
                       icon: FontAwesomeIcons.trash,

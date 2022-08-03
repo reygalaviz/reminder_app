@@ -14,7 +14,6 @@ import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/screens/checkbox.dart';
 import 'package:reminder_app/models/repeat_store.dart';
 
-
 String id = "No notes exist";
 bool res = false;
 bool don = false;
@@ -359,7 +358,12 @@ class Table_CalendarState extends State<Table_Calendar> {
                                                 }
                                               },
                                               borderRadius:
-                                                  BorderRadius.circular(10),
+                                                  const BorderRadius.only(
+                                                      topRight:
+                                                          Radius.circular(10.0),
+                                                      bottomRight:
+                                                          Radius.circular(
+                                                              10.0)),
                                               backgroundColor: Colors.red,
                                               foregroundColor: Colors.white,
                                               icon: FontAwesomeIcons.trash,

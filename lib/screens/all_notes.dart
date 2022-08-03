@@ -128,7 +128,9 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                           });
                         }
                       },
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(10.0),
+                          bottomRight: Radius.circular(10.0)),
                       backgroundColor: Colors.red,
                       foregroundColor: Colors.white,
                       icon: FontAwesomeIcons.trash,
