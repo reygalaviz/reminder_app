@@ -369,7 +369,12 @@ class Table_CalendarState extends State<Table_Calendar> {
                                                 }
                                               },
                                               borderRadius:
-                                                  BorderRadius.circular(10),
+                                                  const BorderRadius.only(
+                                                      topRight:
+                                                          Radius.circular(10.0),
+                                                      bottomRight:
+                                                          Radius.circular(
+                                                              10.0)),
                                               backgroundColor: Colors.red,
                                               foregroundColor: Colors.white,
                                               icon: FontAwesomeIcons.trash,
