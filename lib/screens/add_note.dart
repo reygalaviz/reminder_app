@@ -373,17 +373,17 @@ class _AddNoteState extends State<AddNote> {
 
               Navigator.pop(context);
             } else if (repeat == "Daily") {
-              String id2 = Localstore.instance.collection("notes").doc().id;
+              // String id2 = Localstore.instance.collection("notes").doc().id;
               Notifs notif = Notifs(
-                id: id2,
+                id: id,
                 id2: count.channelCounter.toString(),
               );
               notif.save();
-              Repeat reeeeee = Repeat(id: id2, option: "Daily");
+              Repeat reeeeee = Repeat(id: id, option: "Daily");
               reeeeee.save();
               // for (var i = 1; i <= 365; i++) {
               Provider.of<NotesOperation>(context, listen: false).addNewNote(
-                id2,
+                id,
                 title,
                 body,
                 selectDate,

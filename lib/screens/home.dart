@@ -27,22 +27,22 @@ class _HomeState extends State<Home> {
   PageController pageController = PageController();
   int _selectedIndex = 0;
 
-  static List<Notes> itemList = [];
+  //static List<Notes> itemList = [];
   final db = Localstore.instance;
   final items = <String, store.Notes>{};
 
   StreamSubscription<Map<String, dynamic>>? _subscription;
-  @override
-  void initState() {
-    super.initState();
-    db.collection('notes').get().then((value) {
-      _subscription = db.collection('notes').stream.listen((event) {
-        final item = store.Notes.fromMap(event);
-        itemList.add(item);
-        //_items.putIfAbsent(item.id, () => item);
-      });
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   db.collection('notes').get().then((value) {
+  //     _subscription = db.collection('notes').stream.listen((event) {
+  //       final item = store.Notes.fromMap(event);
+  //       itemList.add(item);
+  //       //_items.putIfAbsent(item.id, () => item);
+  //     });
+  //   });
+  // }
 
   void onTapped(int index) {
     setState(() {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -44,17 +46,19 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
     super.initState();
     setState(() {
       uncompleted.clear();
-
-      searchResults.clear();
     });
 
     _tabController = TabController(length: 2, vsync: this);
     _db.collection('notes').get().then((value) {
       _subscription = _db.collection('notes').stream.listen((event) {
         setState(() {
-          searchResults.clear();
           final item = store.Notes.fromMap(event);
-          // searchResults.add(item);
+          if (!notes.contains(item.id)) {
+            notes.add(item.id);
+          }
+
+          // }
+
           items.putIfAbsent(item.id, () => item);
 
           // if (item.done == true) {
@@ -80,18 +84,25 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   Widget notesCard() {
     uncompleted.clear();
     List<String> comp = <String>[];
-    items.forEach((key, value) {
-      if (!searchResults.contains(value)) {
-        searchResults.add(value);
-      }
-      if (value.done == false) {
-        if (!comp.contains(value.title)) {
-          comp.add(value.title);
+    if (notes.isNotEmpty) {
+      for (int j = 0; j < notes.length; j++) {
+        if (items[notes[j]] != null) {
+          var value = items[notes[j]];
+          searchResults.add(value!);
 
-          uncompleted.add(value);
+          if (value.done == false) {
+            if (!comp.contains(value.title)) {
+              comp.add(value.title);
+
+              uncompleted.add(value);
+            }
+          }
         }
       }
-    });
+    }
+
+    //);
+
     return SizedBox(
       height: 500,
       child: ListView.builder(

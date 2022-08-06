@@ -24,7 +24,7 @@ class EditNote extends StatefulWidget {
 
 class _EditNoteState extends State<EditNote> {
   final _db = Localstore.instance;
-  final _items = <String, store.Notes>{};
+  // final _items = <String, store.Notes>{};
   StreamSubscription<Map<String, dynamic>>? _subscription;
   // var item;
   DateFormat format = DateFormat("EEEE, MMM d, yyyy");
@@ -39,28 +39,28 @@ class _EditNoteState extends State<EditNote> {
   String daySelect = "";
   Color selectColor = const Color.fromARGB(255, 180, 175, 174);
   String priority = "low";
-  @override
-  void initState() {
-    super.initState();
-    _db.collection('notes').get().then((value) {
-      _subscription = _db.collection('notes').stream.listen((event) {
-        setState(() {
-          final item = store.Notes.fromMap(event);
-          _items.putIfAbsent(item.id, () => item);
-        });
-      });
-    });
-    _db
-        .collection("notifs")
-        .doc(widget.id)
-        .get()
-        .then((value) => _db.collection('notifs').stream.listen((event) {
-              setState(() {
-                final item = Notifs.fromMap(event);
-                _notifs.putIfAbsent(item.id, () => item);
-              });
-            }));
-  }
+  //@override
+  // void initState() {
+  //   super.initState();
+  //   _db.collection('notes').get().then((value) {
+  //     _subscription = _db.collection('notes').stream.listen((event) {
+  //       setState(() {
+  //         final item = store.Notes.fromMap(event);
+  //         _items.putIfAbsent(item.id, () => item);
+  //       });
+  //     });
+  //   });
+  //   _db
+  //       .collection("notifs")
+  //       .doc(widget.id)
+  //       .get()
+  //       .then((value) => _db.collection('notifs').stream.listen((event) {
+  //             setState(() {
+  //               final item = Notifs.fromMap(event);
+  //               _notifs.putIfAbsent(item.id, () => item);
+  //             });
+  //           }));
+  // }
 
   Widget eventTitle() {
     return TextFormField(
@@ -352,7 +352,7 @@ class _EditNoteState extends State<EditNote> {
   }
 
   Widget eventSubmit() {
-    var item = _items[widget.id]!;
+    var item = items[widget.id]!;
     return CircleAvatar(
       radius: 20,
       backgroundColor: Colors.red,
@@ -406,7 +406,7 @@ class _EditNoteState extends State<EditNote> {
 
   @override
   Widget build(BuildContext context) {
-    var item = _items[widget.id]!;
+    var item = items[widget.id]!;
     if (selectDate == "") {
       selectDate = item.date;
     }
@@ -443,7 +443,7 @@ class _EditNoteState extends State<EditNote> {
                 //_items.remove(item.id);
                 setState(() {
                   items.remove(item.id);
-                  _items.remove(item.id);
+                  // _items.remove(item.id);
                 });
 
                 item.delete();
@@ -463,7 +463,7 @@ class _EditNoteState extends State<EditNote> {
                     done: item.done);
                 item1.save();
 
-                _items.putIfAbsent(item1.id, () => item1);
+                items.putIfAbsent(item1.id, () => item1);
                 Navigator.pop(context);
               },
               child: const Text(
