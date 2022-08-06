@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:reminder_app/models/note_data_store.dart';
 import 'package:reminder_app/main.dart' as count;
 import 'package:reminder_app/models/note_data_store.dart' as store;
+import 'package:reminder_app/screens/all_notes.dart';
 
 class NotesOperation extends ChangeNotifier {
   final List<Notes> _notes = <Notes>[];
@@ -19,6 +20,8 @@ class NotesOperation extends ChangeNotifier {
         done: false);
     //allNotes.searchResults.add(note);
     note.save();
+    items.putIfAbsent(note.id, () => note);
+    notes.add(note.id);
     count.channelCounter++;
     _notes.add(note);
     //allNotes.uncompleted.add(note);

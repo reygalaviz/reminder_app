@@ -63,66 +63,6 @@ class Table_CalendarState extends State<Table_Calendar> {
             final item = Repeat.fromMap(event);
             items3.putIfAbsent(item.id, () => item);
           });
-          for (int i = 0; i < notes.length; i++) {
-            var note1 = items[notes[i]];
-            final parsDate = DateTime.parse(note1!.date);
-            if (!items1.contains(note1)) {
-              setState(() {
-                items1.add(note1);
-              });
-              print(items3.keys);
-              print(note1.id);
-              print(items3.containsKey(note1.id));
-              if (items3.containsKey(note1.id)) {
-                Repeat? rex = items3[note1.id];
-                print(rex!.option);
-                if (rex.option == "Daily") {
-                  var selectDate2 = note1.date;
-                  for (var i = 1; i <= 100; i++) {
-                    DateTime g = DateTime.parse(selectDate2);
-
-                    DateTime h = DateTime(g.year, g.month, g.day + 1);
-                    selectDate2 = format2.format(h);
-                    Notes note = Notes(
-                        id: note1.id,
-                        title: note1.title,
-                        data: note1.data,
-                        date: selectDate2,
-                        time: note1.time,
-                        priority: note1.priority,
-                        color: note1.color,
-                        done: note1.done);
-                    setState(() {
-                      items1.add(note);
-                    });
-                    bool biff = true;
-                    for (int k = 0; k < done.length; k++) {
-                      if (done[k] == h) {
-                        biff = false;
-                      }
-                    }
-
-                    if (biff == true) {
-                      setState(() {
-                        done.add(h);
-                      });
-                    }
-                  }
-                }
-              }
-              bool biff = true;
-              for (int k = 0; k < done.length; k++) {
-                if (done[k] == parsDate) {
-                  biff = false;
-                }
-              }
-              if (biff == true) {
-                setState(() {
-                  done.add(parsDate);
-                });
-              }
-            }
-          }
         }));
   }
   // _db.collection('notes').get().then((value) {
@@ -178,6 +118,64 @@ class Table_CalendarState extends State<Table_Calendar> {
   // }
 
   Future addEvents() async {
+    for (int i = 0; i < notes.length; i++) {
+      var note1 = items[notes[i]];
+      final parsDate = DateTime.parse(note1!.date);
+      if (!items1.contains(note1)) {
+        setState(() {
+          items1.add(note1);
+        });
+        if (items3.containsKey(note1.id)) {
+          Repeat? rex = items3[note1.id];
+          print(rex!.option);
+          if (rex.option == "Daily") {
+            var selectDate2 = note1.date;
+            for (var i = 1; i <= 100; i++) {
+              DateTime g = DateTime.parse(selectDate2);
+
+              DateTime h = DateTime(g.year, g.month, g.day + 1);
+              selectDate2 = format2.format(h);
+              Notes note = Notes(
+                  id: note1.id,
+                  title: note1.title,
+                  data: note1.data,
+                  date: selectDate2,
+                  time: note1.time,
+                  priority: note1.priority,
+                  color: note1.color,
+                  done: note1.done);
+              setState(() {
+                items1.add(note);
+              });
+              bool biff = true;
+              for (int k = 0; k < done.length; k++) {
+                if (done[k] == h) {
+                  biff = false;
+                }
+              }
+
+              if (biff == true) {
+                setState(() {
+                  done.add(h);
+                });
+              }
+            }
+          }
+        }
+        bool biff = true;
+        for (int k = 0; k < done.length; k++) {
+          if (done[k] == parsDate) {
+            biff = false;
+          }
+        }
+        if (biff == true) {
+          setState(() {
+            done.add(parsDate);
+          });
+        }
+      }
+    }
+
     for (var value in done) {
       List<Notes> list = [];
 
@@ -189,7 +187,11 @@ class Table_CalendarState extends State<Table_Calendar> {
       }
 
       setState(() {
-        _events.putIfAbsent(value, () => list);
+        if (_events.containsKey(value)) {
+          _events.update(value, (value) => list);
+        } else {
+          _events.putIfAbsent(value, () => list);
+        }
       });
     }
   }

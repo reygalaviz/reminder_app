@@ -83,7 +83,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
   Widget notesCard() {
     uncompleted.clear();
-    List<String> comp = <String>[];
+    //List<String> comp = <String>[];
     if (notes.isNotEmpty) {
       for (int j = 0; j < notes.length; j++) {
         if (items[notes[j]] != null) {
@@ -91,11 +91,11 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
           searchResults.add(value!);
 
           if (value.done == false) {
-            if (!comp.contains(value.title)) {
-              comp.add(value.title);
+            // if (!comp.contains(value.title)) {
+            //   comp.add(value.title);
 
-              uncompleted.add(value);
-            }
+            uncompleted.add(value);
+            // }
           }
         }
       }
