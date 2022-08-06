@@ -351,40 +351,40 @@ class _EditNoteState extends State<EditNote> {
             ]);
   }
 
-  Widget eventSubmit() {
-    var item = items[widget.id]!;
-    return CircleAvatar(
-      radius: 20,
-      backgroundColor: Colors.red,
-      child: IconButton(
-        onPressed: () {
-          final id = Localstore.instance.collection("notes").doc().id;
+  // Widget eventSubmit() {
+  //   var item = items[widget.id]!;
+  //   return CircleAvatar(
+  //     radius: 20,
+  //     backgroundColor: Colors.red,
+  //     child: IconButton(
+  //       onPressed: () {
+  //         final id = Localstore.instance.collection("notes").doc().id;
 
-          final item1 = store.Notes(
-              id: id,
-              title: title,
-              data: body,
-              date: selectDate,
-              time: daySelect,
-              priority: priority,
-              color: colPick.value.toString(),
-              done: item.done);
-          item1.save();
-          searchResults.clear();
+  //         final item1 = store.Notes(
+  //             id: id,
+  //             title: title,
+  //             data: body,
+  //             date: selectDate,
+  //             time: daySelect,
+  //             priority: priority,
+  //             color: colPick.value.toString(),
+  //             done: item.done);
+  //         item1.save();
+  //         items.putIfAbsent(item1.id, () => item);
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Home2()),
-          );
-        },
-        icon: const Icon(
-          FontAwesomeIcons.arrowUp,
-          color: Colors.white,
-          size: 20,
-        ),
-      ),
-    );
-  }
+  //         Navigator.push(
+  //           context,
+  //           MaterialPageRoute(builder: (context) => const Home2()),
+  //         );
+  //       },
+  //       icon: const Icon(
+  //         FontAwesomeIcons.arrowUp,
+  //         color: Colors.white,
+  //         size: 20,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget eventRepeat() {
     return ListTile(
@@ -439,16 +439,13 @@ class _EditNoteState extends State<EditNote> {
         actions: [
           TextButton(
               onPressed: () {
-                item.delete();
-                //_items.remove(item.id);
                 setState(() {
                   items.remove(item.id);
-                  // _items.remove(item.id);
                 });
 
                 item.delete();
                 uncompleted.remove(item);
-                table.items1.remove(item);
+                items.remove(item.id);
                 searchResults.clear();
                 final id = Localstore.instance.collection("notes").doc().id;
 

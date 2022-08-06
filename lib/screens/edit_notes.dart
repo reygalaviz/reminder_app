@@ -510,7 +510,7 @@ class _EditNoteState extends State<EditNote> {
                 comp.completed.remove(item);
                 allNotes.searchResults.remove(item);
                 allNotes.items.remove(item.id);
-                table.items1.remove(item);
+                //table.items1.remove(item);
                 final id = Localstore.instance.collection("notes").doc().id;
 
                 final item2 = store.Notes(
@@ -524,7 +524,7 @@ class _EditNoteState extends State<EditNote> {
                     done: item.done);
                 item.delete();
                 item2.save();
-                //allNotes.items.putIfAbsent(item2.id, () => item2);
+                allNotes.items.putIfAbsent(item2.id, () => item2);
                 _items.putIfAbsent(item2.id, () => item2);
 
                 Navigator.pop(context);
