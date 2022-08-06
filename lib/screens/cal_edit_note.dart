@@ -12,7 +12,16 @@ import 'package:reminder_app/models/notif_data_store.dart';
 import 'package:reminder_app/screens/table_calendar.dart' as table;
 import 'package:reminder_app/screens/repeat_note.dart';
 
-enum ColorList { blue, green, red, yellow, white, cyan, purple, pink, orange }
+Color col1 = const Color.fromARGB(255, 171, 222, 230);
+Color col2 = const Color.fromARGB(255, 203, 170, 203);
+Color col3 = const Color.fromARGB(255, 245, 214, 196);
+Color col4 = const Color.fromARGB(255, 222, 237, 213);
+Color col5 = const Color.fromARGB(255, 238, 206, 206);
+Color col6 = const Color.fromARGB(255, 197, 210, 114);
+Color col7 = const Color.fromARGB(255, 245, 154, 142);
+Color col8 = const Color.fromARGB(255, 116, 154, 214);
+
+enum ColorList { col1, col2, col3, col4, white, col5, col6, col7, col8 }
 
 //enum Priorities { low, medium, high}
 class EditNote extends StatefulWidget {
@@ -180,177 +189,195 @@ class _EditNoteState extends State<EditNote> {
 
   Widget eventColor() {
     return PopupMenuButton<ColorList>(
-        icon: Material(
-          // type: MaterialType.transparency,
-          child: Ink(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey, width: 1.5),
-              color: selectColor,
-              shape: BoxShape.circle,
-            ),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(10.0),
-              radius: 100.0,
-            ),
+      icon: Material(
+        // type: MaterialType.transparency,
+        child: Ink(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey, width: 1.5),
+            color: selectColor,
+            shape: BoxShape.circle,
+          ),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(10.0),
+            radius: 100.0,
           ),
         ),
-        onSelected: (value) {
-          if (value == ColorList.blue) {
-            setState(() {
-              selectColor = Colors.blue;
-            });
+      ),
+      onSelected: (value) {
+        if (value == ColorList.col1) {
+          setState(() {
+            selectColor = const Color.fromARGB(255, 171, 222, 230);
+          });
 
-            colPick = Colors.blue;
-          } else if (value == ColorList.green) {
-            setState(() {
-              selectColor = Colors.green;
-            });
-            colPick = Colors.green;
-          } else if (value == ColorList.red) {
-            colPick = Colors.red;
-            setState(() {
-              selectColor = Colors.red;
-            });
-          } else if (value == ColorList.yellow) {
-            colPick = Colors.yellow;
-            setState(() {
-              selectColor = Colors.yellow;
-            });
-          } else if (value == ColorList.white) {
-            colPick = Colors.white;
-            setState(() {
-              selectColor = const Color.fromARGB(255, 180, 175, 175);
-            });
-          } else if (value == ColorList.cyan) {
-            colPick = Colors.cyan;
-            setState(() {
-              selectColor = Colors.cyan;
-            });
-          } else if (value == ColorList.purple) {
-            colPick = Colors.purple;
-            setState(() {
-              selectColor = Colors.purple;
-            });
-          } else if (value == ColorList.pink) {
-            colPick = const Color.fromARGB(255, 244, 103, 150);
-            setState(() {
-              selectColor = const Color.fromARGB(255, 244, 103, 150);
-            });
-          } else if (value == ColorList.orange) {
-            colPick = Colors.orange;
-            setState(() {
-              selectColor = Colors.orange;
-            });
-          }
-        },
-        itemBuilder: (BuildContext context) => <PopupMenuEntry<ColorList>>[
-              PopupMenuItem<ColorList>(
-                value: ColorList.blue,
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: const BoxDecoration(
-                    color: Colors.blue,
-                    shape: BoxShape.circle,
-                  ),
+          colPick = const Color.fromARGB(255, 171, 222, 230);
+        } else if (value == ColorList.col2) {
+          setState(() {
+            selectColor = const Color.fromARGB(255, 203, 170, 203);
+          });
+          colPick = const Color.fromARGB(255, 203, 170, 203);
+        } else if (value == ColorList.col3) {
+          colPick = const Color.fromARGB(255, 245, 214, 196);
+          setState(() {
+            selectColor = const Color.fromARGB(255, 245, 214, 196);
+          });
+        } else if (value == ColorList.col4) {
+          colPick = const Color.fromARGB(255, 222, 237, 213);
+          setState(() {
+            selectColor = const Color.fromARGB(255, 222, 237, 213);
+          });
+        } else if (value == ColorList.white) {
+          colPick = Colors.white;
+          setState(() {
+            selectColor = const Color.fromARGB(255, 180, 175, 175);
+          });
+        } else if (value == ColorList.col5) {
+          colPick = const Color.fromARGB(255, 238, 206, 206);
+          setState(() {
+            selectColor = const Color.fromARGB(255, 238, 206, 206);
+          });
+        } else if (value == ColorList.col6) {
+          colPick = const Color.fromARGB(255, 197, 210, 114);
+
+          setState(() {
+            selectColor = const Color.fromARGB(255, 197, 210, 114);
+          });
+        } else if (value == ColorList.col7) {
+          colPick = const Color.fromARGB(255, 245, 154, 142);
+          setState(() {
+            selectColor = const Color.fromARGB(255, 245, 154, 142);
+          });
+        } else if (value == ColorList.col8) {
+          colPick = const Color.fromARGB(255, 116, 154, 214);
+          setState(() {
+            selectColor = const Color.fromARGB(255, 116, 154, 214);
+          });
+        }
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<ColorList>>[
+        PopupMenuItem(
+            child: Row(children: [
+          PopupMenuItem<ColorList>(
+            value: ColorList.col1,
+            child: Container(
+              height: 30,
+              width: 30,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 171, 222, 230),
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+          PopupMenuItem<ColorList>(
+            value: ColorList.col2,
+            child: Container(
+              height: 30,
+              width: 30,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 203, 170, 203),
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+          PopupMenuItem<ColorList>(
+            value: ColorList.col3,
+            child: Container(
+              height: 30,
+              width: 30,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 245, 214, 196),
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+        ])),
+        PopupMenuItem(
+            child: Row(
+          children: [
+            PopupMenuItem<ColorList>(
+              value: ColorList.col4,
+              child: Container(
+                height: 30,
+                width: 30,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 222, 237, 213),
+                  shape: BoxShape.circle,
                 ),
               ),
-              PopupMenuItem<ColorList>(
-                value: ColorList.green,
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: const BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
-                  ),
+            ),
+            PopupMenuItem<ColorList>(
+              value: ColorList.white,
+              child: Container(
+                height: 30,
+                width: 30,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                      top: BorderSide(
+                          width: 1, color: Color.fromARGB(255, 46, 46, 46)),
+                      right: BorderSide(
+                          width: 1, color: Color.fromARGB(255, 46, 46, 46)),
+                      bottom: BorderSide(
+                          width: 1, color: Color.fromARGB(255, 46, 46, 46)),
+                      left: BorderSide(
+                          width: 1, color: Color.fromARGB(255, 46, 46, 46))),
+                  shape: BoxShape.circle,
                 ),
               ),
-              PopupMenuItem<ColorList>(
-                value: ColorList.red,
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: const BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle,
-                  ),
+            ),
+            PopupMenuItem<ColorList>(
+              value: ColorList.col5,
+              child: Container(
+                height: 30,
+                width: 30,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 238, 206, 206),
+                  shape: BoxShape.circle,
                 ),
               ),
-              PopupMenuItem<ColorList>(
-                value: ColorList.yellow,
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: const BoxDecoration(
-                    color: Colors.yellow,
-                    shape: BoxShape.circle,
-                  ),
+            ),
+          ],
+        )),
+        PopupMenuItem(
+            child: Row(
+          children: [
+            PopupMenuItem<ColorList>(
+              value: ColorList.col6,
+              child: Container(
+                height: 30,
+                width: 30,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 197, 210, 114),
+                  shape: BoxShape.circle,
                 ),
               ),
-              PopupMenuItem<ColorList>(
-                value: ColorList.white,
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                        top: BorderSide(width: 1, color: Colors.black),
-                        right: BorderSide(width: 1, color: Colors.black),
-                        bottom: BorderSide(width: 1, color: Colors.black),
-                        left: BorderSide(width: 1, color: Colors.black)),
-                    shape: BoxShape.circle,
-                  ),
+            ),
+            PopupMenuItem<ColorList>(
+              value: ColorList.col7,
+              child: Container(
+                height: 30,
+                width: 30,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 245, 154, 142),
+                  shape: BoxShape.circle,
                 ),
               ),
-              PopupMenuItem<ColorList>(
-                value: ColorList.cyan,
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: const BoxDecoration(
-                    color: Colors.cyan,
-                    shape: BoxShape.circle,
-                  ),
+            ),
+            PopupMenuItem<ColorList>(
+              value: ColorList.col8,
+              child: Container(
+                height: 30,
+                width: 30,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 116, 154, 214),
+                  shape: BoxShape.circle,
                 ),
               ),
-              PopupMenuItem<ColorList>(
-                value: ColorList.purple,
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: const BoxDecoration(
-                    color: Colors.purple,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-              PopupMenuItem<ColorList>(
-                value: ColorList.pink,
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 244, 103, 150),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-              PopupMenuItem<ColorList>(
-                value: ColorList.orange,
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: const BoxDecoration(
-                    color: Colors.orange,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-            ]);
+            ),
+          ],
+        ))
+      ],
+    );
   }
-
   // Widget eventSubmit() {
   //   var item = items[widget.id]!;
   //   return CircleAvatar(
