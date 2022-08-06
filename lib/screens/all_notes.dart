@@ -220,7 +220,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                     Text(
                       formattedDate,
                       style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.normal),
+                          fontSize: 25, fontWeight: FontWeight.normal),
                     ),
                     const SizedBox(
                       height: 10.0,
@@ -231,7 +231,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                       child: TabBar(
                           indicatorPadding: const EdgeInsets.only(right: 10),
                           indicatorColor: Theme.of(context).primaryColor,
-                          indicatorSize: TabBarIndicatorSize.label,
+                          indicatorSize: TabBarIndicatorSize.tab,
                           isScrollable: true,
                           labelColor: Theme.of(context).primaryColor,
                           labelPadding:
@@ -239,7 +239,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                           unselectedLabelColor: Colors.grey[600],
                           controller: _tabController,
                           labelStyle: const TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
+                              fontSize: 18, fontWeight: FontWeight.bold),
                           tabs: const [
                             Tab(
                               text: 'ToDo',
