@@ -75,7 +75,8 @@ class Table_CalendarState extends State<Table_Calendar> {
               print(items3.containsKey(note1.id));
               if (items3.containsKey(note1.id)) {
                 Repeat? rex = items3[note1.id];
-                if (rex?.option == "Daily") {
+                print(rex!.option);
+                if (rex.option == "Daily") {
                   var selectDate2 = note1.date;
                   for (var i = 1; i <= 100; i++) {
                     DateTime g = DateTime.parse(selectDate2);
@@ -94,8 +95,14 @@ class Table_CalendarState extends State<Table_Calendar> {
                     setState(() {
                       items1.add(note);
                     });
+                    bool biff = true;
+                    for (int k = 0; k < done.length; k++) {
+                      if (done[k] == h) {
+                        biff = false;
+                      }
+                    }
 
-                    if (!done.contains(h)) {
+                    if (biff == true) {
                       setState(() {
                         done.add(h);
                       });
@@ -103,8 +110,13 @@ class Table_CalendarState extends State<Table_Calendar> {
                   }
                 }
               }
-
-              if (!done.contains(parsDate)) {
+              bool biff = true;
+              for (int k = 0; k < done.length; k++) {
+                if (done[k] == parsDate) {
+                  biff = false;
+                }
+              }
+              if (biff == true) {
                 setState(() {
                   done.add(parsDate);
                 });

@@ -65,6 +65,6 @@ extension ExtRepeat on Repeat {
 
 final db = Localstore.instance;
 void writeData(String id, String option) {
-  final id = db.collection('repeat').doc().id;
-  db.collection('repeat').doc(id).set({'id': id, 'option': option});
+  final id3 = db.collection('repeat').doc().id;
+  db.collection('repeat').doc(id3).set({'id': id, 'option': option});
 }
