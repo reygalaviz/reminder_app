@@ -118,6 +118,7 @@ class Table_CalendarState extends State<Table_Calendar> {
   // }
 
   Future addEvents() async {
+    items1.clear();
     for (int i = 0; i < notes.length; i++) {
       var note1 = items[notes[i]];
       final parsDate = DateTime.parse(note1!.date);
@@ -149,11 +150,11 @@ class Table_CalendarState extends State<Table_Calendar> {
               });
               if (g.isBefore(DateTime.now())) {
                 lastNote.delete();
-                items1.remove(note1);
+                items1.remove(lastNote);
                 note.save();
               }
               lastNote = note;
-              DateTime f = DateTime.parse(lastNote.date);
+
               bool biff = true;
               for (int k = 0; k < done.length; k++) {
                 if (done[k] == h) {
