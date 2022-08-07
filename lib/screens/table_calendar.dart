@@ -21,6 +21,7 @@ Color colPick = Colors.white;
 StreamSubscription<Map<String, dynamic>>? _subscription;
 //final items1 = <String, store.Notes>{};
 List<Notes> items1 = [];
+final items3 = <String, Repeat>{};
 // late final ValueNotifier<List<Notes>> _selectedEvents;
 //
 
@@ -35,7 +36,6 @@ class Table_CalendarState extends State<Table_Calendar> {
   final _db = Localstore.instance;
   DateFormat format2 = DateFormat("yyyy-MM-dd");
 
-  final items3 = <String, Repeat>{};
   String selectDate = "";
   String title = "";
   String body = "";
@@ -130,9 +130,9 @@ class Table_CalendarState extends State<Table_Calendar> {
           print(rex!.option);
           if (rex.option == "Daily") {
             var selectDate2 = note1.date;
+            Notes lastNote = note1;
             for (var i = 1; i <= 100; i++) {
               DateTime g = DateTime.parse(selectDate2);
-
               DateTime h = DateTime(g.year, g.month, g.day + 1);
               selectDate2 = format2.format(h);
               Notes note = Notes(
@@ -147,6 +147,13 @@ class Table_CalendarState extends State<Table_Calendar> {
               setState(() {
                 items1.add(note);
               });
+              if (g.isBefore(DateTime.now())) {
+                lastNote.delete();
+                items1.remove(note1);
+                note.save();
+              }
+              lastNote = note;
+              DateTime f = DateTime.parse(lastNote.date);
               bool biff = true;
               for (int k = 0; k < done.length; k++) {
                 if (done[k] == h) {

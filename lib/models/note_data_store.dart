@@ -108,9 +108,9 @@ extension ExtNotes on Notes {
 }
 
 final db = Localstore.instance;
-void writeData(String title, String data, String date, String time,
+void writeData(String id, String title, String data, String date, String time,
     String priority, String color) {
-  final id = db.collection('notes').doc().id;
+//  final id = db.collection('notes').doc().id;
   db.collection('notes').doc(id).set({
     'title': title,
     'data': data,
