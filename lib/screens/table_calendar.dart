@@ -13,6 +13,8 @@ import 'package:reminder_app/Screens/cal_edit_note.dart';
 import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/screens/checkbox.dart';
 import 'package:reminder_app/models/repeat_store.dart';
+import 'package:reminder_app/main.dart';
+import 'package:reminder_app/models/notif_data_store.dart';
 
 String id = "No notes exist";
 bool res = false;
@@ -149,6 +151,21 @@ class Table_CalendarState extends State<Table_Calendar> {
                 items1.add(note);
               });
               if (g.isBefore(DateTime.now())) {
+                String ter = notifs[lastNote.id]!.id2;
+
+                NotificationService().deleteNotif(ter);
+                Notifs notif = Notifs(
+                  id: note1.id,
+                  id2: ter,
+                );
+                notif.save();
+                if (notifChoice == true) {
+                  NotificationService().displayScheduleNotif(
+                      body: body,
+                      channel: channelCounter,
+                      title: title,
+                      date: h);
+                }
                 lastNote.delete();
                 items1.remove(lastNote);
                 note.save();
@@ -270,8 +287,6 @@ class Table_CalendarState extends State<Table_Calendar> {
   }
 
   Widget calendar() {
-    print(notes);
-    print(items1);
     addEvents();
     return Container(
       key: UniqueKey(),
@@ -476,7 +491,6 @@ class Table_CalendarState extends State<Table_Calendar> {
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         EditNote(id: id5)));
-                                            items1.clear();
                                           },
                                           trailing: Wrap(children: <Widget>[
                                             CheckBoxNote(id: id5)

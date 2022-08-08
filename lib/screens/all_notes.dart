@@ -56,16 +56,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
           if (!notes.contains(item.id)) {
             notes.add(item.id);
           }
-
-          // }
-
           items.putIfAbsent(item.id, () => item);
-
-          // if (item.done == true) {
-          //   completed.add(item);
-          // } else {
-
-          // }
         });
       });
     });
@@ -108,11 +99,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
       child: ListView.builder(
           shrinkWrap: true,
           itemCount: uncompleted.length,
-          // items.keys.length,
           itemBuilder: (context, index) {
-            // final key = items.keys.elementAt(index);
-            // final item = items[key]!;
-
             final item = uncompleted[index];
 
             return Card(

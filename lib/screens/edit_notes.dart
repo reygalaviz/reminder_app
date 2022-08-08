@@ -5,6 +5,7 @@ import 'package:localstore/localstore.dart';
 import 'package:reminder_app/screens/home.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
+import 'all_notes.dart';
 import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/main.dart' as count;
 import 'package:reminder_app/models/notif_data_store.dart';
@@ -395,7 +396,7 @@ class _EditNoteState extends State<EditNote> {
   }
 
   Widget eventSubmit() {
-    var item = _items[widget.id]!;
+    var item = items[widget.id]!;
     return CircleAvatar(
       radius: 20,
       backgroundColor: Colors.red,
@@ -418,7 +419,7 @@ class _EditNoteState extends State<EditNote> {
           item.delete();
           allNotes.searchResults.remove(item);
           allNotes.uncompleted.remove(item);
-          _items.remove(item.id);
+          items.remove(item.id);
 
           final id = Localstore.instance.collection("notes").doc().id;
 
@@ -472,7 +473,7 @@ class _EditNoteState extends State<EditNote> {
 
   @override
   Widget build(BuildContext context) {
-    var item = _items[widget.id]!;
+    var item = items[widget.id]!;
     if (selectDate == "") {
       selectDate = item.date;
     }
@@ -506,7 +507,20 @@ class _EditNoteState extends State<EditNote> {
         actions: [
           TextButton(
               onPressed: () {
-                _items.remove(item.id);
+                String ter = _notifs[widget.id]!.id2;
+
+                NotificationService().deleteNotif(ter);
+                if (scheduler2.isAfter(DateTime.now())) {
+                  NotificationService().displayScheduleNotif(
+                      body: body,
+                      channel: count.channelCounter,
+                      title: title,
+                      date: scheduler2);
+                } else {
+                  NotificationService().displayNotification(
+                      body: body, channel: count.channelCounter, title: title);
+                }
+                items.remove(item.id);
                 comp.completed.remove(item);
                 allNotes.searchResults.remove(item);
                 allNotes.items.remove(item.id);
@@ -525,8 +539,12 @@ class _EditNoteState extends State<EditNote> {
                 item.delete();
                 item2.save();
                 allNotes.items.putIfAbsent(item2.id, () => item2);
-                _items.putIfAbsent(item2.id, () => item2);
-
+                items.putIfAbsent(item2.id, () => item2);
+                Notifs notif1 = Notifs(
+                  id: id,
+                  id2: count.channelCounter.toString(),
+                );
+                notif1.save();
                 Navigator.pop(context);
               },
               child: const Text(
