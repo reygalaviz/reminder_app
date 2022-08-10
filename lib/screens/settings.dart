@@ -80,7 +80,7 @@ class _SettingsTabState extends State<SettingsTab> {
                                 const Text(
                                   'Dark Theme',
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.w600),
                                 ),
                                 Transform.scale(
@@ -105,7 +105,7 @@ class _SettingsTabState extends State<SettingsTab> {
                                 Text(
                                   'General',
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.w600),
                                 ),
                               ],
@@ -115,68 +115,10 @@ class _SettingsTabState extends State<SettingsTab> {
                               thickness: 1.0,
                               endIndent: 5.0,
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: constraints.maxWidth * .04),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text('Option'),
-                                  Icon(
-                                    FontAwesomeIcons.arrowRight,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: constraints.maxWidth * .04),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text('Option'),
-                                  Icon(
-                                    FontAwesomeIcons.arrowRight,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: constraints.maxWidth * .04),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text('Option'),
-                                  Icon(
-                                    FontAwesomeIcons.arrowRight,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: constraints.maxWidth * .04),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text('Option'),
-                                  Icon(
-                                    FontAwesomeIcons.arrowRight,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
+                            buildGeneralOption(
+                              context,
+                              'Language',
+                              languageOp,
                             ),
                             const SizedBox(height: 20),
                             Row(
@@ -184,7 +126,7 @@ class _SettingsTabState extends State<SettingsTab> {
                                 Text(
                                   'Notifications',
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.w600),
                                 ),
                               ],
@@ -194,67 +136,26 @@ class _SettingsTabState extends State<SettingsTab> {
                               thickness: 1.0,
                               endIndent: 5.0,
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: constraints.maxWidth * .04),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text('Enable/Disable'),
-                                  // Icon(
-                                  //   FontAwesomeIcons.arrowRight,
-                                  //   size: 20,
-                                  // ),
-                                  Transform.scale(
-                                    scale: .7,
-                                    child: CupertinoSwitch(
-                                        value: notifChoice,
-                                        onChanged: (bool value) {
-                                          setState(() {
-                                            notifChoice = !notifChoice;
-                                          });
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Enable/Disable'),
+                                Transform.scale(
+                                  scale: .7,
+                                  child: CupertinoSwitch(
+                                      value: notifChoice,
+                                      onChanged: (bool value) {
+                                        setState(() {
+                                          notifChoice = !notifChoice;
+                                        });
 
-                                          NotifSetting n = NotifSetting(
-                                              id: '1', choice: value);
+                                        NotifSetting n = NotifSetting(
+                                            id: '1', choice: value);
 
-                                          n.save();
-                                        }),
-                                  )
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: constraints.maxWidth * .04),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text('Option'),
-                                  Icon(
-                                    FontAwesomeIcons.arrowRight,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: constraints.maxWidth * .04),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text('Option'),
-                                  Icon(
-                                    FontAwesomeIcons.arrowRight,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
+                                        n.save();
+                                      }),
+                                )
+                              ],
                             ),
                             const SizedBox(height: 20),
                             Row(
@@ -262,7 +163,7 @@ class _SettingsTabState extends State<SettingsTab> {
                                 Text(
                                   'Help and Feedback',
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.w600),
                                 ),
                               ],
@@ -272,53 +173,9 @@ class _SettingsTabState extends State<SettingsTab> {
                               thickness: 1.0,
                               endIndent: 5.0,
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: constraints.maxWidth * .04),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text('Option'),
-                                  Icon(
-                                    FontAwesomeIcons.arrowRight,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: constraints.maxWidth * .04),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text('Option'),
-                                  Icon(
-                                    FontAwesomeIcons.arrowRight,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: constraints.maxWidth * .04),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text('Option'),
-                                  Icon(
-                                    FontAwesomeIcons.arrowRight,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
-                            ),
+                            buildHelpOption(context, 'Support'),
+                            buildHelpOption(context, 'FAQ'),
+                            buildHelpOption(context, 'Suggest a Feature'),
                             const SizedBox(height: 20),
                             Row(
                               children: const [
@@ -335,85 +192,10 @@ class _SettingsTabState extends State<SettingsTab> {
                               thickness: 1.0,
                               endIndent: 5.0,
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: constraints.maxWidth * .04),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text('Option'),
-                                  Icon(
-                                    FontAwesomeIcons.arrowRight,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: constraints.maxWidth * .04),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text('Option'),
-                                  Icon(
-                                    FontAwesomeIcons.arrowRight,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: constraints.maxWidth * .04),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text('Option'),
-                                  Icon(
-                                    FontAwesomeIcons.arrowRight,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: constraints.maxWidth * .04),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text('Option'),
-                                  Icon(
-                                    FontAwesomeIcons.arrowRight,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: constraints.maxWidth * .04),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text('Option'),
-                                  Icon(
-                                    FontAwesomeIcons.arrowRight,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
-                            ),
+                            buildAboutOption(context, 'Privacy Policy'),
+                            buildAboutOption(context, 'Security Policy'),
+                            buildAboutOption(context, 'Terms of Service'),
+                            buildAboutOption(context, 'Acknowledgments'),
                             const SizedBox(height: 20),
                           ],
                         ),
@@ -423,6 +205,44 @@ class _SettingsTabState extends State<SettingsTab> {
                 ],
               ),
             )));
+  }
+
+  GestureDetector buildGeneralOption(
+      BuildContext context, String title, Function generalOp) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          generalOp;
+        });
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                title,
+                style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white),
+              ),
+              const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.grey,
+                size: 20,
+              )
+            ]),
+      ),
+    );
+  }
+
+  void languageOp() {
+    showBottomSheet(
+        context: context,
+        builder: (context) => Center(
+              child: Text('hello'),
+            ));
   }
 
   GestureDetector buildNotificationOption(BuildContext context, String title) {
@@ -435,14 +255,71 @@ class _SettingsTabState extends State<SettingsTab> {
             children: <Widget>[
               Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.grey[600]),
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white),
               ),
               const Icon(
-                FontAwesomeIcons.arrowRight,
+                Icons.arrow_forward_ios,
                 color: Colors.grey,
+                size: 20,
+              )
+            ]),
+      ),
+    );
+  }
+
+  GestureDetector buildHelpOption(BuildContext context, String title) {
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: ((context) => Center(
+                  child: Text('hello'),
+                )));
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                title,
+                style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white),
+              ),
+              const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.grey,
+                size: 20,
+              )
+            ]),
+      ),
+    );
+  }
+
+  GestureDetector buildAboutOption(BuildContext context, String title) {
+    return GestureDetector(
+      onTap: () {},
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                title,
+                style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white),
+              ),
+              const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.grey,
+                size: 20,
               )
             ]),
       ),

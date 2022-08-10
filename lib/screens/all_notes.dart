@@ -207,7 +207,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                     Text(
                       formattedDate,
                       style: const TextStyle(
-                          fontSize: 25, fontWeight: FontWeight.normal),
+                          fontSize: 20, fontWeight: FontWeight.normal),
                     ),
                     const SizedBox(
                       height: 10.0,
@@ -226,7 +226,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                           unselectedLabelColor: Colors.grey[600],
                           controller: _tabController,
                           labelStyle: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
+                              fontSize: 15, fontWeight: FontWeight.bold),
                           tabs: const [
                             Tab(
                               text: 'ToDo',
