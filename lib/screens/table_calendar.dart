@@ -56,7 +56,7 @@ class Table_CalendarState extends State<Table_Calendar> {
   @override
   void initState() {
     super.initState();
-
+    items1.clear();
     _selectedDay = DateTime.now();
     _selectedEvents = [];
     _db.collection('repeat').get().then((value) =>
@@ -120,7 +120,6 @@ class Table_CalendarState extends State<Table_Calendar> {
   // }
 
   Future addEvents() async {
-    items1.clear();
     for (int i = 0; i < notes.length; i++) {
       var note1 = items[notes[i]];
       final parsDate = DateTime.parse(note1!.date);
@@ -128,10 +127,11 @@ class Table_CalendarState extends State<Table_Calendar> {
         setState(() {
           items1.add(note1);
         });
+
         if (items3.containsKey(note1.id)) {
           Repeat? rex = items3[note1.id];
-          print(rex!.option);
-          if (rex.option == "Daily") {
+          // print(rex!.option);
+          if (rex!.option == "Daily") {
             var selectDate2 = note1.date;
             Notes lastNote = note1;
             for (var i = 1; i <= 100; i++) {
@@ -388,10 +388,6 @@ class Table_CalendarState extends State<Table_Calendar> {
           color: Colors.white30,
         ),
         onDismissed: (direct) {
-          setState(() {
-            items1.clear();
-          });
-
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const home.Home()),
@@ -419,7 +415,8 @@ class Table_CalendarState extends State<Table_Calendar> {
                           child: ListView.builder(
                               itemCount: items1.length,
                               itemBuilder: (context, index) {
-                                final item = items1.elementAt(index);
+                                // var item = items1.elementAt(index);
+                                var item = items1[index];
                                 // final item = items1[key]!;
                                 DateFormat format = DateFormat("yyyy-MM-dd");
                                 String day2 = format.format(_selectedDay);
@@ -440,7 +437,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                                                 if (res == true) {
                                                   setState(() {
                                                     searchResults.remove(item);
-                                                    print(item.id);
+                                                    //print(item.id);
 
                                                     uncompleted.remove(item);
                                                     item.delete();
@@ -485,6 +482,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                                           ),
                                           tileColor: invisColor(item),
                                           onTap: () {
+                                            id5 = item.id;
                                             print(id5);
                                             Navigator.push(
                                                 context,

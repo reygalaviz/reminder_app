@@ -11,6 +11,7 @@ import 'package:reminder_app/models/notif_data_store.dart';
 import 'package:reminder_app/screens/repeat_note.dart';
 import 'all_notes.dart' as allNotes;
 import 'completed_notes.dart' as comp;
+import 'package:reminder_app/models/repeat_store.dart';
 import 'package:reminder_app/screens/table_calendar.dart' as table;
 
 Color col1 = const Color.fromARGB(255, 171, 222, 230);
@@ -51,6 +52,7 @@ class _EditNoteState extends State<EditNote> {
   String daySelect = "";
   Color selectColor = const Color.fromARGB(255, 180, 175, 174);
   String priority = "high";
+  String be = "beak";
   @override
   void initState() {
     super.initState();
@@ -67,10 +69,10 @@ class _EditNoteState extends State<EditNote> {
         .doc(widget.id)
         .get()
         .then((value) => _db.collection('notifs').stream.listen((event) {
-              setState(() {
-                final item = Notifs.fromMap(event);
-                _notifs.putIfAbsent(item.id, () => item);
-              });
+              // setState(() {
+              final item = Notifs.fromMap(event);
+              _notifs.putIfAbsent(item.id, () => item);
+              //});
             }));
   }
 
@@ -124,38 +126,6 @@ class _EditNoteState extends State<EditNote> {
 
         dCont.text = compForm;
       },
-
-      // children:[ TextFormField(
-      //   readOnly: true,
-      //   autocorrect: false,
-      //   enableSuggestions: false,
-      //   controller: dCont,
-      //   decoration: InputDecoration(
-      //     border: InputBorder.none,
-      //     prefixIcon: Container(
-      //       padding: const EdgeInsets.all(0.0),
-      //       child: IconButton(
-      //           onPressed: () async {
-      //             final DateTime? dateT = await showDatePicker(
-      //                 context: context,
-      //                 initialDate: DateTime.parse(selectDate),
-      //                 firstDate: DateTime(2022),
-      //                 lastDate: DateTime(2025));
-      //             String compForm = format.format(dateT!);
-      //             selectDate = compForm;
-      //             setState(() {
-      //               scheduler = dateT;
-      //             });
-
-      //             dCont.text = compForm;
-      //           },
-      //           icon: const Icon(
-      //             FontAwesomeIcons.calendar,
-      //             size: 20,
-      //           )),
-      //     ),
-      //   ),
-      // ),]
     );
   }
 
@@ -173,32 +143,6 @@ class _EditNoteState extends State<EditNote> {
         scheduler2 = DateTime(scheduler.year, scheduler.month, scheduler.day,
             timeT.hour, timeT.minute);
       },
-      // child: TextFormField(
-      //     autofocus: false,
-      //     readOnly: true,
-      //     maxLines: 1,
-      //     autocorrect: false,
-      //     enableSuggestions: false,
-      //     controller: cCont,
-      //     decoration: InputDecoration(
-      //       border: InputBorder.none,
-      //       prefixIcon: IconButton(
-      //         onPressed: () async {
-      //           TimeOfDay? timeT = await showTimePicker(
-      //               context: context, initialTime: TimeOfDay.now());
-      //           if (!mounted) return;
-      //           String timeString = timeT!.format(context);
-      //           daySelect = timeString;
-      //           cCont.text = timeString;
-      //           scheduler2 = DateTime(scheduler.year, scheduler.month,
-      //               scheduler.day, timeT.hour, timeT.minute);
-      //         },
-      //         icon: const Icon(
-      //           FontAwesomeIcons.clock,
-      //           size: 20,
-      //         ),
-      //       ),
-      //     )),
     );
   }
 
@@ -394,64 +338,6 @@ class _EditNoteState extends State<EditNote> {
     );
   }
 
-  Widget eventSubmit() {
-    var item = _items[widget.id]!;
-    return CircleAvatar(
-      radius: 20,
-      backgroundColor: Colors.red,
-      child: IconButton(
-        onPressed: () {
-          String ter = _notifs[widget.id]!.id2;
-
-          NotificationService().deleteNotif(ter);
-          if (scheduler2.isAfter(DateTime.now())) {
-            NotificationService().displayScheduleNotif(
-                body: body,
-                channel: count.channelCounter,
-                title: title,
-                date: scheduler2);
-          } else {
-            NotificationService().displayNotification(
-                body: body, channel: count.channelCounter, title: title);
-          }
-          bool bloop = item.done;
-          item.delete();
-          allNotes.searchResults.remove(item);
-          allNotes.uncompleted.remove(item);
-          allNotes.items.remove(item.id);
-
-          final id = Localstore.instance.collection("notes").doc().id;
-
-          final item1 = store.Notes(
-              id: id,
-              title: title,
-              data: body,
-              date: selectDate,
-              time: daySelect,
-              priority: priority,
-              color: colPick.value.toString(),
-              done: bloop);
-          item1.save();
-          allNotes.searchResults.add(item1);
-          Notifs notif1 = Notifs(
-            id: id,
-            id2: count.channelCounter.toString(),
-          );
-          notif1.save();
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Home()),
-          );
-        },
-        icon: const Icon(
-          FontAwesomeIcons.arrowUp,
-          color: Colors.white,
-          size: 20,
-        ),
-      ),
-    );
-  }
-
   Widget eventRepeat() {
     return ListTile(
       leading: const Icon(FontAwesomeIcons.repeat),
@@ -472,8 +358,6 @@ class _EditNoteState extends State<EditNote> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.id);
-    print(_items.keys);
     var item = _items[widget.id]!;
     if (selectDate == "") {
       selectDate = item.date;
@@ -508,9 +392,13 @@ class _EditNoteState extends State<EditNote> {
         actions: [
           TextButton(
               onPressed: () {
-                String ter = _notifs[widget.id]!.id2;
-
-                NotificationService().deleteNotif(ter);
+                if (_notifs[widget.id] != null) {
+                  var ter = _notifs[widget.id];
+                  if (ter != null) {
+                    String tre = ter.id2;
+                    NotificationService().deleteNotif(tre);
+                  }
+                }
                 if (scheduler2.isAfter(DateTime.now())) {
                   NotificationService().displayScheduleNotif(
                       body: body,
@@ -521,14 +409,24 @@ class _EditNoteState extends State<EditNote> {
                   NotificationService().displayNotification(
                       body: body, channel: count.channelCounter, title: title);
                 }
-                allNotes.items.remove(item.id);
-                comp.completed.remove(item);
-                allNotes.searchResults.remove(item);
-                _items.remove(item.id);
-                //table.items1.remove(item);
-                final id = Localstore.instance.collection("notes").doc().id;
 
-                final item2 = store.Notes(
+                var obj = table.items3[item.id];
+                if (obj != null) {
+                  obj.delete();
+                }
+                bool bloop = item.done;
+                item.delete();
+                setState(() {
+                  allNotes.searchResults.remove(item);
+                  allNotes.uncompleted.remove(item);
+                  allNotes.items.remove(item.id);
+                  table.items1.remove(item);
+                  allNotes.notes.removeWhere((element) => element == item.id);
+                });
+
+                final id = Localstore.instance.collection("notes").doc().id;
+                // print(item.id);
+                final item1 = store.Notes(
                     id: id,
                     title: title,
                     data: body,
@@ -536,17 +434,25 @@ class _EditNoteState extends State<EditNote> {
                     time: daySelect,
                     priority: priority,
                     color: colPick.value.toString(),
-                    done: item.done);
-                item.delete();
-                item2.save();
-                allNotes.items.putIfAbsent(item2.id, () => item2);
-                _items.putIfAbsent(item2.id, () => item2);
+                    done: bloop);
+                item1.save();
+
+                allNotes.searchResults.add(item1);
+                allNotes.uncompleted.add(item1);
+                allNotes.items.putIfAbsent(id, () => item1);
+                table.items1.add(item1);
                 Notifs notif1 = Notifs(
                   id: id,
                   id2: count.channelCounter.toString(),
                 );
+                Repeat reeeeee = Repeat(id: id, option: "Daily");
+                reeeeee.save();
                 notif1.save();
+
                 Navigator.pop(context);
+                // bool b = true;
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => Home2(boo: b)));
               },
               child: const Text(
                 'Save',

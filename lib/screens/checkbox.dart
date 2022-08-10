@@ -119,7 +119,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                 item.delete();
 
                 final item1 = store.Notes(
-                    id: id,
+                    id: item.id,
                     title: title,
                     data: body,
                     date: selectDate,
@@ -215,14 +215,14 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
                 NotificationService().deleteNotif(ter);
               }
               all_notes.uncompleted.remove(item);
-              final id = Localstore.instance.collection("notes").doc().id;
+
               all_notes.searchResults.remove(item);
               all_notes.items.remove(item.id);
               items1.remove(item);
               item.delete();
 
               final item1 = store.Notes(
-                  id: id,
+                  id: item.id,
                   title: title,
                   data: body,
                   date: selectDate,

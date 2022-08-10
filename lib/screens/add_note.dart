@@ -421,22 +421,6 @@ class _AddNoteState extends State<AddNote> {
   Widget eventRepeat() {
     return PopupMenuButton<Select>(
         icon: Text(repeat),
-
-        //Material(
-
-        // type: MaterialType.transparency,
-        // child: Ink(
-        //   decoration: BoxDecoration(
-        //     border: Border.all(color: Colors.grey, width: 1.5),
-        //     color: const Color.fromARGB(255, 95, 100, 103),
-        //     shape: BoxShape.circle,
-        //   ),
-        //   child: InkWell(
-        //     borderRadius: BorderRadius.circular(10.0),
-        //     radius: 100.0,
-        //   ),
-        // ),
-
         onSelected: (value) {
           if (value == Select.daily) {
             repeat = "Daily";

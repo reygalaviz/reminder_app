@@ -17,13 +17,13 @@ import 'package:reminder_app/controllers/notifications.dart';
 import 'table_calendar.dart';
 
 int initNumber = 0;
-final items = <String, store.Notes>{};
-final notifs = <String, Notifs>{};
+
+var items = <String, store.Notes>{};
+var notifs = <String, Notifs>{};
 String id = "No notes exist";
 bool res = false;
 List<Notes> searchResults = <Notes>[];
 List<String> notes = <String>[];
-
 List<Notes> uncompleted = <Notes>[];
 
 class AllNotes extends StatefulWidget {
@@ -39,14 +39,14 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
   StreamSubscription<Map<String, dynamic>>? _subscription;
   String formattedDate = DateFormat.MMMMEEEEd().format(DateTime.now());
-
   late TabController _tabController = TabController(length: 2, vsync: this);
+
   @override
   void initState() {
     super.initState();
-    setState(() {
-      uncompleted.clear();
-    });
+    // setState(() {
+    //   uncompleted.clear();
+    // });
 
     _tabController = TabController(length: 2, vsync: this);
     _db.collection('notes').get().then((value) {
@@ -97,6 +97,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
     return SizedBox(
       height: 500,
       child: ListView.builder(
+          //key: Key(uncompleted.length.toString()),
           shrinkWrap: true,
           itemCount: uncompleted.length,
           itemBuilder: (context, index) {
@@ -170,18 +171,19 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
     initNumber = items.keys.length;
 
     return Dismissible(
-        key: UniqueKey(),
+        key: Key(uncompleted.length.toString()),
         background: Container(
           color: Colors.white30,
         ),
         onDismissed: (direct) {
-          setState(() {
-            items1.clear();
-          });
+          // setState(() {
+          //   items1.clear();
+          // });
 
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const home.Home2()),
+            MaterialPageRoute(
+                builder: (context) => const home.Home2(boo: true)),
           );
         },
         direction: DismissDirection.horizontal,

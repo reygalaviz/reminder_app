@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:localstore/localstore.dart';
@@ -166,8 +167,8 @@ class _HomeState extends State<Home> {
 }
 
 class Home2 extends StatefulWidget {
-  const Home2({Key? key}) : super(key: key);
-
+  const Home2({Key? key, required this.boo}) : super(key: key);
+  final bool boo;
   @override
   State<Home2> createState() => _Home2State();
 }
@@ -200,6 +201,9 @@ class _Home2State extends State<Home2> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.boo == true) {
+      setState(() {});
+    }
     return Consumer(
         builder: (context, ThemeModel themeNotifier, child) => Scaffold(
               appBar: AppBar(

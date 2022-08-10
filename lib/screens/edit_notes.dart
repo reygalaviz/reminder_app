@@ -68,10 +68,10 @@ class _EditNoteState extends State<EditNote> {
         .doc(widget.id)
         .get()
         .then((value) => _db.collection('notifs').stream.listen((event) {
-              setState(() {
-                final item = Notifs.fromMap(event);
-                _notifs.putIfAbsent(item.id, () => item);
-              });
+              // setState(() {
+              final item = Notifs.fromMap(event);
+              _notifs.putIfAbsent(item.id, () => item);
+              // });
             }));
   }
 
@@ -421,10 +421,10 @@ class _EditNoteState extends State<EditNote> {
           allNotes.uncompleted.remove(item);
           items.remove(item.id);
 
-          final id = Localstore.instance.collection("notes").doc().id;
+          //final id = Localstore.instance.collection("notes").doc().id;
 
           final item1 = store.Notes(
-              id: id,
+              id: item.id,
               title: title,
               data: body,
               date: selectDate,
@@ -435,7 +435,7 @@ class _EditNoteState extends State<EditNote> {
           item1.save();
           allNotes.searchResults.add(item1);
           Notifs notif1 = Notifs(
-            id: id,
+            id: item.id,
             id2: count.channelCounter.toString(),
           );
           notif1.save();
@@ -525,10 +525,10 @@ class _EditNoteState extends State<EditNote> {
                 allNotes.searchResults.remove(item);
                 allNotes.items.remove(item.id);
                 //table.items1.remove(item);
-                final id = Localstore.instance.collection("notes").doc().id;
+                // final id = Localstore.instance.collection("notes").doc().id;
 
                 final item2 = store.Notes(
-                    id: id,
+                    id: item.id,
                     title: title,
                     data: body,
                     date: selectDate,
@@ -541,7 +541,7 @@ class _EditNoteState extends State<EditNote> {
                 allNotes.items.putIfAbsent(item2.id, () => item2);
                 items.putIfAbsent(item2.id, () => item2);
                 Notifs notif1 = Notifs(
-                  id: id,
+                  id: item.id,
                   id2: count.channelCounter.toString(),
                 );
                 notif1.save();
