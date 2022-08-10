@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         title: Text(
           'RemindMe',
-          style: TextStyle(color: Theme.of(context).primaryColor),
+          style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 25),
         ),
         actions: [
           const SearchNote(),
@@ -209,8 +209,9 @@ class _Home2State extends State<Home2> {
               appBar: AppBar(
                 backgroundColor: Theme.of(context).backgroundColor,
                 title: Text(
-                  themeNotifier.isDark ? 'Dark Theme' : 'Light Theme',
-                  style: TextStyle(color: Theme.of(context).primaryColor),
+                  'RemindMe',
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor, fontSize: 30),
                 ),
                 actions: [
                   const SearchNote(),
