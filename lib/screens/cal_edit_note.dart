@@ -12,6 +12,7 @@ import 'package:reminder_app/screens/repeat_note.dart';
 import 'all_notes.dart' as allNotes;
 import 'completed_notes.dart' as comp;
 import 'package:reminder_app/models/repeat_store.dart';
+import 'package:reminder_app/main.dart';
 import 'package:reminder_app/screens/table_calendar.dart' as table;
 
 Color col1 = const Color.fromARGB(255, 171, 222, 230);
@@ -415,15 +416,26 @@ class _EditNoteState extends State<EditNote> {
                   obj.delete();
                 }
                 bool bloop = item.done;
-                item.delete();
                 setState(() {
-                  allNotes.searchResults.remove(item);
-                  allNotes.uncompleted.remove(item);
+                  int b = searchResults.indexWhere((val) => val.id == item.id);
+                  if (b != -1) {
+                    searchResults.removeAt(b);
+                  }
+                  int c = uncompleted.indexWhere((val) => val.id == item.id);
+                  if (c != -1) {
+                    uncompleted.removeAt(c);
+                  }
                   allNotes.items.remove(item.id);
-                  table.items1.remove(item);
-                  allNotes.notes.removeWhere((element) => element == item.id);
-                });
+                  int d = table.items1
+                      .indexWhere((element) => element.id == item.id);
+                  if (d != -1) {
+                    table.items1.removeAt(d);
+                  }
 
+                  notes.removeWhere((element) => element == item.id);
+                  _items.remove(item.id);
+                });
+                item.delete();
                 final id = Localstore.instance.collection("notes").doc().id;
                 // print(item.id);
                 final item1 = store.Notes(
@@ -437,10 +449,6 @@ class _EditNoteState extends State<EditNote> {
                     done: bloop);
                 item1.save();
 
-                allNotes.searchResults.add(item1);
-                allNotes.uncompleted.add(item1);
-                allNotes.items.putIfAbsent(id, () => item1);
-                table.items1.add(item1);
                 Notifs notif1 = Notifs(
                   id: id,
                   id2: count.channelCounter.toString(),
@@ -448,11 +456,18 @@ class _EditNoteState extends State<EditNote> {
                 Repeat reeeeee = Repeat(id: id, option: "Daily");
                 reeeeee.save();
                 notif1.save();
+                setState(() {
+                  searchResults.add(item1);
+                  uncompleted.add(item1);
+                  allNotes.items.putIfAbsent(id, () => item1);
+                  table.items1.add(item1);
+                  _items.putIfAbsent(item1.id, () => item);
+                });
 
-                Navigator.pop(context);
-                // bool b = true;
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => Home2(boo: b)));
+                // Navigator.pop(context);
+                bool b = true;
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Home2(boo: b)));
               },
               child: const Text(
                 'Save',

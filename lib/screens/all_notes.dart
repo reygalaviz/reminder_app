@@ -15,6 +15,7 @@ import 'home.dart' as home;
 import 'package:reminder_app/models/notif_data_store.dart';
 import 'package:reminder_app/controllers/notifications.dart';
 import 'table_calendar.dart';
+import 'package:reminder_app/main.dart';
 
 int initNumber = 0;
 
@@ -22,9 +23,9 @@ var items = <String, store.Notes>{};
 var notifs = <String, Notifs>{};
 String id = "No notes exist";
 bool res = false;
-List<Notes> searchResults = <Notes>[];
-List<String> notes = <String>[];
-List<Notes> uncompleted = <Notes>[];
+// List<Notes> searchResults = <Notes>[];
+// List<String> notes = <String>[];
+// List<Notes> uncompleted = <Notes>[];
 
 class AllNotes extends StatefulWidget {
   const AllNotes({Key? key}) : super(key: key);
@@ -55,7 +56,16 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
           final item = store.Notes.fromMap(event);
           if (!notes.contains(item.id)) {
             notes.add(item.id);
+            searchResults.add(item);
+
+            if (item.done == false) {
+              if (uncompleted.indexWhere((element) => element.id == item.id) ==
+                  -1) {
+                uncompleted.add(item);
+              }
+            }
           }
+
           items.putIfAbsent(item.id, () => item);
         });
       });
@@ -73,27 +83,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   }
 
   Widget notesCard() {
-    uncompleted.clear();
-    //List<String> comp = <String>[];
-    if (notes.isNotEmpty) {
-      for (int j = 0; j < notes.length; j++) {
-        if (items[notes[j]] != null) {
-          var value = items[notes[j]];
-          searchResults.add(value!);
-
-          if (value.done == false) {
-            // if (!comp.contains(value.title)) {
-            //   comp.add(value.title);
-
-            uncompleted.add(value);
-            // }
-          }
-        }
-      }
-    }
-
-    //);
-
     return SizedBox(
       height: 500,
       child: ListView.builder(

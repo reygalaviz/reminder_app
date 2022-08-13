@@ -6,6 +6,7 @@ import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:reminder_app/screens/edit_notes.dart';
 import '../models/note_data_store.dart';
 import 'all_notes.dart' as all_notes;
+import 'package:reminder_app/main.dart';
 
 class MySearchDelegate extends SearchDelegate {
   //List<Notes> searchResults = <Notes>[];
@@ -35,7 +36,7 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<Notes> suggestions = all_notes.searchResults.where((searchResult) {
+    List<Notes> suggestions = searchResults.where((searchResult) {
       final result = searchResult.title.toLowerCase();
       final input = query.toLowerCase();
 

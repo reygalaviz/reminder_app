@@ -15,10 +15,13 @@ import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:reminder_app/models/notif_option.dart';
+import 'package:reminder_app/models/note_data_store.dart';
 
 int channelCounter = 0;
 bool notifChoice = false;
-
+List<Notes> searchResults = <Notes>[];
+List<String> notes = <String>[];
+List<Notes> uncompleted = <Notes>[];
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _configureLocalTimeZone();

@@ -5,6 +5,7 @@ import 'package:localstore/localstore.dart';
 import 'package:reminder_app/screens/home.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
+import 'package:reminder_app/main.dart';
 import 'all_notes.dart';
 import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/main.dart' as count;
@@ -417,8 +418,8 @@ class _EditNoteState extends State<EditNote> {
           }
           bool bloop = item.done;
           item.delete();
-          allNotes.searchResults.remove(item);
-          allNotes.uncompleted.remove(item);
+          searchResults.remove(item);
+          uncompleted.remove(item);
           items.remove(item.id);
 
           //final id = Localstore.instance.collection("notes").doc().id;
@@ -433,7 +434,7 @@ class _EditNoteState extends State<EditNote> {
               color: colPick.value.toString(),
               done: bloop);
           item1.save();
-          allNotes.searchResults.add(item1);
+          searchResults.add(item1);
           Notifs notif1 = Notifs(
             id: item.id,
             id2: count.channelCounter.toString(),
@@ -522,7 +523,7 @@ class _EditNoteState extends State<EditNote> {
                 }
                 items.remove(item.id);
                 comp.completed.remove(item);
-                allNotes.searchResults.remove(item);
+                searchResults.remove(item);
                 allNotes.items.remove(item.id);
                 //table.items1.remove(item);
                 // final id = Localstore.instance.collection("notes").doc().id;

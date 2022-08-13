@@ -8,6 +8,7 @@ import 'package:reminder_app/screens/edit_notes.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:async';
 import 'checkbox.dart';
+import 'package:reminder_app/main.dart';
 
 List<Notes> completed = <Notes>[];
 String id = "No notes exist";
@@ -64,7 +65,7 @@ class _CompletedNotesState extends State<CompletedNotes> {
                         await _showDialog(item);
                         if (res == true) {
                           setState(() {
-                            all_notes.searchResults.remove(item);
+                            searchResults.remove(item);
                             completed.remove(item);
                             items1.remove(item);
                             item.delete();

@@ -6,6 +6,7 @@ import 'all_notes.dart' as all;
 import '../models/note_data_store.dart';
 import 'package:reminder_app/models/notif_data_store.dart';
 import 'all_notes.dart' as all_notes;
+import 'package:reminder_app/main.dart';
 import 'package:localstore/localstore.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:reminder_app/Screens/home.dart';
@@ -111,9 +112,9 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                   NotificationService().deleteNotif(ter);
                 }
                 items1.remove(item);
-                all_notes.uncompleted.remove(item);
+                uncompleted.remove(item);
                 final id = Localstore.instance.collection("notes").doc().id;
-                all_notes.searchResults.remove(item);
+                searchResults.remove(item);
                 all_notes.items.remove(item.id);
 
                 item.delete();
@@ -129,7 +130,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                     done: boop);
                 item1.save();
 
-                all_notes.searchResults.add(item1);
+                searchResults.add(item1);
 
                 Notifs notif1 = Notifs(
                   id: id,
@@ -214,9 +215,9 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
                 tert.delete();
                 NotificationService().deleteNotif(ter);
               }
-              all_notes.uncompleted.remove(item);
+              uncompleted.remove(item);
 
-              all_notes.searchResults.remove(item);
+              searchResults.remove(item);
               all_notes.items.remove(item.id);
               items1.remove(item);
               item.delete();
@@ -232,7 +233,7 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
                   done: boop);
               item1.save();
 
-              all_notes.searchResults.add(item1);
+              searchResults.add(item1);
               Notifs notif1 = Notifs(
                 id: id,
                 id2: count.channelCounter.toString(),
