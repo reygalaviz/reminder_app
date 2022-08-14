@@ -69,8 +69,10 @@ class _CompletedNotesState extends State<CompletedNotes> {
                             completed.remove(item);
                             items1.remove(item);
                             item.delete();
-                            String not = all_notes.notifs[item.id]!.id2;
-                            NotificationService().deleteNotif(not);
+                            if (all_notes.notifs[item.id] == null) {
+                              String not = all_notes.notifs[item.id]!.id2;
+                              NotificationService().deleteNotif(not);
+                            }
                             all_notes.items.remove(item.id);
                             res = false;
                           });

@@ -581,7 +581,7 @@ class _EditNoteState extends State<EditNote> {
                   uncompleted.add(item1);
                   allNotes.items.putIfAbsent(id, () => item1);
                   table.items1.add(item1);
-                  _items.putIfAbsent(item1.id, () => item);
+                  _items.putIfAbsent(item1.id, () => item1);
                 });
 
                 // Navigator.pop(context);

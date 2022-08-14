@@ -244,11 +244,11 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
             )));
   }
 
-  @override
-  void dispose() {
-    if (_subscription != null) _subscription?.cancel();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   if (_subscription != null) _subscription?.cancel();
+  //   super.dispose();
+  // }
 
   String texter({required store.Notes item2}) {
     if (item2.data == '') {

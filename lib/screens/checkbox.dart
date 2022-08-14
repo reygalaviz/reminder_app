@@ -11,6 +11,7 @@ import 'package:localstore/localstore.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:reminder_app/Screens/home.dart';
 import 'package:reminder_app/screens/table_calendar.dart';
+import 'package:reminder_app/screens/table_calendar.dart' as table;
 
 class CheckBoxNote extends StatefulWidget {
   const CheckBoxNote({Key? key, required this.id}) : super(key: key);
@@ -111,11 +112,22 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                   tert.delete();
                   NotificationService().deleteNotif(ter);
                 }
-                items1.remove(item);
-                uncompleted.remove(item);
-                final id = Localstore.instance.collection("notes").doc().id;
-                searchResults.remove(item);
+
+                //  final id = Localstore.instance.collection("notes").doc().id;
+                int b = searchResults.indexWhere((val) => val.id == item.id);
+                if (b != -1) {
+                  searchResults.removeAt(b);
+                }
+                int c = uncompleted.indexWhere((val) => val.id == item.id);
+                if (c != -1) {
+                  uncompleted.removeAt(c);
+                }
                 all_notes.items.remove(item.id);
+                int d =
+                    table.items1.indexWhere((element) => element.id == item.id);
+                if (d != -1) {
+                  table.items1.removeAt(d);
+                }
 
                 item.delete();
 
@@ -131,6 +143,10 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                 item1.save();
 
                 searchResults.add(item1);
+
+                uncompleted.add(item1);
+                all_notes.items.putIfAbsent(id, () => item1);
+                table.items1.add(item1);
 
                 Notifs notif1 = Notifs(
                   id: id,
@@ -215,11 +231,21 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
                 tert.delete();
                 NotificationService().deleteNotif(ter);
               }
-              uncompleted.remove(item);
-
-              searchResults.remove(item);
+              int b = searchResults.indexWhere((val) => val.id == item.id);
+              if (b != -1) {
+                searchResults.removeAt(b);
+              }
+              int c = uncompleted.indexWhere((val) => val.id == item.id);
+              if (c != -1) {
+                uncompleted.removeAt(c);
+              }
               all_notes.items.remove(item.id);
-              items1.remove(item);
+              int d =
+                  table.items1.indexWhere((element) => element.id == item.id);
+              if (d != -1) {
+                table.items1.removeAt(d);
+              }
+
               item.delete();
 
               final item1 = store.Notes(
@@ -234,26 +260,31 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
               item1.save();
 
               searchResults.add(item1);
+              uncompleted.add(item1);
+              all_notes.items.putIfAbsent(id, () => item1);
+              table.items1.add(item1);
+
               Notifs notif1 = Notifs(
                 id: id,
                 id2: count.channelCounter.toString(),
               );
               notif1.save();
 
-              var scheduler = DateTime.parse(selectDate);
-              var timeT = DateTime.parse(daySelect);
-              DateTime scheduler2 = DateTime(scheduler.year, scheduler.month,
-                  scheduler.day, timeT.hour, timeT.minute);
-              if (scheduler2.isAfter(DateTime.now())) {
-                NotificationService().displayScheduleNotif(
-                    body: body,
-                    channel: count.channelCounter,
-                    title: title,
-                    date: scheduler2);
-              } else {
-                NotificationService().displayNotification(
-                    body: body, channel: count.channelCounter, title: title);
-              }
+              // var scheduler = DateTime.parse(selectDate);
+              // // daySelect = "$selectDate $daySelect";
+              // var timeT = TimeOfDay.fromDateTime(DateTime.parse(daySelect));
+              // DateTime scheduler2 = DateTime(scheduler.year, scheduler.month,
+              //     scheduler.day, timeT.hour, timeT.minute);
+              // if (scheduler2.isAfter(DateTime.now())) {
+              //   NotificationService().displayScheduleNotif(
+              //       body: body,
+              //       channel: count.channelCounter,
+              //       title: title,
+              //       date: scheduler2);
+              // } else {
+              //   NotificationService().displayNotification(
+              //       body: body, channel: count.channelCounter, title: title);
+              // }
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const Home()),

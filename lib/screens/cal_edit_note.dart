@@ -457,15 +457,19 @@ class _EditNoteState extends State<EditNote> {
                   id: id,
                   id2: count.channelCounter.toString(),
                 );
-                Repeat reeeeee = Repeat(id: id, option: "Daily");
-                reeeeee.save();
+                if (obj != null) {
+                  if (obj.option == "Daily") {
+                    Repeat reeeeee = Repeat(id: id, option: "Daily");
+                    reeeeee.save();
+                  }
+                }
                 notif1.save();
                 setState(() {
                   searchResults.add(item1);
                   uncompleted.add(item1);
                   allNotes.items.putIfAbsent(id, () => item1);
                   table.items1.add(item1);
-                  _items.putIfAbsent(item1.id, () => item);
+                  _items.putIfAbsent(item1.id, () => item1);
                 });
 
                 // Navigator.pop(context);
