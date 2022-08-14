@@ -14,6 +14,7 @@ import 'package:reminder_app/screens/repeat_note.dart';
 import 'all_notes.dart' as allNotes;
 import 'completed_notes.dart' as comp;
 import 'package:reminder_app/screens/table_calendar.dart' as table;
+import 'package:reminder_app/models/repeat_store.dart';
 
 Color col1 = const Color.fromARGB(255, 171, 222, 230);
 Color col2 = const Color.fromARGB(255, 203, 170, 203);
@@ -508,45 +509,85 @@ class _EditNoteState extends State<EditNote> {
         actions: [
           TextButton(
               onPressed: () {
-                String ter = _notifs[widget.id]!.id2;
-
-                NotificationService().deleteNotif(ter);
-                if (scheduler2.isAfter(DateTime.now())) {
-                  NotificationService().displayScheduleNotif(
-                      body: body,
-                      channel: count.channelCounter,
-                      title: title,
-                      date: scheduler2);
-                } else {
-                  NotificationService().displayNotification(
-                      body: body, channel: count.channelCounter, title: title);
+                if (_notifs[widget.id] != null) {
+                  var ter = _notifs[widget.id];
+                  if (ter != null) {
+                    String tre = ter.id2;
+                    NotificationService().deleteNotif(tre);
+                  }
                 }
-                items.remove(item.id);
-                comp.completed.remove(item);
-                searchResults.remove(item);
-                allNotes.items.remove(item.id);
-                //table.items1.remove(item);
-                // final id = Localstore.instance.collection("notes").doc().id;
+                if (count.notifChoice == true) {
+                  if (scheduler2.isAfter(DateTime.now())) {
+                    NotificationService().displayScheduleNotif(
+                        body: body,
+                        channel: count.channelCounter,
+                        title: title,
+                        date: scheduler2);
+                  } else {
+                    NotificationService().displayNotification(
+                        body: body,
+                        channel: count.channelCounter,
+                        title: title);
+                  }
+                }
 
-                final item2 = store.Notes(
-                    id: item.id,
+                var obj = table.items3[item.id];
+                if (obj != null) {
+                  obj.delete();
+                }
+                bool bloop = item.done;
+                setState(() {
+                  int b = searchResults.indexWhere((val) => val.id == item.id);
+                  if (b != -1) {
+                    searchResults.removeAt(b);
+                  }
+                  int c = uncompleted.indexWhere((val) => val.id == item.id);
+                  if (c != -1) {
+                    uncompleted.removeAt(c);
+                  }
+                  allNotes.items.remove(item.id);
+                  int d = table.items1
+                      .indexWhere((element) => element.id == item.id);
+                  if (d != -1) {
+                    table.items1.removeAt(d);
+                  }
+
+                  notes.removeWhere((element) => element == item.id);
+                  _items.remove(item.id);
+                });
+                item.delete();
+                final id = Localstore.instance.collection("notes").doc().id;
+                // print(item.id);
+                final item1 = store.Notes(
+                    id: id,
                     title: title,
                     data: body,
                     date: selectDate,
                     time: daySelect,
                     priority: priority,
                     color: colPick.value.toString(),
-                    done: item.done);
-                item.delete();
-                item2.save();
-                allNotes.items.putIfAbsent(item2.id, () => item2);
-                items.putIfAbsent(item2.id, () => item2);
+                    done: bloop);
+                item1.save();
+
                 Notifs notif1 = Notifs(
-                  id: item.id,
+                  id: id,
                   id2: count.channelCounter.toString(),
                 );
+                Repeat reeeeee = Repeat(id: id, option: "Daily");
+                reeeeee.save();
                 notif1.save();
-                Navigator.pop(context);
+                setState(() {
+                  searchResults.add(item1);
+                  uncompleted.add(item1);
+                  allNotes.items.putIfAbsent(id, () => item1);
+                  table.items1.add(item1);
+                  _items.putIfAbsent(item1.id, () => item);
+                });
+
+                // Navigator.pop(context);
+                bool b = true;
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Home2(boo: b)));
               },
               child: const Text(
                 'Save',

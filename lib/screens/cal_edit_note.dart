@@ -400,15 +400,19 @@ class _EditNoteState extends State<EditNote> {
                     NotificationService().deleteNotif(tre);
                   }
                 }
-                if (scheduler2.isAfter(DateTime.now())) {
-                  NotificationService().displayScheduleNotif(
-                      body: body,
-                      channel: count.channelCounter,
-                      title: title,
-                      date: scheduler2);
-                } else {
-                  NotificationService().displayNotification(
-                      body: body, channel: count.channelCounter, title: title);
+                if (count.notifChoice == true) {
+                  if (scheduler2.isAfter(DateTime.now())) {
+                    NotificationService().displayScheduleNotif(
+                        body: body,
+                        channel: count.channelCounter,
+                        title: title,
+                        date: scheduler2);
+                  } else {
+                    NotificationService().displayNotification(
+                        body: body,
+                        channel: count.channelCounter,
+                        title: title);
+                  }
                 }
 
                 var obj = table.items3[item.id];
