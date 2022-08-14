@@ -391,14 +391,38 @@ class _AddNoteState extends State<AddNote> {
                 priority,
                 colPick.value.toString(),
               );
-
-              //   id2 = Localstore.instance.collection("notes").doc().id;
-              //   scheduler = DateTime(
-              //       scheduler.year, scheduler.month, scheduler.day + 1);
-              //   selectDate = format.format(scheduler);
-              // }
               if (count.notifChoice == true) {
                 NotificationService().scheduleNotificationDaily(
+                    body: body,
+                    channel: count.channelCounter,
+                    title: title,
+                    date: scheduler2);
+              }
+
+              selectColor = const Color.fromARGB(255, 180, 175, 175);
+
+              Navigator.pop(context);
+            } else if (repeat == "Weekly") {
+              // String id2 = Localstore.instance.collection("notes").doc().id;
+              Notifs notif = Notifs(
+                id: id,
+                id2: count.channelCounter.toString(),
+              );
+              notif.save();
+              Repeat reeeeee = Repeat(id: id, option: "Weekly");
+              reeeeee.save();
+              // for (var i = 1; i <= 365; i++) {
+              Provider.of<NotesOperation>(context, listen: false).addNewNote(
+                id,
+                title,
+                body,
+                selectDate,
+                daySelect,
+                priority,
+                colPick.value.toString(),
+              );
+              if (count.notifChoice == true) {
+                NotificationService().displayScheduleNotif(
                     body: body,
                     channel: count.channelCounter,
                     title: title,

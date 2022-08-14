@@ -67,57 +67,6 @@ class Table_CalendarState extends State<Table_Calendar> {
           });
         }));
   }
-  // _db.collection('notes').get().then((value) {
-  //   _subscription = _db.collection('notes').stream.listen((event) {
-  //     setState(() {
-  //       final item = store.Notes.fromMap(event);
-
-  //       //items1.putIfAbsent(item.id, () => item);
-  //       if (!items1.contains(item)) {
-  //         items1.add(item);
-  //       }
-  //       final parsDate = DateTime.parse(item.date);
-  //       //parsDate.toUtc();
-  //       if (!done.contains(parsDate)) {
-  //         done.add(parsDate);
-  //       }
-
-  //       if (items3.containsKey(item.id)) {
-  //         Repeat? rex = items3[item.id];
-  //         if (rex?.option == "Daily") {
-  //           var selectDate2 = item.date;
-  //           for (var i = 1; i <= 100; i++) {
-  //             DateTime g = DateTime.parse(selectDate2);
-
-  //             DateTime h = DateTime(g.year, g.month, g.day + 1);
-  //             selectDate2 = format2.format(h);
-  //             Notes note = Notes(
-  //                 id: id,
-  //                 title: item.title,
-  //                 data: item.data,
-  //                 date: selectDate2,
-  //                 time: item.time,
-  //                 priority: item.priority,
-  //                 color: item.color,
-  //                 done: item.done);
-  //             items1.add(note);
-  //             if (!done.contains(h)) {
-  //               done.add(h);
-  //             }
-  //           }
-  //         }
-  //so we have a parsdate map to hold every note occuring during that day
-  //}
-  //       });
-  //     });
-  //   });
-
-  //    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
-  // }
-
-  // int getHashCode(DateTime key) {
-  //   return key.day * 1000000 + key.month * 10000 + key.year;
-  // }
 
   Future addEvents() async {
     for (int i = 0; i < notes.length; i++) {
@@ -137,6 +86,61 @@ class Table_CalendarState extends State<Table_Calendar> {
             for (var i = 1; i <= 100; i++) {
               DateTime g = DateTime.parse(selectDate2);
               DateTime h = DateTime(g.year, g.month, g.day + 1);
+              selectDate2 = format2.format(h);
+              Notes note = Notes(
+                  id: note1.id,
+                  title: note1.title,
+                  data: note1.data,
+                  date: selectDate2,
+                  time: note1.time,
+                  priority: note1.priority,
+                  color: note1.color,
+                  done: note1.done);
+              setState(() {
+                items1.add(note);
+              });
+              if (g.isBefore(DateTime.now())) {
+                String ter = notifs[lastNote.id]!.id2;
+
+                NotificationService().deleteNotif(ter);
+                Notifs notif = Notifs(
+                  id: note1.id,
+                  id2: ter,
+                );
+                notif.save();
+                if (notifChoice == true) {
+                  NotificationService().displayScheduleNotif(
+                      body: body,
+                      channel: channelCounter,
+                      title: title,
+                      date: h);
+                }
+                lastNote.delete();
+                items1.remove(lastNote);
+                note.save();
+              }
+              lastNote = note;
+
+              bool biff = true;
+              for (int k = 0; k < done.length; k++) {
+                if (done[k] == h) {
+                  biff = false;
+                }
+              }
+
+              if (biff == true) {
+                setState(() {
+                  done.add(h);
+                });
+              }
+            }
+          }
+          if (rex.option == "Weekly") {
+            var selectDate2 = note1.date;
+            Notes lastNote = note1;
+            for (var i = 1; i <= 100; i++) {
+              DateTime g = DateTime.parse(selectDate2);
+              DateTime h = DateTime(g.year, g.month, g.day + 7);
               selectDate2 = format2.format(h);
               Notes note = Notes(
                   id: note1.id,
