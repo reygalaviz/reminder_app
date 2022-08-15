@@ -4,6 +4,7 @@ import 'package:reminder_app/main.dart' as count;
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:reminder_app/screens/all_notes.dart';
 import 'package:reminder_app/main.dart';
+import 'package:reminder_app/screens/table_calendar.dart';
 
 class NotesOperation extends ChangeNotifier {
   final List<Notes> _notes = <Notes>[];
@@ -25,6 +26,10 @@ class NotesOperation extends ChangeNotifier {
     notes.add(note.id);
     count.channelCounter++;
     _notes.add(note);
+    searchResults.add(note);
+    uncompleted.add(note);
+    //items.putIfAbsent(id, () => note);
+    items1.add(note);
     //allNotes.uncompleted.add(note);
     notifyListeners();
   }

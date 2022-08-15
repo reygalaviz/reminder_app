@@ -356,6 +356,7 @@ class _AddNoteState extends State<AddNote> {
                   daySelect,
                   priority,
                   colPick.value.toString());
+
               if (count.notifChoice == true) {
                 if (scheduler2.isAfter(DateTime.now())) {
                   NotificationService().displayScheduleNotif(
@@ -402,6 +403,36 @@ class _AddNoteState extends State<AddNote> {
               selectColor = const Color.fromARGB(255, 180, 175, 175);
 
               Navigator.pop(context);
+            } else if (repeat == "Monthly") {
+              // String id2 = Localstore.instance.collection("notes").doc().id;
+              Notifs notif = Notifs(
+                id: id,
+                id2: count.channelCounter.toString(),
+              );
+              notif.save();
+              Repeat reeeeee = Repeat(id: id, option: "Monthly");
+              reeeeee.save();
+              // for (var i = 1; i <= 365; i++) {
+              Provider.of<NotesOperation>(context, listen: false).addNewNote(
+                id,
+                title,
+                body,
+                selectDate,
+                daySelect,
+                priority,
+                colPick.value.toString(),
+              );
+              if (count.notifChoice == true) {
+                NotificationService().displayScheduleNotif(
+                    body: body,
+                    channel: count.channelCounter,
+                    title: title,
+                    date: scheduler2);
+              }
+
+              selectColor = const Color.fromARGB(255, 180, 175, 175);
+
+              Navigator.pop(context);
             } else if (repeat == "Weekly") {
               // String id2 = Localstore.instance.collection("notes").doc().id;
               Notifs notif = Notifs(
@@ -410,6 +441,36 @@ class _AddNoteState extends State<AddNote> {
               );
               notif.save();
               Repeat reeeeee = Repeat(id: id, option: "Weekly");
+              reeeeee.save();
+              // for (var i = 1; i <= 365; i++) {
+              Provider.of<NotesOperation>(context, listen: false).addNewNote(
+                id,
+                title,
+                body,
+                selectDate,
+                daySelect,
+                priority,
+                colPick.value.toString(),
+              );
+              if (count.notifChoice == true) {
+                NotificationService().displayScheduleNotif(
+                    body: body,
+                    channel: count.channelCounter,
+                    title: title,
+                    date: scheduler2);
+              }
+
+              selectColor = const Color.fromARGB(255, 180, 175, 175);
+
+              Navigator.pop(context);
+            } else if (repeat == "Yearly") {
+              // String id2 = Localstore.instance.collection("notes").doc().id;
+              Notifs notif = Notifs(
+                id: id,
+                id2: count.channelCounter.toString(),
+              );
+              notif.save();
+              Repeat reeeeee = Repeat(id: id, option: "Yearly");
               reeeeee.save();
               // for (var i = 1; i <= 365; i++) {
               Provider.of<NotesOperation>(context, listen: false).addNewNote(

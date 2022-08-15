@@ -135,12 +135,177 @@ class Table_CalendarState extends State<Table_Calendar> {
               }
             }
           }
-          if (rex.option == "Weekly") {
+          if (rex.option == "Monthly") {
             var selectDate2 = note1.date;
             Notes lastNote = note1;
             for (var i = 1; i <= 100; i++) {
               DateTime g = DateTime.parse(selectDate2);
               DateTime h = DateTime(g.year, g.month, g.day + 7);
+              selectDate2 = format2.format(h);
+              Notes note = Notes(
+                  id: note1.id,
+                  title: note1.title,
+                  data: note1.data,
+                  date: selectDate2,
+                  time: note1.time,
+                  priority: note1.priority,
+                  color: note1.color,
+                  done: note1.done);
+              setState(() {
+                items1.add(note);
+              });
+              if (g.isBefore(DateTime.now())) {
+                String ter = notifs[lastNote.id]!.id2;
+
+                NotificationService().deleteNotif(ter);
+                Notifs notif = Notifs(
+                  id: note1.id,
+                  id2: ter,
+                );
+                notif.save();
+                if (notifChoice == true) {
+                  NotificationService().displayScheduleNotif(
+                      body: body,
+                      channel: channelCounter,
+                      title: title,
+                      date: h);
+                }
+                lastNote.delete();
+                items1.remove(lastNote);
+                note.save();
+              }
+              lastNote = note;
+
+              bool biff = true;
+              for (int k = 0; k < done.length; k++) {
+                if (done[k] == h) {
+                  biff = false;
+                }
+              }
+
+              if (biff == true) {
+                setState(() {
+                  done.add(h);
+                });
+              }
+            }
+          }
+          if (rex.option == "Weekly") {
+            var selectDate2 = note1.date;
+            Notes lastNote = note1;
+            for (var i = 1; i <= 100; i++) {
+              DateTime g = DateTime.parse(selectDate2);
+              DateTime h = DateTime(g.year, g.month + 1, g.day);
+              selectDate2 = format2.format(h);
+              Notes note = Notes(
+                  id: note1.id,
+                  title: note1.title,
+                  data: note1.data,
+                  date: selectDate2,
+                  time: note1.time,
+                  priority: note1.priority,
+                  color: note1.color,
+                  done: note1.done);
+              setState(() {
+                items1.add(note);
+              });
+              if (g.isBefore(DateTime.now())) {
+                String ter = notifs[lastNote.id]!.id2;
+
+                NotificationService().deleteNotif(ter);
+                Notifs notif = Notifs(
+                  id: note1.id,
+                  id2: ter,
+                );
+                notif.save();
+                if (notifChoice == true) {
+                  NotificationService().displayScheduleNotif(
+                      body: body,
+                      channel: channelCounter,
+                      title: title,
+                      date: h);
+                }
+                lastNote.delete();
+                items1.remove(lastNote);
+                note.save();
+              }
+              lastNote = note;
+
+              bool biff = true;
+              for (int k = 0; k < done.length; k++) {
+                if (done[k] == h) {
+                  biff = false;
+                }
+              }
+
+              if (biff == true) {
+                setState(() {
+                  done.add(h);
+                });
+              }
+            }
+          }
+          if (rex.option == "Monthly") {
+            var selectDate2 = note1.date;
+            Notes lastNote = note1;
+            for (var i = 1; i <= 100; i++) {
+              DateTime g = DateTime.parse(selectDate2);
+              DateTime h = DateTime(g.year, g.month, g.day + 7);
+              selectDate2 = format2.format(h);
+              Notes note = Notes(
+                  id: note1.id,
+                  title: note1.title,
+                  data: note1.data,
+                  date: selectDate2,
+                  time: note1.time,
+                  priority: note1.priority,
+                  color: note1.color,
+                  done: note1.done);
+              setState(() {
+                items1.add(note);
+              });
+              if (g.isBefore(DateTime.now())) {
+                String ter = notifs[lastNote.id]!.id2;
+
+                NotificationService().deleteNotif(ter);
+                Notifs notif = Notifs(
+                  id: note1.id,
+                  id2: ter,
+                );
+                notif.save();
+                if (notifChoice == true) {
+                  NotificationService().displayScheduleNotif(
+                      body: body,
+                      channel: channelCounter,
+                      title: title,
+                      date: h);
+                }
+                lastNote.delete();
+                items1.remove(lastNote);
+                note.save();
+              }
+              lastNote = note;
+
+              bool biff = true;
+              for (int k = 0; k < done.length; k++) {
+                if (done[k] == h) {
+                  biff = false;
+                }
+              }
+
+              if (biff == true) {
+                setState(() {
+                  done.add(h);
+                });
+              }
+            }
+          }
+          if (rex.option == "Yearly") {
+            var selectDate2 = note1.date;
+            Notes lastNote = note1;
+            for (var i = 1; i <= 100; i++) {
+              DateTime g = DateTime.parse(selectDate2);
+              DateTime h = DateTime(g.year + 1, g.month, g.day);
               selectDate2 = format2.format(h);
               Notes note = Notes(
                   id: note1.id,
