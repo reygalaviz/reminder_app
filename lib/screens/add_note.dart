@@ -9,6 +9,7 @@ import 'package:reminder_app/main.dart' as count;
 import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/models/notif_data_store.dart';
 import 'package:reminder_app/models/repeat_store.dart';
+import 'package:reminder_app/screens/home.dart';
 
 Color col1 = const Color.fromARGB(255, 171, 222, 230);
 Color col2 = const Color.fromARGB(255, 203, 170, 203);
@@ -492,7 +493,9 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
 
-              Navigator.pop(context);
+              //Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const Home()));
             }
           },
           icon: const Icon(
