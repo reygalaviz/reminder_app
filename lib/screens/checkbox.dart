@@ -35,30 +35,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
   String daySelect = "";
   Color selectColor = const Color.fromARGB(255, 180, 175, 174);
   String priority = "high";
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _db.collection('notes').get().then((value) {
-  //     _subscription = _db.collection('notes').stream.listen((event) {
-  //       setState(() {
-  //         final item = store.Notes.fromMap(event);
-  //         print(item);
-  //         _items.putIfAbsent(item.id, () => item);
-  //       });
-  //     });
-  //   });
-  //   _db
-  //       .collection("notifs")
-  //       .doc(widget.id)
-  //       .get()
-  //       .then((value) => _db.collection('notifs').stream.listen((event) {
-  //             setState(() {
-  //               final item = Notifs.fromMap(event);
-  //               _notifs.putIfAbsent(item.id, () => item);
-  //             });
-  //           }));
-  // }
+  String id4 = "";
 
   bool? val = false;
   @override
@@ -81,7 +58,10 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
             value: val,
             onChanged: (val) {
               setState(() {
-                store.Notes item = all.items[widget.id]!;
+                if (id4 == "") {
+                  id4 = widget.id;
+                }
+                store.Notes item = all.items[id4]!;
                 if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
                   colPick = Color(int.parse(item.color));
                 }
@@ -116,25 +96,27 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                 }
 
                 //  final id = Localstore.instance.collection("notes").doc().id;
-                int b = searchResults.indexWhere((val) => val.id == item.id);
-                if (b != -1) {
-                  searchResults.removeAt(b);
-                }
-                int c = uncompleted.indexWhere((val) => val.id == item.id);
-                if (c != -1) {
-                  uncompleted.removeAt(c);
-                }
-                all_notes.items.remove(item.id);
-                int d =
-                    table.items1.indexWhere((element) => element.id == item.id);
-                if (d != -1) {
-                  table.items1.removeAt(d);
-                }
-                int e =
-                    completed.indexWhere((element) => element.id == item.id);
-                if (e != -1) {
-                  completed.removeAt(e);
-                }
+                setState(() {
+                  int b = searchResults.indexWhere((val) => val.id == item.id);
+                  if (b != -1) {
+                    searchResults.removeAt(b);
+                  }
+                  int c = uncompleted.indexWhere((val) => val.id == item.id);
+                  if (c != -1) {
+                    uncompleted.removeAt(c);
+                  }
+                  all_notes.items.remove(item.id);
+                  int d = table.items1
+                      .indexWhere((element) => element.id == item.id);
+                  if (d != -1) {
+                    table.items1.removeAt(d);
+                  }
+                  int e =
+                      completed.indexWhere((element) => element.id == item.id);
+                  if (e != -1) {
+                    completed.removeAt(e);
+                  }
+                });
 
                 item.delete();
                 final id1 = store.db.collection('notes').doc().id;
@@ -160,9 +142,14 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                 notif.save();
                 searchResults.add(note);
                 if (boop == true) {
-                  completed.add(note);
+                  setState(() {
+                    completed.add(note);
+                  });
                 } else {
-                  uncompleted.add(note);
+                  setState(() {
+                    uncompleted.add(note);
+                    completed.removeWhere((element) => element.id == widget.id);
+                  });
                 }
 
                 all_notes.items.putIfAbsent(id1, () => note);
@@ -192,10 +179,11 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                   id2: count.channelCounter.toString(),
                 );
                 notif1.save();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Home()),
-                );
+
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => const Home()),
+                // );
               });
             }));
   }

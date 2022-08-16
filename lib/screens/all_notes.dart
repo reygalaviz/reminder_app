@@ -234,7 +234,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                           controller: _tabController,
                           children: [
                             notesCard(),
-                            const CompletedNotes(),
+                            CompletedNotes(key: UniqueKey()),
                           ],
                         )),
                     const SizedBox(
@@ -303,4 +303,3 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
     );
   }
 }
-

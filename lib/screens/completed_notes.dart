@@ -23,14 +23,24 @@ class CompletedNotes extends StatefulWidget {
 
 class _CompletedNotesState extends State<CompletedNotes> {
   bool res = false;
-  @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     completed.clear();
     all_notes.items.forEach((key, value) {
       if (value.done == true) {
         completed.add(value);
       }
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // completed.clear();
+    // all_notes.items.forEach((key, value) {
+    //   if (value.done == true) {
+    //     completed.add(value);
+    //   }
+    // });
     // return const SingleChildScrollView(
     //     child: Flexible(
     //   child: Card(
