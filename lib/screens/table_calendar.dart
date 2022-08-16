@@ -93,11 +93,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                 String ter = notifs[lastNote.id]!.id2;
 
                 NotificationService().deleteNotif(ter);
-                Notifs notif = Notifs(
-                  id: note1.id,
-                  id2: ter,
-                );
-                notif.save();
+
                 if (notifChoice == true) {
                   NotificationService().displayScheduleNotif(
                       body: body,
@@ -143,6 +139,11 @@ class Table_CalendarState extends State<Table_Calendar> {
                   items1.add(note);
                 });
                 note.save();
+                Notifs notif = Notifs(
+                  id: id,
+                  id2: ter,
+                );
+                notif.save();
                 searchResults.add(note);
                 uncompleted.add(note);
                 items.putIfAbsent(id, () => note);
@@ -195,11 +196,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                 String ter = notifs[lastNote.id]!.id2;
 
                 NotificationService().deleteNotif(ter);
-                Notifs notif = Notifs(
-                  id: note1.id,
-                  id2: ter,
-                );
-                notif.save();
+
                 if (notifChoice == true) {
                   NotificationService().displayScheduleNotif(
                       body: body,
@@ -245,6 +242,11 @@ class Table_CalendarState extends State<Table_Calendar> {
                   items1.add(note);
                 });
                 note.save();
+                Notifs notif = Notifs(
+                  id: id,
+                  id2: ter,
+                );
+                notif.save();
                 searchResults.add(note);
                 uncompleted.add(note);
                 items.putIfAbsent(id, () => note);
@@ -296,11 +298,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                   String ter = notifs[lastNote.id]!.id2;
 
                   NotificationService().deleteNotif(ter);
-                  Notifs notif = Notifs(
-                    id: note1.id,
-                    id2: ter,
-                  );
-                  notif.save();
+
                   if (notifChoice == true) {
                     NotificationService().displayScheduleNotif(
                         body: body,
@@ -348,6 +346,11 @@ class Table_CalendarState extends State<Table_Calendar> {
                     items1.add(note);
                   });
                   note.save();
+                  Notifs notif = Notifs(
+                    id: id,
+                    id2: ter,
+                  );
+                  notif.save();
                   searchResults.add(note);
                   uncompleted.add(note);
                   items.putIfAbsent(id, () => note);
@@ -398,11 +401,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                   String ter = notifs[lastNote.id]!.id2;
 
                   NotificationService().deleteNotif(ter);
-                  Notifs notif = Notifs(
-                    id: note1.id,
-                    id2: ter,
-                  );
-                  notif.save();
+
                   if (notifChoice == true) {
                     NotificationService().displayScheduleNotif(
                         body: body,
@@ -449,6 +448,11 @@ class Table_CalendarState extends State<Table_Calendar> {
                     items1.add(note);
                   });
                   note.save();
+                  Notifs notif = Notifs(
+                    id: id,
+                    id2: ter,
+                  );
+                  notif.save();
                   searchResults.add(note);
                   uncompleted.add(note);
                   items.putIfAbsent(id, () => note);

@@ -65,10 +65,33 @@ class _CompletedNotesState extends State<CompletedNotes> {
                         await _showDialog(item);
                         if (res == true) {
                           setState(() {
-                            searchResults.remove(item);
-                            completed.remove(item);
-                            items1.remove(item);
+                            int b = searchResults
+                                .indexWhere((val) => val.id == item.id);
+                            if (b != -1) {
+                              searchResults.removeAt(b);
+                            }
+                            int c = uncompleted
+                                .indexWhere((val) => val.id == item.id);
+                            if (c != -1) {
+                              uncompleted.removeAt(c);
+                            }
+                            all_notes.items.remove(item.id);
+                            int d = items1
+                                .indexWhere((element) => element.id == item.id);
+                            if (d != -1) {
+                              items1.removeAt(d);
+                            }
+
+                            notes.removeWhere((element) => element == item.id);
+
+                            int e = completed
+                                .indexWhere((element) => element.id == item.id);
+                            if (e != -1) {
+                              completed.removeAt(e);
+                            }
+
                             item.delete();
+
                             if (all_notes.notifs[item.id] == null) {
                               String not = all_notes.notifs[item.id]!.id2;
                               NotificationService().deleteNotif(not);
@@ -108,8 +131,7 @@ class _CompletedNotesState extends State<CompletedNotes> {
                         MaterialPageRoute(
                             builder: (context) => EditNote(id: id)));
                   },
-                  trailing:
-                      Wrap(children: <Widget>[CheckBoxNote2(id: item.id)]),
+                  trailing: Wrap(children: <Widget>[CheckBoxNote(id: item.id)]),
                 ),
               ),
             );
