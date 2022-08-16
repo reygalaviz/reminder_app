@@ -607,3 +607,4 @@ class _AddNoteState extends State<AddNote> {
     );
   }
 }
+

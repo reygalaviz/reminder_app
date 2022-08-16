@@ -285,10 +285,10 @@ class _CheckBoxNoteState2 extends State<CheckBoxNote2> {
               //   NotificationService().displayNotification(
               //       body: body, channel: count.channelCounter, title: title);
               // }
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Home()),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => const Home()),
+              // );
             });
           }),
     );
