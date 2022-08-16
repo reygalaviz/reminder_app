@@ -222,10 +222,10 @@ class _SettingsTabState extends State<SettingsTab> {
             children: <Widget>[
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w400,
-                    color: Colors.white),
+                    color: Theme.of(context).primaryColor),
               ),
               const Icon(
                 Icons.arrow_forward_ios,
@@ -255,10 +255,10 @@ class _SettingsTabState extends State<SettingsTab> {
             children: <Widget>[
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w400,
-                    color: Colors.white),
+                    color: Theme.of(context).primaryColor),
               ),
               const Icon(
                 Icons.arrow_forward_ios,
@@ -286,10 +286,10 @@ class _SettingsTabState extends State<SettingsTab> {
             children: <Widget>[
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w400,
-                    color: Colors.white),
+                    color: Theme.of(context).primaryColor),
               ),
               const Icon(
                 Icons.arrow_forward_ios,
@@ -311,10 +311,10 @@ class _SettingsTabState extends State<SettingsTab> {
             children: <Widget>[
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w400,
-                    color: Colors.white),
+                    color: Theme.of(context).primaryColor),
               ),
               const Icon(
                 Icons.arrow_forward_ios,
