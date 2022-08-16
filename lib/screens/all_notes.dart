@@ -159,24 +159,26 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     initNumber = items.keys.length;
 
-    return Dismissible(
-        key: Key(uncompleted.length.toString()),
-        background: Container(
-          color: Colors.white30,
-        ),
-        onDismissed: (direct) {
-          // setState(() {
-          //   items1.clear();
-          // });
+    return
+        //Dismissible(
+        // key: Key(uncompleted.length.toString()),
+        // background: Container(
+        //   color: Colors.white30,
+        // ),
+        // onDismissed: (direct) {
+        //   // setState(() {
+        //   //   items1.clear();
+        //   // });
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const home.Home2(boo: true)),
-          );
-        },
-        direction: DismissDirection.horizontal,
-        child: Scaffold(
+        //   Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => const home.Home2(boo: true)),
+        //   );
+        // },
+        // direction: DismissDirection.horizontal,
+        // child:
+        Scaffold(
             resizeToAvoidBottomInset: false,
             body: LayoutBuilder(
               builder: (context, constraints) => Padding(
@@ -232,7 +234,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                           controller: _tabController,
                           children: [
                             notesCard(),
-                            const CompletedNotes(),
+                            CompletedNotes(key: UniqueKey()),
                           ],
                         )),
                     const SizedBox(
@@ -241,7 +243,8 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                   ],
                 ),
               ),
-            )));
+            ));
+    //));
   }
 
   // @override
