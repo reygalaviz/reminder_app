@@ -83,23 +83,13 @@ class Table_CalendarState extends State<Table_Calendar> {
           if (rex!.option == "Daily") {
             var selectDate2 = note1.date;
             Notes lastNote = note1;
+            //items1.add(lastNote);
             for (var i = 1; i <= 100; i++) {
               DateTime g = DateTime.parse(selectDate2);
               DateTime h = DateTime(g.year, g.month, g.day + 1);
               selectDate2 = format2.format(h);
-              Notes note = Notes(
-                  id: note1.id,
-                  title: note1.title,
-                  data: note1.data,
-                  date: selectDate2,
-                  time: note1.time,
-                  priority: note1.priority,
-                  color: note1.color,
-                  done: note1.done);
-              setState(() {
-                items1.add(note);
-              });
               if (g.isBefore(DateTime.now())) {
+                // if (g.day != DateTime.now().day) {
                 String ter = notifs[lastNote.id]!.id2;
 
                 NotificationService().deleteNotif(ter);
@@ -115,11 +105,66 @@ class Table_CalendarState extends State<Table_Calendar> {
                       title: title,
                       date: h);
                 }
+
                 lastNote.delete();
-                items1.remove(lastNote);
+                // items1.remove(lastNote);
+                int b =
+                    searchResults.indexWhere((val) => val.id == lastNote.id);
+                if (b != -1) {
+                  searchResults.removeAt(b);
+                }
+                int c = uncompleted.indexWhere((val) => val.id == lastNote.id);
+                if (c != -1) {
+                  uncompleted.removeAt(c);
+                }
+                items.remove(lastNote.id);
+                int d =
+                    items1.indexWhere((element) => element.id == lastNote.id);
+                if (d != -1) {
+                  items1.removeAt(d);
+                }
+                var x = items3[lastNote.id];
+                if (x != null) {
+                  x.delete;
+                }
+                items3.remove(lastNote.id);
+                final id1 = store.db.collection('notes').doc().id;
+                id = id1;
+                Notes note = Notes(
+                    id: id,
+                    title: note1.title,
+                    data: note1.data,
+                    date: selectDate2,
+                    time: note1.time,
+                    priority: note1.priority,
+                    color: note1.color,
+                    done: note1.done);
+                setState(() {
+                  items1.add(note);
+                });
                 note.save();
+                searchResults.add(note);
+                uncompleted.add(note);
+                items.putIfAbsent(id, () => note);
+                Repeat r = Repeat(id: note.id, option: "Daily");
+                r.save();
+                lastNote = note;
+                // }
+              } else {
+                Notes note = Notes(
+                    id: id,
+                    title: note1.title,
+                    data: note1.data,
+                    date: selectDate2,
+                    time: note1.time,
+                    priority: note1.priority,
+                    color: note1.color,
+                    done: note1.done);
+                setState(() {
+                  items1.add(note);
+                });
+                lastNote = note;
               }
-              lastNote = note;
 
               bool biff = true;
               for (int k = 0; k < done.length; k++) {
@@ -135,81 +180,18 @@ class Table_CalendarState extends State<Table_Calendar> {
               }
             }
           }
-          if (rex.option == "Monthly") {
-            var selectDate2 = note1.date;
-            Notes lastNote = note1;
-            for (var i = 1; i <= 100; i++) {
-              DateTime g = DateTime.parse(selectDate2);
-              DateTime h = DateTime(g.year, g.month, g.day + 7);
-              selectDate2 = format2.format(h);
-              Notes note = Notes(
-                  id: note1.id,
-                  title: note1.title,
-                  data: note1.data,
-                  date: selectDate2,
-                  time: note1.time,
-                  priority: note1.priority,
-                  color: note1.color,
-                  done: note1.done);
-              setState(() {
-                items1.add(note);
-              });
-              if (g.isBefore(DateTime.now())) {
-                String ter = notifs[lastNote.id]!.id2;
 
-                NotificationService().deleteNotif(ter);
-                Notifs notif = Notifs(
-                  id: note1.id,
-                  id2: ter,
-                );
-                notif.save();
-                if (notifChoice == true) {
-                  NotificationService().displayScheduleNotif(
-                      body: body,
-                      channel: channelCounter,
-                      title: title,
-                      date: h);
-                }
-                lastNote.delete();
-                items1.remove(lastNote);
-                note.save();
-              }
-              lastNote = note;
-
-              bool biff = true;
-              for (int k = 0; k < done.length; k++) {
-                if (done[k] == h) {
-                  biff = false;
-                }
-              }
-
-              if (biff == true) {
-                setState(() {
-                  done.add(h);
-                });
-              }
-            }
-          }
           if (rex.option == "Weekly") {
             var selectDate2 = note1.date;
             Notes lastNote = note1;
-            for (var i = 1; i <= 100; i++) {
+            //items1.add(lastNote);
+            for (var i = 1; i <= 50; i++) {
               DateTime g = DateTime.parse(selectDate2);
-              DateTime h = DateTime(g.year, g.month + 1, g.day);
+              DateTime h = DateTime(g.year, g.month, g.day + 7);
               selectDate2 = format2.format(h);
-              Notes note = Notes(
-                  id: note1.id,
-                  title: note1.title,
-                  data: note1.data,
-                  date: selectDate2,
-                  time: note1.time,
-                  priority: note1.priority,
-                  color: note1.color,
-                  done: note1.done);
-              setState(() {
-                items1.add(note);
-              });
+
               if (g.isBefore(DateTime.now())) {
+                // if (g.day != DateTime.now().day) {
                 String ter = notifs[lastNote.id]!.id2;
 
                 NotificationService().deleteNotif(ter);
@@ -225,11 +207,66 @@ class Table_CalendarState extends State<Table_Calendar> {
                       title: title,
                       date: h);
                 }
+
                 lastNote.delete();
-                items1.remove(lastNote);
+                // items1.remove(lastNote);
+                int b =
+                    searchResults.indexWhere((val) => val.id == lastNote.id);
+                if (b != -1) {
+                  searchResults.removeAt(b);
+                }
+                int c = uncompleted.indexWhere((val) => val.id == lastNote.id);
+                if (c != -1) {
+                  uncompleted.removeAt(c);
+                }
+                items.remove(lastNote.id);
+                int d =
+                    items1.indexWhere((element) => element.id == lastNote.id);
+                if (d != -1) {
+                  items1.removeAt(d);
+                }
+                var x = items3[lastNote.id];
+                if (x != null) {
+                  x.delete;
+                }
+                items3.remove(lastNote.id);
+                final id1 = store.db.collection('notes').doc().id;
+                id = id1;
+                Notes note = Notes(
+                    id: id,
+                    title: note1.title,
+                    data: note1.data,
+                    date: selectDate2,
+                    time: note1.time,
+                    priority: note1.priority,
+                    color: note1.color,
+                    done: note1.done);
+                setState(() {
+                  items1.add(note);
+                });
                 note.save();
+                searchResults.add(note);
+                uncompleted.add(note);
+                items.putIfAbsent(id, () => note);
+                Repeat r = Repeat(id: note.id, option: "Weekly");
+                r.save();
+                lastNote = note;
+                // }
+              } else {
+                Notes note = Notes(
+                    id: id,
+                    title: note1.title,
+                    data: note1.data,
+                    date: selectDate2,
+                    time: note1.time,
+                    priority: note1.priority,
+                    color: note1.color,
+                    done: note1.done);
+                setState(() {
+                  items1.add(note);
+                });
+                lastNote = note;
               }
-              lastNote = note;
 
               bool biff = true;
               for (int k = 0; k < done.length; k++) {
@@ -248,44 +285,91 @@ class Table_CalendarState extends State<Table_Calendar> {
           if (rex.option == "Monthly") {
             var selectDate2 = note1.date;
             Notes lastNote = note1;
-            for (var i = 1; i <= 100; i++) {
+            //items1.add(lastNote);
+            for (var i = 1; i <= 24; i++) {
               DateTime g = DateTime.parse(selectDate2);
-              DateTime h = DateTime(g.year, g.month, g.day + 7);
+              DateTime h = DateTime(g.year, g.month + 1, g.day);
               selectDate2 = format2.format(h);
-              Notes note = Notes(
-                  id: note1.id,
-                  title: note1.title,
-                  data: note1.data,
-                  date: selectDate2,
-                  time: note1.time,
-                  priority: note1.priority,
-                  color: note1.color,
-                  done: note1.done);
-              setState(() {
-                items1.add(note);
-              });
+
               if (g.isBefore(DateTime.now())) {
-                String ter = notifs[lastNote.id]!.id2;
+                if (g.day != DateTime.now().day) {
+                  String ter = notifs[lastNote.id]!.id2;
 
-                NotificationService().deleteNotif(ter);
-                Notifs notif = Notifs(
-                  id: note1.id,
-                  id2: ter,
-                );
-                notif.save();
-                if (notifChoice == true) {
-                  NotificationService().displayScheduleNotif(
-                      body: body,
-                      channel: channelCounter,
-                      title: title,
-                      date: h);
+                  NotificationService().deleteNotif(ter);
+                  Notifs notif = Notifs(
+                    id: note1.id,
+                    id2: ter,
+                  );
+                  notif.save();
+                  if (notifChoice == true) {
+                    NotificationService().displayScheduleNotif(
+                        body: body,
+                        channel: channelCounter,
+                        title: title,
+                        date: h);
+                  }
+
+                  lastNote.delete();
+                  // items1.remove(lastNote);
+                  int b =
+                      searchResults.indexWhere((val) => val.id == lastNote.id);
+                  if (b != -1) {
+                    searchResults.removeAt(b);
+                  }
+                  int c =
+                      uncompleted.indexWhere((val) => val.id == lastNote.id);
+                  if (c != -1) {
+                    uncompleted.removeAt(c);
+                  }
+                  items.remove(lastNote.id);
+                  int d =
+                      items1.indexWhere((element) => element.id == lastNote.id);
+                  if (d != -1) {
+                    items1.removeAt(d);
+                  }
+                  var x = items3[lastNote.id];
+                  if (x != null) {
+                    x.delete;
+                  }
+                  items3.remove(lastNote.id);
+
+                  final id1 = store.db.collection('notes').doc().id;
+                  id = id1;
+                  Notes note = Notes(
+                      id: id,
+                      title: note1.title,
+                      data: note1.data,
+                      date: selectDate2,
+                      time: note1.time,
+                      priority: note1.priority,
+                      color: note1.color,
+                      done: note1.done);
+                  setState(() {
+                    items1.add(note);
+                  });
+                  note.save();
+                  searchResults.add(note);
+                  uncompleted.add(note);
+                  items.putIfAbsent(id, () => note);
+                  Repeat r = Repeat(id: note.id, option: "Monthly");
+                  r.save();
+                  lastNote = note;
                 }
-                lastNote.delete();
-                items1.remove(lastNote);
-                note.save();
+              } else {
+                Notes note = Notes(
+                    id: id,
+                    title: note1.title,
+                    data: note1.data,
+                    date: selectDate2,
+                    time: note1.time,
+                    priority: note1.priority,
+                    color: note1.color,
+                    done: note1.done);
+                setState(() {
+                  items1.add(note);
+                });
+                lastNote = note;
               }
-              lastNote = note;
-
               bool biff = true;
               for (int k = 0; k < done.length; k++) {
                 if (done[k] == h) {
@@ -303,43 +387,90 @@ class Table_CalendarState extends State<Table_Calendar> {
           if (rex.option == "Yearly") {
             var selectDate2 = note1.date;
             Notes lastNote = note1;
-            for (var i = 1; i <= 100; i++) {
+            String id = lastNote.id;
+            // items1.add(lastNote);
+            for (var i = 1; i <= 10; i++) {
               DateTime g = DateTime.parse(selectDate2);
               DateTime h = DateTime(g.year + 1, g.month, g.day);
               selectDate2 = format2.format(h);
-              Notes note = Notes(
-                  id: note1.id,
-                  title: note1.title,
-                  data: note1.data,
-                  date: selectDate2,
-                  time: note1.time,
-                  priority: note1.priority,
-                  color: note1.color,
-                  done: note1.done);
-              setState(() {
-                items1.add(note);
-              });
               if (g.isBefore(DateTime.now())) {
-                String ter = notifs[lastNote.id]!.id2;
+                if (g.day != DateTime.now().day) {
+                  String ter = notifs[lastNote.id]!.id2;
 
-                NotificationService().deleteNotif(ter);
-                Notifs notif = Notifs(
-                  id: note1.id,
-                  id2: ter,
-                );
-                notif.save();
-                if (notifChoice == true) {
-                  NotificationService().displayScheduleNotif(
-                      body: body,
-                      channel: channelCounter,
-                      title: title,
-                      date: h);
+                  NotificationService().deleteNotif(ter);
+                  Notifs notif = Notifs(
+                    id: note1.id,
+                    id2: ter,
+                  );
+                  notif.save();
+                  if (notifChoice == true) {
+                    NotificationService().displayScheduleNotif(
+                        body: body,
+                        channel: channelCounter,
+                        title: title,
+                        date: h);
+                  }
+
+                  lastNote.delete();
+                  // items1.remove(lastNote);
+                  int b =
+                      searchResults.indexWhere((val) => val.id == lastNote.id);
+                  if (b != -1) {
+                    searchResults.removeAt(b);
+                  }
+                  int c =
+                      uncompleted.indexWhere((val) => val.id == lastNote.id);
+                  if (c != -1) {
+                    uncompleted.removeAt(c);
+                  }
+                  items.remove(lastNote.id);
+                  int d =
+                      items1.indexWhere((element) => element.id == lastNote.id);
+                  if (d != -1) {
+                    items1.removeAt(d);
+                  }
+                  var x = items3[lastNote.id];
+                  if (x != null) {
+                    x.delete;
+                  }
+                  items3.remove(lastNote.id);
+                  final id1 = store.db.collection('notes').doc().id;
+                  id = id1;
+                  Notes note = Notes(
+                      id: id,
+                      title: note1.title,
+                      data: note1.data,
+                      date: selectDate2,
+                      time: note1.time,
+                      priority: note1.priority,
+                      color: note1.color,
+                      done: note1.done);
+                  setState(() {
+                    items1.add(note);
+                  });
+                  note.save();
+                  searchResults.add(note);
+                  uncompleted.add(note);
+                  items.putIfAbsent(id, () => note);
+                  Repeat r = Repeat(id: note.id, option: "Yearly");
+                  r.save();
+                  lastNote = note;
                 }
-                lastNote.delete();
-                items1.remove(lastNote);
-                note.save();
+              } else {
+                Notes note = Notes(
+                    id: id,
+                    title: note1.title,
+                    data: note1.data,
+                    date: selectDate2,
+                    time: note1.time,
+                    priority: note1.priority,
+                    color: note1.color,
+                    done: note1.done);
+                setState(() {
+                  items1.add(note);
+                });
+                lastNote = note;
               }
-              lastNote = note;
 
               bool biff = true;
               for (int k = 0; k < done.length; k++) {
@@ -551,19 +682,21 @@ class Table_CalendarState extends State<Table_Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-        key: UniqueKey(),
-        background: Container(
-          color: Colors.white30,
-        ),
-        onDismissed: (direct) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const home.Home()),
-          );
-        },
-        direction: DismissDirection.horizontal,
-        child: Scaffold(
+    return
+        //  Dismissible(
+        //     key: UniqueKey(),
+        //     background: Container(
+        //       color: Colors.white30,
+        //     ),
+        //     onDismissed: (direct) {
+        //       Navigator.push(
+        //         context,
+        //         MaterialPageRoute(builder: (context) => const home.Home()),
+        //       );
+        //     },
+        //     direction: DismissDirection.horizontal,
+        //child:
+        Scaffold(
             body: Container(
                 color: Theme.of(context).backgroundColor,
                 child: Column(
@@ -668,6 +801,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                                   return Container();
                                 }
                               }))
-                    ]))));
+                    ])));
   }
 }
+
