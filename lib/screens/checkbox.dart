@@ -170,15 +170,19 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                   var repea = items3[item.id];
                   if (repea!.option == "Daily") {
                     Repeat r = Repeat(id: note.id, option: "Daily");
+                    items3.putIfAbsent(note.id, () => r);
                     r.save();
                   } else if (repea.option == "Weekly") {
                     Repeat r = Repeat(id: note.id, option: "Weekly");
+                    items3.putIfAbsent(note.id, () => r);
                     r.save();
                   } else if (repea.option == "Monthly") {
                     Repeat r = Repeat(id: note.id, option: "Monthly");
+                    items3.putIfAbsent(note.id, () => r);
                     r.save();
                   } else if (repea.option == "Yearly") {
                     Repeat r = Repeat(id: note.id, option: "Yearly");
+                    items3.putIfAbsent(note.id, () => r);
                     r.save();
                   }
                 }
