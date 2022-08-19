@@ -140,7 +140,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void showSettingsModal() {
+  void showSettingsModal() async {
     showModalBottomSheet(
         context: context,
         enableDrag: true,
@@ -303,7 +303,7 @@ class _Home2State extends State<Home2> {
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
-        backgroundColor: Colors.white,
+        backgroundColor: col,
         builder: (context) {
           return const SettingsTab();
         });
