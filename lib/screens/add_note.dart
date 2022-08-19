@@ -10,6 +10,7 @@ import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/models/notif_data_store.dart';
 import 'package:reminder_app/models/repeat_store.dart';
 import 'package:reminder_app/screens/home.dart';
+import 'package:reminder_app/screens/table_calendar.dart';
 
 Color col1 = const Color.fromARGB(255, 171, 222, 230);
 Color col2 = const Color.fromARGB(255, 203, 170, 203);
@@ -373,7 +374,10 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
 
-              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Home(key: UniqueKey())));
             } else if (repeat == "Daily") {
               // String id2 = Localstore.instance.collection("notes").doc().id;
               Notifs notif = Notifs(
@@ -402,7 +406,10 @@ class _AddNoteState extends State<AddNote> {
               }
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
-
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => Home(key: UniqueKey())));
               Navigator.pop(context);
             } else if (repeat == "Monthly") {
               // String id2 = Localstore.instance.collection("notes").doc().id;
@@ -413,6 +420,7 @@ class _AddNoteState extends State<AddNote> {
               notif.save();
               Repeat reeeeee = Repeat(id: id, option: "Monthly");
               reeeeee.save();
+              items3.putIfAbsent(reeeeee.id, () => reeeeee);
               // for (var i = 1; i <= 365; i++) {
               Provider.of<NotesOperation>(context, listen: false).addNewNote(
                 id,
@@ -432,7 +440,10 @@ class _AddNoteState extends State<AddNote> {
               }
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
-
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => Home(key: UniqueKey())));
               Navigator.pop(context);
             } else if (repeat == "Weekly") {
               // String id2 = Localstore.instance.collection("notes").doc().id;
@@ -443,6 +454,8 @@ class _AddNoteState extends State<AddNote> {
               notif.save();
               Repeat reeeeee = Repeat(id: id, option: "Weekly");
               reeeeee.save();
+              items3.putIfAbsent(reeeeee.id, () => reeeeee);
+
               // for (var i = 1; i <= 365; i++) {
               Provider.of<NotesOperation>(context, listen: false).addNewNote(
                 id,
@@ -463,7 +476,10 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
 
-              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Home(key: UniqueKey())));
             } else if (repeat == "Yearly") {
               // String id2 = Localstore.instance.collection("notes").doc().id;
               Notifs notif = Notifs(
@@ -493,9 +509,10 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
 
-              //Navigator.pop(context);
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const Home()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Home(key: UniqueKey())));
             }
           },
           icon: const Icon(
@@ -607,4 +624,3 @@ class _AddNoteState extends State<AddNote> {
     );
   }
 }
-

@@ -79,6 +79,7 @@ class Table_CalendarState extends State<Table_Calendar> {
 
         if (items3.containsKey(note1.id)) {
           Repeat? rex = items3[note1.id];
+
           // print(rex!.option);
           if (rex!.option == "Daily") {
             var selectDate2 = note1.date;
@@ -252,6 +253,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                 items.putIfAbsent(id, () => note);
                 Repeat r = Repeat(id: note.id, option: "Weekly");
                 r.save();
+                items3.putIfAbsent(r.id, () => r);
                 lastNote = note;
                 // }
               } else {
@@ -290,6 +292,7 @@ class Table_CalendarState extends State<Table_Calendar> {
             //items1.add(lastNote);
             for (var i = 1; i <= 24; i++) {
               DateTime g = DateTime.parse(selectDate2);
+              print(g);
               DateTime h = DateTime(g.year, g.month + 1, g.day);
               selectDate2 = format2.format(h);
 
@@ -741,21 +744,19 @@ class Table_CalendarState extends State<Table_Calendar> {
                                               onPressed: (context) async {
                                                 await _showDialog(item);
                                                 if (res == true) {
-                                                  setState(() {
-                                                    searchResults.remove(item);
-                                                    //print(item.id);
+                                                  searchResults.remove(item);
+                                                  //print(item.id);
 
-                                                    uncompleted.remove(item);
-                                                    item.delete();
-                                                    String not =
-                                                        notifs[item.id]!.id2;
-                                                    NotificationService()
-                                                        .deleteNotif(not);
+                                                  uncompleted.remove(item);
+                                                  item.delete();
+                                                  String not =
+                                                      notifs[item.id]!.id2;
+                                                  NotificationService()
+                                                      .deleteNotif(not);
 
-                                                    items.remove(item.id);
+                                                  items.remove(item.id);
 
-                                                    res = false;
-                                                  });
+                                                  res = false;
                                                 }
                                               },
                                               borderRadius:

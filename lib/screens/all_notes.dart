@@ -159,91 +159,69 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     initNumber = items.keys.length;
 
-    return
-        //Dismissible(
-        // key: Key(uncompleted.length.toString()),
-        // background: Container(
-        //   color: Colors.white30,
-        // ),
-        // onDismissed: (direct) {
-        //   // setState(() {
-        //   //   items1.clear();
-        //   // });
-
-        //   Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => const home.Home2(boo: true)),
-        //   );
-        // },
-        // direction: DismissDirection.horizontal,
-        // child:
-        Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: LayoutBuilder(
-              builder: (context, constraints) => Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Text(
-                      'Today',
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 3.0,
-                    ),
-                    Text(
-                      formattedDate,
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.normal),
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.only(left: constraints.maxWidth * .01),
-                      child: TabBar(
-                          indicatorPadding: const EdgeInsets.only(right: 10),
-                          indicatorColor: Theme.of(context).primaryColor,
-                          indicatorSize: TabBarIndicatorSize.tab,
-                          isScrollable: true,
-                          labelColor: Theme.of(context).primaryColor,
-                          labelPadding:
-                              const EdgeInsets.only(left: 0, right: 20),
-                          unselectedLabelColor: Colors.grey[600],
-                          controller: _tabController,
-                          labelStyle: const TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
-                          tabs: const [
-                            Tab(
-                              text: 'ToDo',
-                            ),
-                            Tab(text: 'Completed'),
-                          ]),
-                    ),
-                    SizedBox(
-                        width: double.maxFinite,
-                        height: constraints.maxHeight * .77,
-                        child: TabBarView(
-                          controller: _tabController,
-                          children: [
-                            notesCard(),
-                            CompletedNotes(key: UniqueKey()),
-                          ],
-                        )),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                  ],
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: LayoutBuilder(
+          builder: (context, constraints) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 10,
                 ),
-              ),
-            ));
+                const Text(
+                  'Today',
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 3.0,
+                ),
+                Text(
+                  formattedDate,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.normal),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: constraints.maxWidth * .01),
+                  child: TabBar(
+                      indicatorPadding: const EdgeInsets.only(right: 10),
+                      indicatorColor: Theme.of(context).primaryColor,
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      isScrollable: true,
+                      labelColor: Theme.of(context).primaryColor,
+                      labelPadding: const EdgeInsets.only(left: 0, right: 20),
+                      unselectedLabelColor: Colors.grey[600],
+                      controller: _tabController,
+                      labelStyle: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.bold),
+                      tabs: const [
+                        Tab(
+                          text: 'ToDo',
+                        ),
+                        Tab(text: 'Completed'),
+                      ]),
+                ),
+                SizedBox(
+                    width: double.maxFinite,
+                    height: constraints.maxHeight * .77,
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        notesCard(),
+                        CompletedNotes(key: UniqueKey()),
+                      ],
+                    )),
+                const SizedBox(
+                  height: 10.0,
+                ),
+              ],
+            ),
+          ),
+        ));
     //));
   }
 

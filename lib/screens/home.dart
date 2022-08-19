@@ -225,9 +225,11 @@ class _Home2State extends State<Home2> {
               body: PageView(
                 controller: pageController2,
                 physics: const NeverScrollableScrollPhysics(),
-                children: const [
-                  Table_Calendar(),
-                  AllNotes(),
+                children: [
+                  Table_Calendar(
+                    key: UniqueKey(),
+                  ),
+                  const AllNotes(),
                 ],
               ),
               floatingActionButtonLocation:

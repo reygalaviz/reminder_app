@@ -40,6 +40,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
   bool? val = false;
   @override
   Widget build(BuildContext context) {
+    String ter = "";
     return Transform.scale(
         scale: 1.5,
         child: Checkbox(
@@ -86,10 +87,12 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                   boop = true;
                   val = false;
                 }
-                String ter = all_notes.notifs[item.id]!.id2;
+                // if (all_notes.notifs[item.id] != null) {
+                //   ter = all_notes.notifs[item.id]!.id2;
+                // }
                 if (all.notifs[widget.id] != null) {
                   var tert = all.notifs[widget.id]!;
-                  String ter = tert.id2;
+                  ter = tert.id2;
                   all_notes.notifs.remove(tert.id);
                   tert.delete();
                   NotificationService().deleteNotif(ter);
@@ -134,12 +137,13 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                   items1.add(note);
                 });
                 note.save();
-
-                Notifs notif = Notifs(
-                  id: id1,
-                  id2: ter,
-                );
-                notif.save();
+                // if (ter != "") {
+                //   Notifs notif = Notifs(
+                //     id: id1,
+                //     id2: ter,
+                //   );
+                //   notif.save();
+                // }
                 searchResults.add(note);
                 if (boop == true) {
                   setState(() {
