@@ -66,7 +66,9 @@ class _HomeState extends State<Home> {
           style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 25),
         ),
         actions: [
-          const SearchNote(),
+          SearchNote(
+            key: UniqueKey(),
+          ),
           IconButton(
               color: Theme.of(context).primaryColor,
               onPressed: () => showSettingsModal(),

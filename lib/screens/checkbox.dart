@@ -14,6 +14,7 @@ import 'package:reminder_app/Screens/home.dart';
 import 'package:reminder_app/screens/table_calendar.dart';
 import 'package:reminder_app/screens/table_calendar.dart' as table;
 import 'package:reminder_app/models/repeat_store.dart';
+import 'search_notes.dart';
 
 class CheckBoxNote extends StatefulWidget {
   const CheckBoxNote({Key? key, required this.id}) : super(key: key);
@@ -40,6 +41,11 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
   bool? val = false;
   @override
   Widget build(BuildContext context) {
+    if (id4 == "") {
+      id4 = widget.id;
+    }
+    store.Notes item = all.items[id4]!;
+    bool boop = item.done;
     String ter = "";
     return Transform.scale(
         scale: 1.5,
@@ -56,13 +62,9 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
             checkColor: colPick,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5.0))),
-            value: val,
+            value: boop,
             onChanged: (val) {
               setState(() {
-                if (id4 == "") {
-                  id4 = widget.id;
-                }
-                store.Notes item = all.items[id4]!;
                 if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
                   colPick = Color(int.parse(item.color));
                 }
@@ -78,7 +80,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                 if (daySelect == "") {
                   daySelect = item.time;
                 }
-                bool boop = item.done;
+
                 if (item.done == true) {
                   boop = false;
 
@@ -99,27 +101,30 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                 }
 
                 //  final id = Localstore.instance.collection("notes").doc().id;
-                setState(() {
-                  int b = searchResults.indexWhere((val) => val.id == item.id);
-                  if (b != -1) {
-                    searchResults.removeAt(b);
-                  }
-                  int c = uncompleted.indexWhere((val) => val.id == item.id);
-                  if (c != -1) {
-                    uncompleted.removeAt(c);
-                  }
-                  all_notes.items.remove(item.id);
-                  int d = table.items1
-                      .indexWhere((element) => element.id == item.id);
-                  if (d != -1) {
-                    table.items1.removeAt(d);
-                  }
-                  int e =
-                      completed.indexWhere((element) => element.id == item.id);
-                  if (e != -1) {
-                    completed.removeAt(e);
-                  }
-                });
+
+                int a = suggestions.indexWhere((val) => val.id == item.id);
+                if (a != -1) {
+                  suggestions.removeAt(a);
+                }
+                int b = searchResults.indexWhere((val) => val.id == item.id);
+                if (b != -1) {
+                  searchResults.removeAt(b);
+                }
+                int c = uncompleted.indexWhere((val) => val.id == item.id);
+                if (c != -1) {
+                  uncompleted.removeAt(c);
+                }
+                all_notes.items.remove(item.id);
+                int d =
+                    table.items1.indexWhere((element) => element.id == item.id);
+                if (d != -1) {
+                  table.items1.removeAt(d);
+                }
+                int e =
+                    completed.indexWhere((element) => element.id == item.id);
+                if (e != -1) {
+                  completed.removeAt(e);
+                }
 
                 item.delete();
                 final id1 = store.db.collection('notes').doc().id;
@@ -133,9 +138,9 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                     priority: priority,
                     color: colPick.value.toString(),
                     done: boop);
-                setState(() {
-                  items1.add(note);
-                });
+
+                items1.add(note);
+
                 note.save();
                 // if (ter != "") {
                 //   Notifs notif = Notifs(
@@ -144,16 +149,12 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                 //   );
                 //   notif.save();
                 // }
-                searchResults.add(note);
+                //searchResults.add(note);
                 if (boop == true) {
-                  setState(() {
-                    completed.add(note);
-                  });
+                  completed.add(note);
                 } else {
-                  setState(() {
-                    uncompleted.add(note);
-                    completed.removeWhere((element) => element.id == widget.id);
-                  });
+                  uncompleted.add(note);
+                  completed.removeWhere((element) => element.id == widget.id);
                 }
 
                 all_notes.items.putIfAbsent(id1, () => note);

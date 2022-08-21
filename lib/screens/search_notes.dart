@@ -8,6 +8,8 @@ import '../models/note_data_store.dart';
 import 'all_notes.dart' as all_notes;
 import 'package:reminder_app/main.dart';
 
+List<Notes> suggestions = [];
+
 class MySearchDelegate extends SearchDelegate {
   //List<Notes> searchResults = <Notes>[];
 
@@ -36,7 +38,7 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<Notes> suggestions = searchResults.where((searchResult) {
+    suggestions = searchResults.where((searchResult) {
       final result = searchResult.title.toLowerCase();
       final input = query.toLowerCase();
 
@@ -73,22 +75,6 @@ class SearchNote extends StatefulWidget {
 }
 
 class SearchNoteState extends State<SearchNote> {
-  final _db = Localstore.instance;
-  final _items = <String, store.Notes>{};
-  StreamSubscription<Map<String, dynamic>>? _subscription;
-  @override
-  void initState() {
-    super.initState();
-    _db.collection('notes').get().then((value) {
-      _subscription = _db.collection('notes').stream.listen((event) {
-        setState(() {
-          final item = store.Notes.fromMap(event);
-          _items.putIfAbsent(item.id, () => item);
-        });
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return IconButton(

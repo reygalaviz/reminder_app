@@ -537,6 +537,11 @@ class _EditNoteState extends State<EditNote> {
                 }
                 bool bloop = item.done;
                 setState(() {
+                  int a = comp.completed
+                      .indexWhere((element) => element.id == item.id);
+                  if (a != -1) {
+                    comp.completed.removeAt(a);
+                  }
                   int b = searchResults.indexWhere((val) => val.id == item.id);
                   if (b != -1) {
                     searchResults.removeAt(b);
@@ -576,18 +581,23 @@ class _EditNoteState extends State<EditNote> {
                 Repeat reeeeee = Repeat(id: id, option: "Daily");
                 reeeeee.save();
                 notif1.save();
-                setState(() {
-                  searchResults.add(item1);
+
+                searchResults.add(item1);
+                if (item.done == true) {
+                  comp.completed.add(item1);
+                } else {
                   uncompleted.add(item1);
-                  allNotes.items.putIfAbsent(id, () => item1);
-                  table.items1.add(item1);
-                  _items.putIfAbsent(item1.id, () => item1);
-                });
+                }
+                allNotes.items.putIfAbsent(id, () => item1);
+                table.items1.add(item1);
+                _items.putIfAbsent(item1.id, () => item1);
 
                 // Navigator.pop(context);
                 bool b = true;
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Home2(boo: b)));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Home(key: UniqueKey())));
               },
               child: const Text(
                 'Save',
