@@ -9,6 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:async';
 import 'checkbox.dart';
 import 'package:reminder_app/main.dart';
+import 'home.dart';
 
 List<Notes> completed = <Notes>[];
 String id = "No notes exist";
@@ -73,6 +74,7 @@ class _CompletedNotesState extends State<CompletedNotes> {
                     SlidableAction(
                       onPressed: (context) async {
                         await _showDialog(item);
+                        notes.remove(item.id);
                         if (res == true) {
                           setState(() {
                             int b = searchResults
@@ -108,6 +110,12 @@ class _CompletedNotesState extends State<CompletedNotes> {
                             }
                             all_notes.items.remove(item.id);
                             res = false;
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Home(
+                                          key: UniqueKey(),
+                                        )));
                           });
                         }
                       },

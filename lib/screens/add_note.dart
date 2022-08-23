@@ -11,6 +11,7 @@ import 'package:reminder_app/models/notif_data_store.dart';
 import 'package:reminder_app/models/repeat_store.dart';
 import 'package:reminder_app/screens/home.dart';
 import 'package:reminder_app/screens/table_calendar.dart';
+import 'package:reminder_app/models/note_data_store.dart';
 
 Color col1 = const Color.fromARGB(255, 171, 222, 230);
 Color col2 = const Color.fromARGB(255, 203, 170, 203);
@@ -387,6 +388,7 @@ class _AddNoteState extends State<AddNote> {
               notif.save();
               Repeat reeeeee = Repeat(id: id, option: "Daily");
               reeeeee.save();
+
               // for (var i = 1; i <= 365; i++) {
               Provider.of<NotesOperation>(context, listen: false).addNewNote(
                 id,
@@ -397,6 +399,26 @@ class _AddNoteState extends State<AddNote> {
                 priority,
                 colPick.value.toString(),
               );
+              for (var i = 1; i <= 100; i++) {
+                DateTime g = DateTime.parse(selectDate);
+                DateTime h = DateTime(g.year, g.month, g.day + 1);
+                selectDate = format.format(h);
+                if (done.indexWhere((element) => element == g) == -1) {
+                  done.add(g);
+                }
+                Notes note = Notes(
+                    id: id,
+                    title: title,
+                    data: body,
+                    date: selectDate,
+                    time: daySelect,
+                    priority: priority,
+                    color: colPick.value.toString(),
+                    done: false);
+                setState(() {
+                  items1.add(note);
+                });
+              }
               if (count.notifChoice == true) {
                 NotificationService().scheduleNotificationDaily(
                     body: body,

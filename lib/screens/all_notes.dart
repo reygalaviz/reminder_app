@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -21,7 +20,7 @@ int initNumber = 0;
 
 var items = <String, store.Notes>{};
 var notifs = <String, Notifs>{};
-String id = "No notes exist";
+//String id = "No notes exist";
 bool res = false;
 // List<Notes> searchResults = <Notes>[];
 // List<String> notes = <String>[];
@@ -55,6 +54,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
         setState(() {
           final item = store.Notes.fromMap(event);
           if (!notes.contains(item.id)) {
+            print(item.id);
             notes.add(item.id);
             searchResults.add(item);
 
@@ -104,15 +104,35 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                         await _showDialog(item);
                         if (res == true) {
                           setState(() {
-                            searchResults.remove(item);
-                            uncompleted.remove(item);
-                            item.delete();
+                            int b = searchResults
+                                .indexWhere((val) => val.id == item.id);
+                            if (b != -1) {
+                              searchResults.removeAt(b);
+                            }
+                            int c = uncompleted
+                                .indexWhere((val) => val.id == item.id);
+                            if (c != -1) {
+                              uncompleted.removeAt(c);
+                            }
+                            items.remove(item.id);
+                            int d = items1
+                                .indexWhere((element) => element.id == item.id);
+                            if (d != -1) {
+                              items1.removeAt(d);
+                            }
 
+                            notes.removeWhere((element) => element == item.id);
+
+                            int e = completed
+                                .indexWhere((element) => element.id == item.id);
+                            if (e != -1) {
+                              completed.removeAt(e);
+                            }
+
+                            item.delete();
+                            notes.remove(item.id);
                             String not = notifs[item.id]!.id2;
                             NotificationService().deleteNotif(not);
-
-                            items.remove(item.id);
-
                             res = false;
                           });
                         }
@@ -140,12 +160,12 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                   ),
                   tileColor: Color(int.parse(item.color)).withOpacity(1),
                   onTap: () {
-                    id = item.id;
+                    ;
 
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => EditNote(id: id)));
+                            builder: (context) => EditNote(id: item.id)));
                   },
                   trailing: Wrap(children: <Widget>[CheckBoxNote(id: item.id)]),
                 ),

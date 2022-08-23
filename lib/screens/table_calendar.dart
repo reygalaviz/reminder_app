@@ -16,7 +16,7 @@ import 'package:reminder_app/models/repeat_store.dart';
 import 'package:reminder_app/main.dart';
 import 'package:reminder_app/models/notif_data_store.dart';
 
-String id = "No notes exist";
+// String id = "No notes exist";
 bool res = false;
 bool don = false;
 Color colPick = Colors.white;
@@ -24,6 +24,8 @@ StreamSubscription<Map<String, dynamic>>? _subscription;
 //final items1 = <String, store.Notes>{};
 List<Notes> items1 = [];
 final items3 = <String, Repeat>{};
+List<DateTime> done = [];
+
 // late final ValueNotifier<List<Notes>> _selectedEvents;
 //
 
@@ -47,7 +49,6 @@ class Table_CalendarState extends State<Table_Calendar> {
   final Map<DateTime, List<Notes>> _events = {};
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
-  List<DateTime> done = [];
 
   List<Notes> _selectedEvents = [];
 
@@ -71,6 +72,7 @@ class Table_CalendarState extends State<Table_Calendar> {
   Future addEvents() async {
     for (int i = 0; i < notes.length; i++) {
       var note1 = items[notes[i]];
+
       final parsDate = DateTime.parse(note1!.date);
       if (!items1.contains(note1)) {
         setState(() {
@@ -79,8 +81,6 @@ class Table_CalendarState extends State<Table_Calendar> {
 
         if (items3.containsKey(note1.id)) {
           Repeat? rex = items3[note1.id];
-
-          // print(rex!.option);
           if (rex!.option == "Daily") {
             var selectDate2 = note1.date;
             Notes lastNote = note1;
@@ -89,8 +89,9 @@ class Table_CalendarState extends State<Table_Calendar> {
               DateTime g = DateTime.parse(selectDate2);
               DateTime h = DateTime(g.year, g.month, g.day + 1);
               selectDate2 = format2.format(h);
+
               if (g.isBefore(DateTime.now())) {
-                // if (g.day != DateTime.now().day) {
+                //if (g.day != DateTime.now().day) {
                 String ter = notifs[lastNote.id]!.id2;
 
                 NotificationService().deleteNotif(ter);
@@ -104,7 +105,6 @@ class Table_CalendarState extends State<Table_Calendar> {
                 }
 
                 lastNote.delete();
-                // items1.remove(lastNote);
                 int b =
                     searchResults.indexWhere((val) => val.id == lastNote.id);
                 if (b != -1) {
@@ -125,10 +125,10 @@ class Table_CalendarState extends State<Table_Calendar> {
                   x.delete;
                 }
                 items3.remove(lastNote.id);
-                final id1 = store.db.collection('notes').doc().id;
-                id = id1;
+                String id1 = store.db.collection('notes').doc().id;
+                //  id = id1;
                 Notes note = Notes(
-                    id: id,
+                    id: id1,
                     title: note1.title,
                     data: note1.data,
                     date: selectDate2,
@@ -141,20 +141,20 @@ class Table_CalendarState extends State<Table_Calendar> {
                 });
                 note.save();
                 Notifs notif = Notifs(
-                  id: id,
+                  id: id1,
                   id2: ter,
                 );
                 notif.save();
                 searchResults.add(note);
                 uncompleted.add(note);
-                items.putIfAbsent(id, () => note);
+                items.putIfAbsent(id1, () => note);
                 Repeat r = Repeat(id: note.id, option: "Daily");
                 r.save();
                 lastNote = note;
                 // }
               } else {
                 Notes note = Notes(
-                    id: id,
+                    id: note1.id,
                     title: note1.title,
                     data: note1.data,
                     date: selectDate2,
@@ -229,9 +229,9 @@ class Table_CalendarState extends State<Table_Calendar> {
                 }
                 items3.remove(lastNote.id);
                 final id1 = store.db.collection('notes').doc().id;
-                id = id1;
+                // id = id1;
                 Notes note = Notes(
-                    id: id,
+                    id: id1,
                     title: note1.title,
                     data: note1.data,
                     date: selectDate2,
@@ -244,13 +244,13 @@ class Table_CalendarState extends State<Table_Calendar> {
                 });
                 note.save();
                 Notifs notif = Notifs(
-                  id: id,
+                  id: id1,
                   id2: ter,
                 );
                 notif.save();
                 searchResults.add(note);
                 uncompleted.add(note);
-                items.putIfAbsent(id, () => note);
+                items.putIfAbsent(id1, () => note);
                 Repeat r = Repeat(id: note.id, option: "Weekly");
                 r.save();
                 items3.putIfAbsent(r.id, () => r);
@@ -258,7 +258,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                 // }
               } else {
                 Notes note = Notes(
-                    id: id,
+                    id: note1.id,
                     title: note1.title,
                     data: note1.data,
                     date: selectDate2,
@@ -292,7 +292,7 @@ class Table_CalendarState extends State<Table_Calendar> {
             //items1.add(lastNote);
             for (var i = 1; i <= 24; i++) {
               DateTime g = DateTime.parse(selectDate2);
-              //print(g);
+
               DateTime h = DateTime(g.year, g.month + 1, g.day);
               selectDate2 = format2.format(h);
 
@@ -335,9 +335,9 @@ class Table_CalendarState extends State<Table_Calendar> {
                   items3.remove(lastNote.id);
 
                   final id1 = store.db.collection('notes').doc().id;
-                  id = id1;
+                  // id = id1;
                   Notes note = Notes(
-                      id: id,
+                      id: id1,
                       title: note1.title,
                       data: note1.data,
                       date: selectDate2,
@@ -350,20 +350,20 @@ class Table_CalendarState extends State<Table_Calendar> {
                   });
                   note.save();
                   Notifs notif = Notifs(
-                    id: id,
+                    id: id1,
                     id2: ter,
                   );
                   notif.save();
                   searchResults.add(note);
                   uncompleted.add(note);
-                  items.putIfAbsent(id, () => note);
+                  items.putIfAbsent(id1, () => note);
                   Repeat r = Repeat(id: note.id, option: "Monthly");
                   r.save();
                   lastNote = note;
                 }
               } else {
                 Notes note = Notes(
-                    id: id,
+                    id: note1.id,
                     title: note1.title,
                     data: note1.data,
                     date: selectDate2,
@@ -393,7 +393,7 @@ class Table_CalendarState extends State<Table_Calendar> {
           if (rex.option == "Yearly") {
             var selectDate2 = note1.date;
             Notes lastNote = note1;
-            String id = lastNote.id;
+            // String id = lastNote.id;
             // items1.add(lastNote);
             for (var i = 1; i <= 10; i++) {
               DateTime g = DateTime.parse(selectDate2);
@@ -437,9 +437,9 @@ class Table_CalendarState extends State<Table_Calendar> {
                   }
                   items3.remove(lastNote.id);
                   final id1 = store.db.collection('notes').doc().id;
-                  id = id1;
+                  //id = id1;
                   Notes note = Notes(
-                      id: id,
+                      id: id1,
                       title: note1.title,
                       data: note1.data,
                       date: selectDate2,
@@ -452,20 +452,20 @@ class Table_CalendarState extends State<Table_Calendar> {
                   });
                   note.save();
                   Notifs notif = Notifs(
-                    id: id,
+                    id: id1,
                     id2: ter,
                   );
                   notif.save();
                   searchResults.add(note);
                   uncompleted.add(note);
-                  items.putIfAbsent(id, () => note);
+                  items.putIfAbsent(id1, () => note);
                   Repeat r = Repeat(id: note.id, option: "Yearly");
                   r.save();
                   lastNote = note;
                 }
               } else {
                 Notes note = Notes(
-                    id: id,
+                    id: note1.id,
                     title: note1.title,
                     data: note1.data,
                     date: selectDate2,
@@ -689,123 +689,127 @@ class Table_CalendarState extends State<Table_Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    return
-        //  Dismissible(
-        //     key: UniqueKey(),
-        //     background: Container(
-        //       color: Colors.white30,
-        //     ),
-        //     onDismissed: (direct) {
-        //       Navigator.push(
-        //         context,
-        //         MaterialPageRoute(builder: (context) => const home.Home()),
-        //       );
-        //     },
-        //     direction: DismissDirection.horizontal,
-        //child:
-        Scaffold(
-            body: Container(
-                color: Theme.of(context).backgroundColor,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      calendar(),
-                      const SizedBox(
-                        height: 8.0,
-                      ),
-                      eventTitle(),
-                      const Divider(
-                        height: 15,
-                        thickness: 2.0,
-                        indent: 10.0,
-                        endIndent: 10.0,
-                      ),
-                      Expanded(
-                          child: ListView.builder(
-                              itemCount: items1.length,
-                              itemBuilder: (context, index) {
-                                // var item = items1.elementAt(index);
-                                var item = items1[index];
-                                // final item = items1[key]!;
-                                DateFormat format = DateFormat("yyyy-MM-dd");
-                                String day2 = format.format(_selectedDay);
-                                don = item.done;
-                                String id5 = item.id;
-                                if (item.date == day2 && item.done == false) {
-                                  return Card(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      child: Slidable(
-                                        endActionPane: ActionPane(
-                                          motion: const ScrollMotion(),
-                                          children: [
-                                            SlidableAction(
-                                              onPressed: (context) async {
-                                                await _showDialog(item);
-                                                if (res == true) {
-                                                  searchResults.remove(item);
-                                                  //print(item.id);
+    print(items1);
+    return Scaffold(
+        body: Container(
+            color: Theme.of(context).backgroundColor,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              calendar(),
+              const SizedBox(
+                height: 8.0,
+              ),
+              eventTitle(),
+              const Divider(
+                height: 15,
+                thickness: 2.0,
+                indent: 10.0,
+                endIndent: 10.0,
+              ),
+              Expanded(
+                  child: ListView.builder(
+                      itemCount: items1.length,
+                      itemBuilder: (context, index) {
+                        // var item = items1.elementAt(index);
+                        var item = items1[index];
+                        // final item = items1[key]!;
+                        DateFormat format = DateFormat("yyyy-MM-dd");
+                        String day2 = format.format(_selectedDay);
+                        don = item.done;
+                        String id5 = item.id;
+                        if (item.date == day2 && item.done == false) {
+                          return Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Slidable(
+                                endActionPane: ActionPane(
+                                  motion: const ScrollMotion(),
+                                  children: [
+                                    SlidableAction(
+                                      onPressed: (context) async {
+                                        await _showDialog(item);
 
-                                                  uncompleted.remove(item);
-                                                  item.delete();
-                                                  String not =
-                                                      notifs[item.id]!.id2;
-                                                  NotificationService()
-                                                      .deleteNotif(not);
+                                        if (res == true) {
+                                          int b = searchResults.indexWhere(
+                                              (val) => val.id == item.id);
+                                          if (b != -1) {
+                                            searchResults.removeAt(b);
+                                          }
+                                          int c = uncompleted.indexWhere(
+                                              (val) => val.id == item.id);
+                                          if (c != -1) {
+                                            uncompleted.removeAt(c);
+                                          }
+                                          items.remove(item.id);
+                                          int d = items1.indexWhere((element) =>
+                                              element.id == item.id);
+                                          if (d != -1) {
+                                            items1.removeAt(d);
+                                          }
 
-                                                  items.remove(item.id);
+                                          notes.removeWhere(
+                                              (element) => element == item.id);
 
-                                                  res = false;
-                                                }
-                                              },
-                                              borderRadius:
-                                                  const BorderRadius.only(
-                                                      topRight:
-                                                          Radius.circular(10.0),
-                                                      bottomRight:
-                                                          Radius.circular(
-                                                              10.0)),
-                                              backgroundColor: Colors.red,
-                                              foregroundColor: Colors.white,
-                                              icon: FontAwesomeIcons.trash,
-                                            ),
-                                          ],
-                                        ),
-                                        child: ListTile(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          title: Text(
-                                            item.title,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black),
-                                          ),
-                                          subtitle: Text(
-                                            item.time,
-                                            style: const TextStyle(
-                                                color: Colors.black),
-                                          ),
-                                          tileColor: invisColor(item),
-                                          onTap: () {
-                                            id5 = item.id;
-                                            print(id5);
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        EditNote(id: id5)));
-                                          },
-                                          trailing: Wrap(children: <Widget>[
-                                            CheckBoxNote(id: id5)
-                                          ]),
-                                        ),
-                                      ));
-                                } else {
-                                  return Container();
-                                }
-                              }))
-                    ])));
+                                          item.delete();
+
+                                          notes.remove(item.id);
+
+                                          String not = notifs[item.id]!.id2;
+                                          NotificationService()
+                                              .deleteNotif(not);
+
+                                          res = false;
+                                          if (!mounted) return;
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      home.Home2(
+                                                          key: UniqueKey(),
+                                                          boo: true)));
+                                        }
+                                      },
+                                      borderRadius: const BorderRadius.only(
+                                          topRight: Radius.circular(10.0),
+                                          bottomRight: Radius.circular(10.0)),
+                                      backgroundColor: Colors.red,
+                                      foregroundColor: Colors.white,
+                                      icon: FontAwesomeIcons.trash,
+                                    ),
+                                  ],
+                                ),
+                                child: ListTile(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  title: Text(
+                                    item.title,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
+                                  subtitle: Text(
+                                    item.time,
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                  tileColor: invisColor(item),
+                                  onTap: () {
+                                    id5 = item.id;
+
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditNote(id: id5)));
+                                  },
+                                  trailing: Wrap(children: <Widget>[
+                                    CheckBoxNote(id: id5)
+                                  ]),
+                                ),
+                              ));
+                        } else {
+                          return Container();
+                        }
+                      }))
+            ])));
   }
 }

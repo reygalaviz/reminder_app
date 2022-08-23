@@ -41,11 +41,17 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
   bool? val = false;
   @override
   Widget build(BuildContext context) {
-    if (id4 == "") {
-      id4 = widget.id;
+    // print(all.items);
+    // print(count.searchResults);
+    bool boop = true;
+    print(notes);
+    var ovj = count.notes
+        .firstWhere((element) => element == widget.id, orElse: (() => ""));
+    if (ovj != "") {
+      var obj = all.items[ovj];
+      boop = obj!.done;
     }
-    store.Notes item = all.items[id4]!;
-    bool boop = item.done;
+
     String ter = "";
     return Transform.scale(
         scale: 1.5,
@@ -65,6 +71,10 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
             value: boop,
             onChanged: (val) {
               setState(() {
+                if (id4 == "") {
+                  id4 = widget.id;
+                }
+                store.Notes item = all.items[id4]!;
                 if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
                   colPick = Color(int.parse(item.color));
                 }
