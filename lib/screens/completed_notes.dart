@@ -110,6 +110,8 @@ class _CompletedNotesState extends State<CompletedNotes> {
                             }
                             all_notes.items.remove(item.id);
                             res = false;
+                            done.clear();
+                            items1.clear();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

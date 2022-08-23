@@ -689,7 +689,6 @@ class Table_CalendarState extends State<Table_Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    print(items1);
     return Scaffold(
         body: Container(
             color: Theme.of(context).backgroundColor,
