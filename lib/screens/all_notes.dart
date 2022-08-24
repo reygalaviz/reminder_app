@@ -21,7 +21,7 @@ int initNumber = 0;
 var items = <String, store.Notes>{};
 var notifs = <String, Notifs>{};
 //String id = "No notes exist";
-bool res = false;
+
 // List<Notes> searchResults = <Notes>[];
 // List<String> notes = <String>[];
 // List<Notes> uncompleted = <Notes>[];
@@ -102,41 +102,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                     SlidableAction(
                       onPressed: (context) async {
                         await _showDialog(item);
-                        if (res == true) {
-                          // setState(() {
-                          //   int b = searchResults
-                          //       .indexWhere((val) => val.id == item.id);
-                          //   if (b != -1) {
-                          //     searchResults.removeAt(b);
-                          //   }
-                          //   int c = uncompleted
-                          //       .indexWhere((val) => val.id == item.id);
-                          //   if (c != -1) {
-                          //     uncompleted.removeAt(c);
-                          //   }
-                          //   items.remove(item.id);
-                          //   int d = items1
-                          //       .indexWhere((element) => element.id == item.id);
-                          //   if (d != -1) {
-                          //     items1.removeAt(d);
-                          //   }
-
-                          //   notes.removeWhere((element) => element == item.id);
-
-                          //   int e = completed
-                          //       .indexWhere((element) => element.id == item.id);
-                          //   if (e != -1) {
-                          //     completed.removeAt(e);
-                          //   }
-
-                          //   item.delete();
-                          //   notes.remove(item.id);
-                          //   String not = notifs[item.id]!.id2;
-                          //   NotificationService().deleteNotif(not);
-//});
-
-                          res = false;
-                        }
                       },
                       borderRadius: const BorderRadius.only(
                           topRight: Radius.circular(10.0),
@@ -283,7 +248,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                   style: TextStyle(color: Theme.of(context).primaryColor)),
               onPressed: () {
                 Navigator.of(context).pop();
-                res = false;
               },
             ),
             TextButton(
@@ -324,7 +288,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                             builder: (dialogContext) => home.Home(
                                   key: UniqueKey(),
                                 )));
-                    res = true;
                   });
                 },
                 child: const Text(

@@ -43,13 +43,15 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
   Widget build(BuildContext context) {
     // print(all.items);
     // print(count.searchResults);
-    bool boop = true;
+    bool boop = false;
     print(notes);
     var ovj = count.notes
         .firstWhere((element) => element == widget.id, orElse: (() => ""));
     if (ovj != "") {
       var obj = all.items[ovj];
-      boop = obj!.done;
+      if (!obj!.done) {
+        boop = obj.done;
+      }
     }
 
     String ter = "";
