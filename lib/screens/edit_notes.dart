@@ -592,12 +592,12 @@ class _EditNoteState extends State<EditNote> {
                 table.items1.add(item1);
                 _items.putIfAbsent(item1.id, () => item1);
 
-                // Navigator.pop(context);
+                Navigator.pop(context);
                 bool b = true;
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Home(key: UniqueKey())));
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => Home(key: UniqueKey())));
               },
               child: const Text(
                 'Save',
