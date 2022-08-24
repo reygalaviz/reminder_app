@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -21,7 +20,7 @@ int initNumber = 0;
 
 var items = <String, store.Notes>{};
 var notifs = <String, Notifs>{};
-String id = "No notes exist";
+//String id = "No notes exist";
 bool res = false;
 // List<Notes> searchResults = <Notes>[];
 // List<String> notes = <String>[];
@@ -55,6 +54,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
         setState(() {
           final item = store.Notes.fromMap(event);
           if (!notes.contains(item.id)) {
+            ;
             notes.add(item.id);
             searchResults.add(item);
 
@@ -103,18 +103,39 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                       onPressed: (context) async {
                         await _showDialog(item);
                         if (res == true) {
-                          setState(() {
-                            searchResults.remove(item);
-                            uncompleted.remove(item);
-                            item.delete();
+                          // setState(() {
+                          //   int b = searchResults
+                          //       .indexWhere((val) => val.id == item.id);
+                          //   if (b != -1) {
+                          //     searchResults.removeAt(b);
+                          //   }
+                          //   int c = uncompleted
+                          //       .indexWhere((val) => val.id == item.id);
+                          //   if (c != -1) {
+                          //     uncompleted.removeAt(c);
+                          //   }
+                          //   items.remove(item.id);
+                          //   int d = items1
+                          //       .indexWhere((element) => element.id == item.id);
+                          //   if (d != -1) {
+                          //     items1.removeAt(d);
+                          //   }
 
-                            String not = notifs[item.id]!.id2;
-                            NotificationService().deleteNotif(not);
+                          //   notes.removeWhere((element) => element == item.id);
 
-                            items.remove(item.id);
+                          //   int e = completed
+                          //       .indexWhere((element) => element.id == item.id);
+                          //   if (e != -1) {
+                          //     completed.removeAt(e);
+                          //   }
 
-                            res = false;
-                          });
+                          //   item.delete();
+                          //   notes.remove(item.id);
+                          //   String not = notifs[item.id]!.id2;
+                          //   NotificationService().deleteNotif(not);
+//});
+
+                          res = false;
                         }
                       },
                       borderRadius: const BorderRadius.only(
@@ -140,12 +161,12 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                   ),
                   tileColor: Color(int.parse(item.color)).withOpacity(1),
                   onTap: () {
-                    id = item.id;
+                    ;
 
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => EditNote(id: id)));
+                            builder: (context) => EditNote(id: item.id)));
                   },
                   trailing: Wrap(children: <Widget>[CheckBoxNote(id: item.id)]),
                 ),
@@ -239,11 +260,11 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
     }
   }
 
-  Future<bool?> _showDialog(final item) async {
+  Future<bool?> _showDialog(store.Notes item2) async {
     return showDialog<bool>(
       context: context,
       barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
+      builder: (dialogContex) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
@@ -267,9 +288,44 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
             ),
             TextButton(
                 onPressed: () {
-                  res = true;
+                  setState(() {
+                    int b =
+                        searchResults.indexWhere((val) => val.id == item2.id);
+                    if (b != -1) {
+                      searchResults.removeAt(b);
+                    }
+                    int c = uncompleted.indexWhere((val) => val.id == item2.id);
+                    if (c != -1) {
+                      uncompleted.removeAt(c);
+                    }
+                    items.remove(item2.id);
+                    int d =
+                        items1.indexWhere((element) => element.id == item2.id);
+                    if (d != -1) {
+                      items1.removeAt(d);
+                    }
 
-                  Navigator.of(context).pop();
+                    notes.removeWhere((element) => element == item2.id);
+
+                    int e = completed
+                        .indexWhere((element) => element.id == item2.id);
+                    if (e != -1) {
+                      completed.removeAt(e);
+                    }
+
+                    item2.delete();
+                    notes.remove(item2.id);
+                    String not = notifs[item2.id]!.id2;
+                    NotificationService().deleteNotif(not);
+                    if (!mounted) return;
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (dialogContext) => home.Home(
+                                  key: UniqueKey(),
+                                )));
+                    res = true;
+                  });
                 },
                 child: const Text(
                   "Delete",
