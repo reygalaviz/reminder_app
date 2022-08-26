@@ -17,7 +17,7 @@ import 'package:reminder_app/main.dart';
 import 'package:reminder_app/models/notif_data_store.dart';
 
 // String id = "No notes exist";
-bool res = false;
+
 bool don = false;
 Color colPick = Colors.white;
 StreamSubscription<Map<String, dynamic>>? _subscription;
@@ -72,7 +72,9 @@ class Table_CalendarState extends State<Table_Calendar> {
   Future addEvents() async {
     for (int i = 0; i < notes.length; i++) {
       var note1 = items[notes[i]];
-
+      // print(note1!.date);
+      // print(note1.id);
+      // print(items.keys);
       final parsDate = DateTime.parse(note1!.date);
       if (!items1.contains(note1)) {
         setState(() {
@@ -148,7 +150,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                 searchResults.add(note);
                 uncompleted.add(note);
                 items.putIfAbsent(id1, () => note);
-                Repeat r = Repeat(id: note.id, option: "Daily");
+                Repeat r = Repeat(id: id1, option: "Daily");
                 r.save();
                 lastNote = note;
                 // }
@@ -251,7 +253,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                 searchResults.add(note);
                 uncompleted.add(note);
                 items.putIfAbsent(id1, () => note);
-                Repeat r = Repeat(id: note.id, option: "Weekly");
+                Repeat r = Repeat(id: id1, option: "Weekly");
                 r.save();
                 items3.putIfAbsent(r.id, () => r);
                 lastNote = note;
@@ -357,7 +359,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                   searchResults.add(note);
                   uncompleted.add(note);
                   items.putIfAbsent(id1, () => note);
-                  Repeat r = Repeat(id: note.id, option: "Monthly");
+                  Repeat r = Repeat(id: id1, option: "Monthly");
                   r.save();
                   lastNote = note;
                 }
@@ -435,6 +437,10 @@ class Table_CalendarState extends State<Table_Calendar> {
                   if (x != null) {
                     x.delete;
                   }
+                  Repeat? f = items3[lastNote.id];
+                  if (f != null) {
+                    f.delete();
+                  }
                   items3.remove(lastNote.id);
                   final id1 = store.db.collection('notes').doc().id;
                   //id = id1;
@@ -459,7 +465,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                   searchResults.add(note);
                   uncompleted.add(note);
                   items.putIfAbsent(id1, () => note);
-                  Repeat r = Repeat(id: note.id, option: "Yearly");
+                  Repeat r = Repeat(id: id1, option: "Yearly");
                   r.save();
                   lastNote = note;
                 }
@@ -554,7 +560,7 @@ class Table_CalendarState extends State<Table_Calendar> {
     }
   }
 
-  Future<bool?> _showDialog(final item) async {
+  Future<bool?> _showDialog(Notes item) async {
     return showDialog<bool>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -577,13 +583,37 @@ class Table_CalendarState extends State<Table_Calendar> {
                   style: TextStyle(color: Theme.of(context).primaryColor)),
               onPressed: () {
                 Navigator.of(context).pop();
-                res = false;
               },
             ),
             TextButton(
                 onPressed: () {
-                  res = true;
-                  Navigator.pop(context);
+                  int b = searchResults.indexWhere((val) => val.id == item.id);
+                  if (b != -1) {
+                    searchResults.removeAt(b);
+                  }
+                  int c = uncompleted.indexWhere((val) => val.id == item.id);
+                  if (c != -1) {
+                    uncompleted.removeAt(c);
+                  }
+                  items.remove(item.id);
+                  int d = items1.indexWhere((element) => element.id == item.id);
+                  if (d != -1) {
+                    items1.removeAt(d);
+                  }
+
+                  notes.removeWhere((element) => element == item.id);
+
+                  item.delete();
+
+                  notes.remove(item.id);
+
+                  String not = notifs[item.id]!.id2;
+                  NotificationService().deleteNotif(not);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              home.Home2(key: UniqueKey(), boo: true)));
                 },
                 child:
                     const Text("Delete", style: TextStyle(color: Colors.red)))
@@ -727,46 +757,6 @@ class Table_CalendarState extends State<Table_Calendar> {
                                     SlidableAction(
                                       onPressed: (context) async {
                                         await _showDialog(item);
-
-                                        if (res == true) {
-                                          int b = searchResults.indexWhere(
-                                              (val) => val.id == item.id);
-                                          if (b != -1) {
-                                            searchResults.removeAt(b);
-                                          }
-                                          int c = uncompleted.indexWhere(
-                                              (val) => val.id == item.id);
-                                          if (c != -1) {
-                                            uncompleted.removeAt(c);
-                                          }
-                                          items.remove(item.id);
-                                          int d = items1.indexWhere((element) =>
-                                              element.id == item.id);
-                                          if (d != -1) {
-                                            items1.removeAt(d);
-                                          }
-
-                                          notes.removeWhere(
-                                              (element) => element == item.id);
-
-                                          item.delete();
-
-                                          notes.remove(item.id);
-
-                                          String not = notifs[item.id]!.id2;
-                                          NotificationService()
-                                              .deleteNotif(not);
-
-                                          res = false;
-                                          if (!mounted) return;
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      home.Home2(
-                                                          key: UniqueKey(),
-                                                          boo: true)));
-                                        }
                                       },
                                       borderRadius: const BorderRadius.only(
                                           topRight: Radius.circular(10.0),
@@ -787,7 +777,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                                         color: Colors.black),
                                   ),
                                   subtitle: Text(
-                                    item.time,
+                                    "${item.time}     ${item.data}",
                                     style: const TextStyle(color: Colors.black),
                                   ),
                                   tileColor: invisColor(item),

@@ -15,6 +15,7 @@ import 'package:reminder_app/screens/table_calendar.dart';
 import 'package:reminder_app/screens/table_calendar.dart' as table;
 import 'package:reminder_app/models/repeat_store.dart';
 import 'search_notes.dart';
+import 'package:intl/intl.dart';
 
 class CheckBoxNote extends StatefulWidget {
   const CheckBoxNote({Key? key, required this.id}) : super(key: key);
@@ -37,14 +38,14 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
   Color selectColor = const Color.fromARGB(255, 180, 175, 174);
   String priority = "high";
   String id4 = "";
-
+  DateFormat format = DateFormat("yyyy-MM-dd");
   bool? val = false;
   @override
   Widget build(BuildContext context) {
     // print(all.items);
     // print(count.searchResults);
     bool boop = false;
-    print(notes);
+
     var ovj = count.notes
         .firstWhere((element) => element == widget.id, orElse: (() => ""));
     if (ovj != "") {
@@ -154,14 +155,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                 items1.add(note);
 
                 note.save();
-                // if (ter != "") {
-                //   Notifs notif = Notifs(
-                //     id: id1,
-                //     id2: ter,
-                //   );
-                //   notif.save();
-                // }
-                //searchResults.add(note);
+
                 if (boop == true) {
                   completed.add(note);
                 } else {
@@ -176,6 +170,26 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                     Repeat r = Repeat(id: note.id, option: "Daily");
                     items3.putIfAbsent(note.id, () => r);
                     r.save();
+                    for (var i = 1; i <= 100; i++) {
+                      DateTime g = DateTime.parse(selectDate);
+                      DateTime h = DateTime(g.year, g.month, g.day + 1);
+                      selectDate = format.format(h);
+                      if (done.indexWhere((element) => element == g) == -1) {
+                        done.add(g);
+                      }
+                      Notes note = Notes(
+                          id: id,
+                          title: title,
+                          data: body,
+                          date: selectDate,
+                          time: daySelect,
+                          priority: priority,
+                          color: colPick.value.toString(),
+                          done: false);
+                      setState(() {
+                        items1.add(note);
+                      });
+                    }
                   } else if (repea.option == "Weekly") {
                     Repeat r = Repeat(id: note.id, option: "Weekly");
                     items3.putIfAbsent(note.id, () => r);
