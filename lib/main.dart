@@ -17,8 +17,6 @@ import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:reminder_app/models/notif_option.dart';
 import 'package:reminder_app/models/note_data_store.dart';
-import 'package:reminder_app/l10n/l10n.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 int channelCounter = 0;
 bool notifChoice = false;
@@ -71,7 +69,6 @@ class MyApp extends StatelessWidget {
         ],
         child: Consumer(
           builder: (context, ThemeModel themeModel, child) => MaterialApp(
-            supportedLocales: L10n.all,
             builder: (context, child) => ResponsiveWrapper.builder(
               BouncingScrollWrapper.builder(context, child!),
               maxWidth: 1200,

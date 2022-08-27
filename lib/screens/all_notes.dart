@@ -281,12 +281,17 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                     String not = notifs[item2.id]!.id2;
                     NotificationService().deleteNotif(not);
                     if (!mounted) return;
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (dialogContext) => home.Home(
-                                  key: UniqueKey(),
-                                )));
+
+                    // Navigator.pop(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (dialogContext) => home.Home(
+                    //               key: UniqueKey(),
+                    //             )));
+                    Navigator.pop(context);
+
+                    res = true;
+
                   });
                 },
                 child: const Text(
