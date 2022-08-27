@@ -15,6 +15,7 @@ import 'package:reminder_app/screens/table_calendar.dart';
 import 'package:reminder_app/screens/table_calendar.dart' as table;
 import 'package:reminder_app/models/repeat_store.dart';
 import 'search_notes.dart';
+import 'package:intl/intl.dart';
 
 class CheckBoxNote extends StatefulWidget {
   const CheckBoxNote({Key? key, required this.id}) : super(key: key);
@@ -37,19 +38,24 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
   Color selectColor = const Color.fromARGB(255, 180, 175, 174);
   String priority = "high";
   String id4 = "";
-
+  DateFormat format = DateFormat("yyyy-MM-dd");
   bool? val = false;
   @override
   Widget build(BuildContext context) {
     // print(all.items);
     // print(count.searchResults);
-    bool boop = true;
-    print(notes);
+    bool boop = false;
+
     var ovj = count.notes
         .firstWhere((element) => element == widget.id, orElse: (() => ""));
     if (ovj != "") {
       var obj = all.items[ovj];
-      boop = obj!.done;
+      print(all.items.keys);
+      if (obj != null) {
+        if (!obj.done) {
+          boop = obj.done;
+        }
+      }
     }
 
     String ter = "";
@@ -109,9 +115,6 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                   tert.delete();
                   NotificationService().deleteNotif(ter);
                 }
-
-                //  final id = Localstore.instance.collection("notes").doc().id;
-
                 int a = suggestions.indexWhere((val) => val.id == item.id);
                 if (a != -1) {
                   suggestions.removeAt(a);
@@ -152,14 +155,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                 items1.add(note);
 
                 note.save();
-                // if (ter != "") {
-                //   Notifs notif = Notifs(
-                //     id: id1,
-                //     id2: ter,
-                //   );
-                //   notif.save();
-                // }
-                //searchResults.add(note);
+
                 if (boop == true) {
                   completed.add(note);
                 } else {
@@ -168,24 +164,115 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                 }
 
                 all_notes.items.putIfAbsent(id1, () => note);
+                notes.add(note.id);
                 if (items3[item.id] != null) {
                   var repea = items3[item.id];
                   if (repea!.option == "Daily") {
                     Repeat r = Repeat(id: note.id, option: "Daily");
                     items3.putIfAbsent(note.id, () => r);
                     r.save();
+
+                    for (var i = 1; i <= 100; i++) {
+                      DateTime g = DateTime.parse(selectDate);
+                      DateTime h = DateTime(g.year, g.month, g.day + 1);
+                      selectDate = format.format(h);
+                      if (done.indexWhere((element) => element == g) == -1) {
+                        done.add(g);
+                      }
+                      if (boop == false) {
+                        Notes note = Notes(
+                            id: id,
+                            title: title,
+                            data: body,
+                            date: selectDate,
+                            time: daySelect,
+                            priority: priority,
+                            color: colPick.value.toString(),
+                            done: false);
+                        setState(() {
+                          items1.add(note);
+                        });
+                      }
+                    }
                   } else if (repea.option == "Weekly") {
                     Repeat r = Repeat(id: note.id, option: "Weekly");
                     items3.putIfAbsent(note.id, () => r);
                     r.save();
+                    for (var i = 1; i <= 50; i++) {
+                      DateTime g = DateTime.parse(selectDate);
+                      DateTime h = DateTime(g.year, g.month, g.day + 7);
+                      selectDate = format.format(h);
+                      if (done.indexWhere((element) => element == g) == -1) {
+                        done.add(g);
+                      }
+                      if (boop == false) {
+                        Notes note = Notes(
+                            id: id,
+                            title: title,
+                            data: body,
+                            date: selectDate,
+                            time: daySelect,
+                            priority: priority,
+                            color: colPick.value.toString(),
+                            done: false);
+                        setState(() {
+                          items1.add(note);
+                        });
+                      }
+                    }
                   } else if (repea.option == "Monthly") {
                     Repeat r = Repeat(id: note.id, option: "Monthly");
                     items3.putIfAbsent(note.id, () => r);
                     r.save();
+                    for (var i = 1; i <= 24; i++) {
+                      DateTime g = DateTime.parse(selectDate);
+                      DateTime h = DateTime(g.year, g.month + 1, g.day);
+                      selectDate = format.format(h);
+                      if (done.indexWhere((element) => element == g) == -1) {
+                        done.add(g);
+                      }
+                      if (boop == false) {
+                        Notes note = Notes(
+                            id: id,
+                            title: title,
+                            data: body,
+                            date: selectDate,
+                            time: daySelect,
+                            priority: priority,
+                            color: colPick.value.toString(),
+                            done: false);
+                        setState(() {
+                          items1.add(note);
+                        });
+                      }
+                    }
                   } else if (repea.option == "Yearly") {
                     Repeat r = Repeat(id: note.id, option: "Yearly");
                     items3.putIfAbsent(note.id, () => r);
                     r.save();
+
+                    for (var i = 1; i <= 5; i++) {
+                      DateTime g = DateTime.parse(selectDate);
+                      DateTime h = DateTime(g.year + 1, g.month, g.day);
+                      selectDate = format.format(h);
+                      if (done.indexWhere((element) => element == g) == -1) {
+                        done.add(g);
+                      }
+                      if (boop == false) {
+                        Notes note = Notes(
+                            id: id,
+                            title: title,
+                            data: body,
+                            date: selectDate,
+                            time: daySelect,
+                            priority: priority,
+                            color: colPick.value.toString(),
+                            done: false);
+                        setState(() {
+                          items1.add(note);
+                        });
+                      }
+                    }
                   }
                 }
 

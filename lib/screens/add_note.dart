@@ -452,6 +452,26 @@ class _AddNoteState extends State<AddNote> {
                 priority,
                 colPick.value.toString(),
               );
+              for (var i = 1; i <= 24; i++) {
+                DateTime g = DateTime.parse(selectDate);
+                DateTime h = DateTime(g.year, g.month + 1, g.day);
+                selectDate = format.format(h);
+                if (done.indexWhere((element) => element == g) == -1) {
+                  done.add(g);
+                }
+                Notes note = Notes(
+                    id: id,
+                    title: title,
+                    data: body,
+                    date: selectDate,
+                    time: daySelect,
+                    priority: priority,
+                    color: colPick.value.toString(),
+                    done: false);
+                setState(() {
+                  items1.add(note);
+                });
+              }
               if (count.notifChoice == true) {
                 NotificationService().displayScheduleNotif(
                     body: body,
@@ -486,6 +506,26 @@ class _AddNoteState extends State<AddNote> {
                 priority,
                 colPick.value.toString(),
               );
+              for (var i = 1; i <= 50; i++) {
+                DateTime g = DateTime.parse(selectDate);
+                DateTime h = DateTime(g.year, g.month, g.day + 7);
+                selectDate = format.format(h);
+                if (done.indexWhere((element) => element == g) == -1) {
+                  done.add(g);
+                }
+                Notes note = Notes(
+                    id: id,
+                    title: title,
+                    data: body,
+                    date: selectDate,
+                    time: daySelect,
+                    priority: priority,
+                    color: colPick.value.toString(),
+                    done: false);
+                setState(() {
+                  items1.add(note);
+                });
+              }
               if (count.notifChoice == true) {
                 NotificationService().displayScheduleNotif(
                     body: body,
@@ -519,6 +559,26 @@ class _AddNoteState extends State<AddNote> {
                 priority,
                 colPick.value.toString(),
               );
+              for (var i = 1; i <= 5; i++) {
+                DateTime g = DateTime.parse(selectDate);
+                DateTime h = DateTime(g.year + 1, g.month, g.day);
+                selectDate = format.format(h);
+                if (done.indexWhere((element) => element == g) == -1) {
+                  done.add(g);
+                }
+                Notes note = Notes(
+                    id: id,
+                    title: title,
+                    data: body,
+                    date: selectDate,
+                    time: daySelect,
+                    priority: priority,
+                    color: colPick.value.toString(),
+                    done: false);
+                setState(() {
+                  items1.add(note);
+                });
+              }
               if (count.notifChoice == true) {
                 NotificationService().displayScheduleNotif(
                     body: body,

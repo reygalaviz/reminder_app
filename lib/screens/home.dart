@@ -78,9 +78,11 @@ class _HomeState extends State<Home> {
       resizeToAvoidBottomInset: false,
       body: IndexedStack(
         index: _selectedIndex,
-        children: const [
-          AllNotes(),
-          Table_Calendar(),
+        children: [
+          const AllNotes(),
+          Table_Calendar(
+            key: UniqueKey(),
+          ),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
