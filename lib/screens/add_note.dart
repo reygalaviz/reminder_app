@@ -375,7 +375,7 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
 
-              Navigator.push(
+              Navigator.pop(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Home(key: UniqueKey())));
@@ -428,11 +428,10 @@ class _AddNoteState extends State<AddNote> {
               }
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (context) => Home(key: UniqueKey())));
-              Navigator.pop(context);
+              Navigator.pop(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Home(key: UniqueKey())));
             } else if (repeat == "Monthly") {
               // String id2 = Localstore.instance.collection("notes").doc().id;
               Notifs notif = Notifs(
@@ -462,11 +461,10 @@ class _AddNoteState extends State<AddNote> {
               }
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (context) => Home(key: UniqueKey())));
-              Navigator.pop(context);
+              Navigator.pop(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Home(key: UniqueKey())));
             } else if (repeat == "Weekly") {
               // String id2 = Localstore.instance.collection("notes").doc().id;
               Notifs notif = Notifs(
@@ -498,7 +496,7 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
 
-              Navigator.push(
+              Navigator.pop(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Home(key: UniqueKey())));
@@ -531,7 +529,7 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
 
-              Navigator.push(
+              Navigator.pop(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Home(key: UniqueKey())));

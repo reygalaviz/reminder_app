@@ -40,8 +40,8 @@ dependencies:
   drag_and_drop_lists: ^0.3.2+2
   flutter_slidable: ^1.3.1
   bottom_picker: ^1.9.1
-  flutter_localizations:
-    sdk: flutter
+  get:
+  
   
   
   
