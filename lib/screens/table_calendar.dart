@@ -670,18 +670,21 @@ class Table_CalendarState extends State<Table_Calendar> {
             _focusedDay = focusedDay;
           },
           eventLoader: _getEventsForDay,
-          headerStyle: const HeaderStyle(
-            formatButtonTextStyle:
-                TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-            formatButtonDecoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(8.0))),
+          headerStyle: HeaderStyle(
+            formatButtonVisible: false,
+            titleCentered: true,
             titleTextStyle:
                 TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             leftChevronIcon: Icon(
               Icons.arrow_back_ios,
               size: 15,
+              color: Theme.of(context).primaryColor,
             ),
-            rightChevronIcon: Icon(Icons.arrow_forward_ios, size: 15),
+            rightChevronIcon: Icon(
+              Icons.arrow_forward_ios,
+              size: 15,
+              color: Theme.of(context).primaryColor,
+            ),
           ),
           daysOfWeekStyle: const DaysOfWeekStyle(
               weekdayStyle: TextStyle(fontWeight: FontWeight.bold)),
