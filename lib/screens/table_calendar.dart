@@ -608,33 +608,37 @@ class Table_CalendarState extends State<Table_Calendar> {
             ),
             TextButton(
                 onPressed: () {
-                  int b = searchResults.indexWhere((val) => val.id == item.id);
-                  if (b != -1) {
-                    searchResults.removeAt(b);
-                  }
-                  int c = uncompleted.indexWhere((val) => val.id == item.id);
-                  if (c != -1) {
-                    uncompleted.removeAt(c);
-                  }
-                  items.remove(item.id);
-                  int d = items1.indexWhere((element) => element.id == item.id);
-                  if (d != -1) {
-                    items1.removeAt(d);
-                  }
+                  setState(() {
+                    int b =
+                        searchResults.indexWhere((val) => val.id == item.id);
+                    if (b != -1) {
+                      searchResults.removeAt(b);
+                    }
+                    int c = uncompleted.indexWhere((val) => val.id == item.id);
+                    if (c != -1) {
+                      uncompleted.removeAt(c);
+                    }
+                    items.remove(item.id);
+                    int d =
+                        items1.indexWhere((element) => element.id == item.id);
+                    if (d != -1) {
+                      items1.removeAt(d);
+                    }
 
-                  notes.removeWhere((element) => element == item.id);
+                    notes.removeWhere((element) => element == item.id);
 
-                  item.delete();
+                    item.delete();
 
-                  notes.remove(item.id);
-
+                    notes.remove(item.id);
+                  });
                   String not = notifs[item.id]!.id2;
                   NotificationService().deleteNotif(not);
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
                               home.Home2(key: UniqueKey(), boo: true)));
+                  //  Navigator.pop(context);
                 },
                 child:
                     const Text("Delete", style: TextStyle(color: Colors.red)))
