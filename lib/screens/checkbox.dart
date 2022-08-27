@@ -50,8 +50,11 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
         .firstWhere((element) => element == widget.id, orElse: (() => ""));
     if (ovj != "") {
       var obj = all.items[ovj];
-      if (!obj!.done) {
-        boop = obj.done;
+      print(all.items.keys);
+      if (obj != null) {
+        if (!obj.done) {
+          boop = obj.done;
+        }
       }
     }
 
@@ -112,9 +115,6 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                   tert.delete();
                   NotificationService().deleteNotif(ter);
                 }
-
-                //  final id = Localstore.instance.collection("notes").doc().id;
-
                 int a = suggestions.indexWhere((val) => val.id == item.id);
                 if (a != -1) {
                   suggestions.removeAt(a);
@@ -164,12 +164,14 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                 }
 
                 all_notes.items.putIfAbsent(id1, () => note);
+                notes.add(note.id);
                 if (items3[item.id] != null) {
                   var repea = items3[item.id];
                   if (repea!.option == "Daily") {
                     Repeat r = Repeat(id: note.id, option: "Daily");
                     items3.putIfAbsent(note.id, () => r);
                     r.save();
+
                     for (var i = 1; i <= 100; i++) {
                       DateTime g = DateTime.parse(selectDate);
                       DateTime h = DateTime(g.year, g.month, g.day + 1);
@@ -177,18 +179,20 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                       if (done.indexWhere((element) => element == g) == -1) {
                         done.add(g);
                       }
-                      Notes note = Notes(
-                          id: id,
-                          title: title,
-                          data: body,
-                          date: selectDate,
-                          time: daySelect,
-                          priority: priority,
-                          color: colPick.value.toString(),
-                          done: false);
-                      setState(() {
-                        items1.add(note);
-                      });
+                      if (boop == false) {
+                        Notes note = Notes(
+                            id: id,
+                            title: title,
+                            data: body,
+                            date: selectDate,
+                            time: daySelect,
+                            priority: priority,
+                            color: colPick.value.toString(),
+                            done: false);
+                        setState(() {
+                          items1.add(note);
+                        });
+                      }
                     }
                   } else if (repea.option == "Weekly") {
                     Repeat r = Repeat(id: note.id, option: "Weekly");

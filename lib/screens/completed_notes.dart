@@ -36,22 +36,6 @@ class _CompletedNotesState extends State<CompletedNotes> {
 
   @override
   Widget build(BuildContext context) {
-    // completed.clear();
-    // all_notes.items.forEach((key, value) {
-    //   if (value.done == true) {
-    //     completed.add(value);
-    //   }
-    // });
-    // return const SingleChildScrollView(
-    //     child: Flexible(
-    //   child: Card(
-    //       child: ExpansionTile(
-    //     textColor: Colors.green,
-    //     iconColor: Colors.green,
-    //     title: Text(
-    //       'Completed',
-    //       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-    //     ),
     return SizedBox(
       height: 500,
       child: ListView.builder(

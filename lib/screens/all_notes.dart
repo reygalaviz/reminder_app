@@ -54,7 +54,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
         setState(() {
           final item = store.Notes.fromMap(event);
           if (!notes.contains(item.id)) {
-            ;
             notes.add(item.id);
             searchResults.add(item);
 
