@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:reminder_app/main.dart';
 import 'package:reminder_app/screens/settings-language.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:provider/provider.dart';
-//import '../models/notes_operation.dart';
 import '../themes/theme_model.dart';
 import 'package:reminder_app/models/notif_option.dart';
 import 'package:reminder_app/screens/settings-support.dart';
@@ -26,8 +24,8 @@ class _SettingsTabState extends State<SettingsTab> {
   void initState() {
     pages = [
       settings(),
-      SettingsLanguage(),
-      SettingsSupport(),
+      const SettingsLanguage(),
+      const SettingsSupport(),
     ];
     super.initState();
   }
