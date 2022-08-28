@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:provider/provider.dart';
 import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/screens/home.dart';
@@ -27,12 +26,7 @@ Future<void> main() async {
   await _configureLocalTimeZone();
   await NotificationService().init();
   var items = await store.db.collection('notes').get();
-  try {
-    var nChoice = await store.db.collection('notifSetting').doc('1').get();
-  } catch (e) {
-    NotifSetting n = NotifSetting(id: '1', choice: notifChoice);
-    n.save();
-  }
+
   if (items != null) {
     channelCounter = items.length;
   }

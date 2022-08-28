@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import '../themes/theme_model.dart';
 import 'package:reminder_app/models/notif_option.dart';
 import 'package:reminder_app/screens/settings-support.dart';
+import 'all_notes.dart';
+import 'package:localstore/localstore.dart';
 
 Color col = Colors.white;
 
@@ -27,6 +29,7 @@ class _SettingsTabState extends State<SettingsTab> {
       const SettingsLanguage(),
       const SettingsSupport(),
     ];
+
     super.initState();
   }
 
@@ -36,6 +39,10 @@ class _SettingsTabState extends State<SettingsTab> {
   }
 
   Widget settings() {
+    if (notifSet.isNotEmpty) {
+      notifChoice = notifSet[0].choice;
+    }
+
     return LayoutBuilder(
         builder: (context, constraints) => SizedBox(
             height: constraints.maxHeight * .92,
@@ -150,14 +157,25 @@ class _SettingsTabState extends State<SettingsTab> {
                                 child: CupertinoSwitch(
                                     value: notifChoice,
                                     onChanged: (bool value) {
+                                      String id0 = Localstore.instance
+                                          .collection("notifOption")
+                                          .doc()
+                                          .id;
+
+                                      if (notifSet.isNotEmpty) {
+                                        NotifSetting no = notifSet[0];
+                                        no.delete();
+                                        notifSet.clear();
+                                      }
                                       setState(() {
                                         notifChoice = !notifChoice;
                                       });
 
                                       NotifSetting n =
-                                          NotifSetting(id: '1', choice: value);
+                                          NotifSetting(id: id0, choice: value);
 
                                       n.save();
+                                      notifSet.add(n);
                                     }),
                               )
                             ],

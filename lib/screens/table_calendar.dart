@@ -683,7 +683,7 @@ class Table_CalendarState extends State<Table_Calendar> {
             formatButtonVisible: false,
             titleCentered: true,
             titleTextStyle:
-                TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             leftChevronIcon: Icon(
               Icons.arrow_back_ios,
               size: 15,
