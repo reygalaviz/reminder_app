@@ -22,8 +22,13 @@ class SettingsTab extends StatefulWidget {
 class _SettingsTabState extends State<SettingsTab> {
   int currentview = 0;
   late List<Widget> pages;
+  bool ball = false;
   @override
   void initState() {
+    if (notifSet.isNotEmpty) {
+      notifChoice = notifSet[0].choice;
+    }
+
     pages = [
       settings(),
       const SettingsLanguage(),
@@ -39,10 +44,7 @@ class _SettingsTabState extends State<SettingsTab> {
   }
 
   Widget settings() {
-    if (notifSet.isNotEmpty) {
-      notifChoice = notifSet[0].choice;
-    }
-
+    ball = notifChoice;
     return LayoutBuilder(
         builder: (context, constraints) => SizedBox(
             height: constraints.maxHeight * .92,
@@ -155,7 +157,7 @@ class _SettingsTabState extends State<SettingsTab> {
                               Transform.scale(
                                 scale: .7,
                                 child: CupertinoSwitch(
-                                    value: notifChoice,
+                                    value: ball,
                                     onChanged: (bool value) {
                                       String id0 = Localstore.instance
                                           .collection("notifOption")
@@ -167,15 +169,19 @@ class _SettingsTabState extends State<SettingsTab> {
                                         no.delete();
                                         notifSet.clear();
                                       }
-                                      setState(() {
-                                        notifChoice = !notifChoice;
-                                      });
 
                                       NotifSetting n =
                                           NotifSetting(id: id0, choice: value);
 
                                       n.save();
                                       notifSet.add(n);
+
+                                      setState(() {
+                                        notifChoice = value;
+                                        ball = value;
+                                      });
+
+                                      print(ball);
                                     }),
                               )
                             ],
