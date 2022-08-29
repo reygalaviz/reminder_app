@@ -93,7 +93,7 @@ class _SettingsLanguageState extends State<SettingsLanguage> {
                       child: Column(
                         children: [
                           ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: languages.length,
                               itemBuilder: (context, index) {
@@ -116,15 +116,14 @@ class _SettingsLanguageState extends State<SettingsLanguage> {
   }
 
   void _onSelected(bool selected, String lang) {
-    if (selected == true) {
-      if (_checkedLang.isEmpty) {
-        setState(() {
-          _checkedLang.add(lang);
-        });
-      }
-    } else {
+    if (_checkedLang.isEmpty) {
       setState(() {
-        _checkedLang.remove(lang);
+        _checkedLang.add(lang);
+      });
+    } else if (_checkedLang.length == 1) {
+      setState(() {
+        _checkedLang.removeAt(0);
+        _checkedLang.add(lang);
       });
     }
   }

@@ -25,7 +25,7 @@ class _SettingsTabState extends State<SettingsTab> {
   @override
   void initState() {
     pages = [
-      settings(),
+      // settings(),
       SettingsLanguage(),
       SettingsSupport(),
     ];
@@ -34,10 +34,6 @@ class _SettingsTabState extends State<SettingsTab> {
 
   @override
   Widget build(BuildContext context) {
-    return pages[currentview];
-  }
-
-  Widget settings() {
     return LayoutBuilder(
         builder: (context, constraints) => SizedBox(
             height: constraints.maxHeight * .92,
@@ -217,7 +213,7 @@ class _SettingsTabState extends State<SettingsTab> {
       behavior: HitTestBehavior.translucent,
       onTap: () {
         setState(() {
-          currentview = 1;
+          // currentview = 1;
         });
       },
       child: Padding(
@@ -247,7 +243,7 @@ class _SettingsTabState extends State<SettingsTab> {
       behavior: HitTestBehavior.translucent,
       onTap: () {
         setState(() {
-          currentview = 2;
+          // currentview = 2;
         });
       },
       child: Padding(
