@@ -36,8 +36,8 @@ getData(String id) async {
 
 class NotifSetting {
   final String id;
-  bool? choice;
-  NotifSetting({required this.id, required choice});
+  final bool choice;
+  NotifSetting({required this.id, required this.choice});
 
   Map<String, dynamic> toMap() {
     return {'id': id, 'choice': choice};

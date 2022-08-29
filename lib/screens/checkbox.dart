@@ -50,7 +50,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
         .firstWhere((element) => element == widget.id, orElse: (() => ""));
     if (ovj != "") {
       var obj = all.items[ovj];
-      print(all.items.keys);
+
       if (obj != null) {
         if (!obj.done) {
           boop = obj.done;

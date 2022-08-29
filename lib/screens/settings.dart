@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:reminder_app/main.dart';
 import 'package:reminder_app/screens/settings-language.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:provider/provider.dart';
-//import '../models/notes_operation.dart';
 import '../themes/theme_model.dart';
 import 'package:reminder_app/models/notif_option.dart';
 import 'package:reminder_app/screens/settings-support.dart';
+import 'all_notes.dart';
+import 'package:localstore/localstore.dart';
 
 Color col = Colors.white;
 
@@ -22,13 +22,21 @@ class SettingsTab extends StatefulWidget {
 class _SettingsTabState extends State<SettingsTab> {
   int currentview = 0;
   late List<Widget> pages;
+  bool ball = false;
   @override
   void initState() {
+    if (notifSet.isNotEmpty) {
+      notifChoice = notifSet[0].choice;
+    }
+
     pages = [
+
       // settings(),
       SettingsLanguage(),
       SettingsSupport(),
+
     ];
+
     super.initState();
   }
 
@@ -146,16 +154,31 @@ class _SettingsTabState extends State<SettingsTab> {
                               Transform.scale(
                                 scale: .7,
                                 child: CupertinoSwitch(
-                                    value: notifChoice,
+                                    value: ball,
                                     onChanged: (bool value) {
-                                      setState(() {
-                                        notifChoice = !notifChoice;
-                                      });
+                                      String id0 = Localstore.instance
+                                          .collection("notifOption")
+                                          .doc()
+                                          .id;
+
+                                      if (notifSet.isNotEmpty) {
+                                        NotifSetting no = notifSet[0];
+                                        no.delete();
+                                        notifSet.clear();
+                                      }
 
                                       NotifSetting n =
-                                          NotifSetting(id: '1', choice: value);
+                                          NotifSetting(id: id0, choice: value);
 
                                       n.save();
+                                      notifSet.add(n);
+
+                                      setState(() {
+                                        notifChoice = value;
+                                        ball = value;
+                                      });
+
+                                      print(ball);
                                     }),
                               )
                             ],

@@ -15,11 +15,13 @@ import 'package:reminder_app/models/notif_data_store.dart';
 import 'package:reminder_app/controllers/notifications.dart';
 import 'table_calendar.dart';
 import 'package:reminder_app/main.dart';
+import 'package:reminder_app/models/notif_option.dart';
 
 int initNumber = 0;
 
 var items = <String, store.Notes>{};
 var notifs = <String, Notifs>{};
+List<NotifSetting> notifSet = <NotifSetting>[];
 //String id = "No notes exist";
 bool res = false;
 // List<Notes> searchResults = <Notes>[];
@@ -78,6 +80,20 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
               setState(() {
                 final item = Notifs.fromMap(event);
                 notifs.putIfAbsent(item.id, () => item);
+              });
+            }));
+
+    _db
+        .collection('notifOption')
+        .get()
+        .then((value) => _db.collection("notifOption").stream.listen((event) {
+              setState(() {
+                final item = NotifSetting.fromMap(event);
+                notifSet.add(item);
+                // print(item.choice);
+                // if (item.choice != null) {
+                //   notifChoice = item.choice!;
+                // }
               });
             }));
   }
@@ -161,8 +177,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                   ),
                   tileColor: Color(int.parse(item.color)).withOpacity(1),
                   onTap: () {
-                    ;
-
                     Navigator.push(
                         context,
                         MaterialPageRoute(

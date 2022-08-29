@@ -152,7 +152,7 @@ class _HomeState extends State<Home> {
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
         builder: (context) {
-          return const SettingsTab();
+          return SettingsTab(key: UniqueKey());
         });
   }
 
@@ -309,7 +309,7 @@ class _Home2State extends State<Home2> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
         backgroundColor: col,
         builder: (context) {
-          return const SettingsTab();
+          return SettingsTab(key: UniqueKey());
         });
   }
 
