@@ -173,6 +173,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                   ),
                   subtitle: Text(
                     texter(item2: item),
+                    maxLines: 2,
                     style: const TextStyle(color: Colors.black),
                   ),
                   tileColor: Color(int.parse(item.color)).withOpacity(1),
@@ -240,16 +241,18 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                         Tab(text: 'Completed'),
                       ]),
                 ),
-                SizedBox(
-                    width: double.maxFinite,
-                    height: constraints.maxHeight * .77,
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        notesCard(),
-                        CompletedNotes(key: UniqueKey()),
-                      ],
-                    )),
+                Expanded(
+                  child: SizedBox(
+                      width: double.maxFinite,
+                      height: constraints.maxHeight * .77,
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          notesCard(),
+                          CompletedNotes(key: UniqueKey()),
+                        ],
+                      )),
+                ),
                 const SizedBox(
                   height: 10.0,
                 ),
