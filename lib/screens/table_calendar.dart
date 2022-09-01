@@ -88,6 +88,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                   var selectDate2 = note1.date;
                   Notes lastNote = note1;
                   //items1.add(lastNote);
+
                   for (var i = 1; i <= 100; i++) {
                     DateTime g = DateTime.parse(selectDate2);
                     DateTime h = DateTime(g.year, g.month, g.day + 1);
@@ -127,10 +128,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                       if (d != -1) {
                         items1.removeAt(d);
                       }
-                      var x = items3[lastNote.id];
-                      if (x != null) {
-                        x.delete;
-                      }
+
                       Repeat? f = items3[lastNote.id];
                       if (f != null) {
                         f.delete();
@@ -769,6 +767,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                       itemBuilder: (context, index) {
                         // var item = items1.elementAt(index);
                         var item = items1[index];
+                        print(item.id);
                         // final item = items1[key]!;
                         DateFormat format = DateFormat("yyyy-MM-dd");
                         String day2 = format.format(_selectedDay);

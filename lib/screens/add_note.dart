@@ -289,8 +289,8 @@ class _AddNoteState extends State<AddNote> {
               final DateTime? dateT = await showDatePicker(
                   context: context,
                   initialDate: DateTime.now(),
-                  firstDate: DateTime(2022, 1, 1),
-                  lastDate: DateTime(2025, 12, 12));
+                  firstDate: DateTime.now(),
+                  lastDate: DateTime(2029, 12, 12));
               String compForm = format.format(dateT!);
               setState(() {
                 scheduler = dateT;
@@ -344,6 +344,7 @@ class _AddNoteState extends State<AddNote> {
       backgroundColor: Colors.red,
       child: IconButton(
           onPressed: () {
+            print(count.notifChoice);
             if (repeat == "One-Time") {
               Notifs notif = Notifs(
                 id: id,
@@ -399,32 +400,34 @@ class _AddNoteState extends State<AddNote> {
                 priority,
                 colPick.value.toString(),
               );
-              for (var i = 1; i <= 100; i++) {
-                DateTime g = DateTime.parse(selectDate);
-                DateTime h = DateTime(g.year, g.month, g.day + 1);
-                selectDate = format.format(h);
-                if (done.indexWhere((element) => element == g) == -1) {
-                  done.add(g);
+              if (scheduler2.isAfter(DateTime.now())) {
+                for (var i = 1; i <= 100; i++) {
+                  DateTime g = DateTime.parse(selectDate);
+                  DateTime h = DateTime(g.year, g.month, g.day + 1);
+                  selectDate = format.format(h);
+                  if (done.indexWhere((element) => element == g) == -1) {
+                    done.add(g);
+                  }
+                  Notes note = Notes(
+                      id: id,
+                      title: title,
+                      data: body,
+                      date: selectDate,
+                      time: daySelect,
+                      priority: priority,
+                      color: colPick.value.toString(),
+                      done: false);
+                  setState(() {
+                    items1.add(note);
+                  });
                 }
-                Notes note = Notes(
-                    id: id,
-                    title: title,
-                    data: body,
-                    date: selectDate,
-                    time: daySelect,
-                    priority: priority,
-                    color: colPick.value.toString(),
-                    done: false);
-                setState(() {
-                  items1.add(note);
-                });
-              }
-              if (count.notifChoice == true) {
-                NotificationService().scheduleNotificationDaily(
-                    body: body,
-                    channel: count.channelCounter,
-                    title: title,
-                    date: scheduler2);
+                if (count.notifChoice == true) {
+                  NotificationService().displayScheduleNotif(
+                      body: body,
+                      channel: count.channelCounter,
+                      title: title,
+                      date: scheduler2);
+                }
               }
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);

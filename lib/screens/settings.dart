@@ -10,6 +10,7 @@ import 'package:reminder_app/screens/settings-support.dart';
 import 'all_notes.dart';
 import 'package:localstore/localstore.dart';
 
+bool ball = false;
 Color col = Colors.white;
 
 class SettingsTab extends StatefulWidget {
@@ -22,7 +23,7 @@ class SettingsTab extends StatefulWidget {
 class _SettingsTabState extends State<SettingsTab> {
   int currentview = 0;
   late List<Widget> pages;
-  bool ball = false;
+
   @override
   void initState() {
     if (notifSet.isNotEmpty) {
@@ -30,11 +31,9 @@ class _SettingsTabState extends State<SettingsTab> {
     }
 
     pages = [
-
       // settings(),
-      SettingsLanguage(),
-      SettingsSupport(),
-
+      const SettingsLanguage(),
+      const SettingsSupport(),
     ];
 
     super.initState();
@@ -42,6 +41,9 @@ class _SettingsTabState extends State<SettingsTab> {
 
   @override
   Widget build(BuildContext context) {
+    if (notifSet.isNotEmpty) {
+      ball = notifSet[0].choice;
+    }
     return LayoutBuilder(
         builder: (context, constraints) => SizedBox(
             height: constraints.maxHeight * .92,
