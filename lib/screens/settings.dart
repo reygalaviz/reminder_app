@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:reminder_app/main.dart';
 import 'package:reminder_app/screens/settings-language.dart';
 import 'package:reminder_app/themes/theme_model.dart';
@@ -24,221 +25,214 @@ class _SettingsTabState extends State<SettingsTab> {
   int currentview = 0;
   late List<Widget> pages;
 
+  bool ball = false;
+
   @override
   void initState() {
     if (notifSet.isNotEmpty) {
       notifChoice = notifSet[0].choice;
     }
 
-    pages = [
-      // settings(),
-      const SettingsLanguage(),
-      const SettingsSupport(),
-    ];
-
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext rootContext) {
     if (notifSet.isNotEmpty) {
       ball = notifSet[0].choice;
     }
-    return LayoutBuilder(
-        builder: (context, constraints) => SizedBox(
-            height: constraints.maxHeight * .92,
-            child: Column(
-              children: [
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    const Text(
-                      'Settings',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
+    return Material(
+      child: Navigator(
+          onGenerateRoute: (_) => MaterialPageRoute(
+              builder: (context2) => Builder(
+                  builder: (context) => CupertinoPageScaffold(
+                      navigationBar: CupertinoNavigationBar(
+                        backgroundColor: col,
+                        middle: Text(
+                          'Settings',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Theme.of(context).primaryColor),
+                        ),
+                        trailing: TextButton(
+                          child: const Text(
+                            'Done',
+                            style: TextStyle(fontSize: 18, color: Colors.blue),
+                          ),
+                          onPressed: () => Navigator.of(rootContext).pop(),
+                        ),
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding:
-                            EdgeInsets.only(right: constraints.maxWidth * .03),
-                        child: TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text(
-                              'Done',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                      ),
-                    )
-                  ],
-                ),
-                const Divider(
-                  height: 5.0,
-                  thickness: 1.0,
-                ),
-                Expanded(
-                  child: SizedBox(
-                    height: constraints.maxHeight * 1,
-                    child: Container(
-                      padding: const EdgeInsets.all(10.0),
-                      child: ListView(
-                        children: <Widget>[
-                          const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                'Dark Theme',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w600),
-                              ),
-                              Transform.scale(
-                                  scale: .7,
-                                  child: Consumer(
-                                    builder: (context, ThemeModel themeNotifier,
-                                            child) =>
-                                        CupertinoSwitch(
-                                            value: themeNotifier.isDark,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.all(10.0),
+                              child: ListView(
+                                children: <Widget>[
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Dark Theme',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Transform.scale(
+                                          scale: .7,
+                                          child: Consumer(
+                                            builder: (context,
+                                                    ThemeModel themeNotifier,
+                                                    child) =>
+                                                CupertinoSwitch(
+                                                    value: themeNotifier.isDark,
+                                                    onChanged: (bool value) {
+                                                      setState(() {});
+                                                      themeNotifier.isDark =
+                                                          !themeNotifier.isDark;
+                                                    }),
+                                          ))
+                                    ],
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Row(
+                                    children: const [
+                                      Text(
+                                        'General',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                  const Divider(
+                                    height: 30.0,
+                                    thickness: 1.0,
+                                    endIndent: 5.0,
+                                  ),
+                                  buildGeneralLanguageOption(
+                                    context,
+                                    'Language',
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Row(
+                                    children: const [
+                                      Text(
+                                        'Notifications',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                  const Divider(
+                                    height: 30.0,
+                                    thickness: 1.0,
+                                    endIndent: 5.0,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text('Enable/Disable'),
+                                      Transform.scale(
+                                        scale: .7,
+                                        child: CupertinoSwitch(
+                                            value: ball,
                                             onChanged: (bool value) {
-                                              setState(() {});
-                                              themeNotifier.isDark =
-                                                  !themeNotifier.isDark;
+                                              String id0 = Localstore.instance
+                                                  .collection("notifOption")
+                                                  .doc()
+                                                  .id;
+
+                                              if (notifSet.isNotEmpty) {
+                                                NotifSetting no = notifSet[0];
+                                                no.delete();
+                                                notifSet.clear();
+                                              }
+
+                                              NotifSetting n = NotifSetting(
+                                                  id: id0, choice: value);
+
+                                              n.save();
+                                              notifSet.add(n);
+
+                                              setState(() {
+                                                notifChoice = value;
+                                                ball = value;
+                                              });
+
+                                              print(ball);
                                             }),
-                                  ))
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: const [
-                              Text(
-                                'General',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w600),
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Row(
+                                    children: const [
+                                      Text(
+                                        'Help and Feedback',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                  const Divider(
+                                    height: 30.0,
+                                    thickness: 1.0,
+                                    endIndent: 5.0,
+                                  ),
+                                  buildHelpSupportOption(context, 'Support'),
+                                  buildHelpFAQOption(context, 'FAQ'),
+                                  buildHelpSuggestOption(
+                                      context, 'Suggest a Feature'),
+                                  const SizedBox(height: 20),
+                                  Row(
+                                    children: const [
+                                      Text(
+                                        'About',
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                  const Divider(
+                                    height: 30.0,
+                                    thickness: 1.0,
+                                    endIndent: 5.0,
+                                  ),
+                                  buildAboutPrivOption(
+                                      context, 'Privacy Policy'),
+                                  buildAboutSecOption(
+                                      context, 'Security Policy'),
+                                  buildAboutTermsOption(
+                                      context, 'Terms of Service'),
+                                  buildAboutAckOption(
+                                      context, 'Acknowledgments'),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
-                          const Divider(
-                            height: 30.0,
-                            thickness: 1.0,
-                            endIndent: 5.0,
-                          ),
-                          buildGeneralLanguageOption(
-                            context,
-                            'Language',
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: const [
-                              Text(
-                                'Notifications',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            height: 30.0,
-                            thickness: 1.0,
-                            endIndent: 5.0,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Enable/Disable'),
-                              Transform.scale(
-                                scale: .7,
-                                child: CupertinoSwitch(
-                                    value: ball,
-                                    onChanged: (bool value) {
-                                      String id0 = Localstore.instance
-                                          .collection("notifOption")
-                                          .doc()
-                                          .id;
-
-                                      if (notifSet.isNotEmpty) {
-                                        NotifSetting no = notifSet[0];
-                                        no.delete();
-                                        notifSet.clear();
-                                      }
-
-                                      NotifSetting n =
-                                          NotifSetting(id: id0, choice: value);
-
-                                      n.save();
-                                      notifSet.add(n);
-
-                                      setState(() {
-                                        notifChoice = value;
-                                        ball = value;
-                                      });
-
-                                      print(ball);
-                                    }),
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: const [
-                              Text(
-                                'Help and Feedback',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            height: 30.0,
-                            thickness: 1.0,
-                            endIndent: 5.0,
-                          ),
-                          buildHelpSupportOption(context, 'Support'),
-                          buildHelpFAQOption(context, 'FAQ'),
-                          buildHelpSuggestOption(context, 'Suggest a Feature'),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: const [
-                              Text(
-                                'About',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            height: 30.0,
-                            thickness: 1.0,
-                            endIndent: 5.0,
-                          ),
-                          buildAboutPrivOption(context, 'Privacy Policy'),
-                          buildAboutSecOption(context, 'Security Policy'),
-                          buildAboutTermsOption(context, 'Terms of Service'),
-                          buildAboutAckOption(context, 'Acknowledgments'),
-                          const SizedBox(height: 20),
                         ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            )));
+                      ))))),
+    );
   }
 
   GestureDetector buildGeneralLanguageOption(
-      BuildContext context, String title) {
+      BuildContext rootContext, String title) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
         setState(() {
-          // currentview = 1;
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const CupertinoPageScaffold(
+                  navigationBar: CupertinoNavigationBar(
+                    middle: Text('Language'),
+                  ),
+                  child: SettingsLanguage())));
         });
       },
       child: Padding(
@@ -263,12 +257,18 @@ class _SettingsTabState extends State<SettingsTab> {
     );
   }
 
-  GestureDetector buildHelpSupportOption(BuildContext context, String title) {
+  GestureDetector buildHelpSupportOption(
+      BuildContext rootContext, String title) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
         setState(() {
-          // currentview = 2;
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const CupertinoPageScaffold(
+                  navigationBar: CupertinoNavigationBar(
+                    middle: Text('Support'),
+                  ),
+                  child: SettingsSupport())));
         });
       },
       child: Padding(
