@@ -344,6 +344,7 @@ class _AddNoteState extends State<AddNote> {
       backgroundColor: Colors.red,
       child: IconButton(
           onPressed: () {
+            count.channelCounter++;
             print(count.notifChoice);
             if (repeat == "One-Time") {
               Notifs notif = Notifs(

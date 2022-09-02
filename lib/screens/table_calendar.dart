@@ -72,7 +72,7 @@ class Table_CalendarState extends State<Table_Calendar> {
   Future addEvents() async {
     for (int i = 0; i < notes.length; i++) {
       var note1 = items[notes[i]];
-
+      channelCounter++;
       if (note1 != null) {
         if ((items1.indexWhere((element) => (element.id == note1.id)) == -1)) {
           var parsDate = DateTime.parse(note1.date);
@@ -767,7 +767,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                       itemBuilder: (context, index) {
                         // var item = items1.elementAt(index);
                         var item = items1[index];
-                        print(item.id);
+                        // print(item.id);
                         // final item = items1[key]!;
                         DateFormat format = DateFormat("yyyy-MM-dd");
                         String day2 = format.format(_selectedDay);
