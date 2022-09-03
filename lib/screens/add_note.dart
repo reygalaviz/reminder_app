@@ -1,8 +1,10 @@
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:localstore/localstore.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder_app/controllers/notifications.dart';
 import 'package:reminder_app/main.dart' as count;
@@ -320,16 +322,49 @@ class _AddNoteState extends State<AddNote> {
           border: InputBorder.none,
           prefixIcon: IconButton(
             onPressed: () async {
-              TimeOfDay? timeT = await showTimePicker(
+              TimeOfDay? timeT = TimeOfDay.fromDateTime(DateTime.now());
+              showCupertinoModalPopup(
                   context: context,
-                  initialTime: TimeOfDay.fromDateTime(DateTime.now()));
-              if (!mounted) return;
-              String timeString = timeT!.format(context);
-              daySelect = timeString;
-              cCont.text = timeString;
-              scheduler2 = DateTime(scheduler.year, scheduler.month,
-                  scheduler.day, timeT.hour, timeT.minute);
+                  builder: (BuildContext builder) {
+                    Radius radi = const Radius.circular(6);
+                    return Container(
+                        width: 200,
+                        height: 300,
+                        padding: const EdgeInsets.only(
+                            top: 20.0, left: 10.0, right: 10.0, bottom: 60.0),
+                        child: CupertinoDatePicker(
+                          mode: CupertinoDatePickerMode.time,
+                          initialDateTime: DateTime.now(),
+                          backgroundColor: Colors.white,
+                          onDateTimeChanged: (value) {
+                            timeT = TimeOfDay.fromDateTime(value);
+                            if (!mounted) return;
+                            if (timeT != null) {
+                              String timeString = timeT!.format(context);
+                              daySelect = timeString;
+                              cCont.text = timeString;
+                              scheduler2 = DateTime(
+                                  scheduler.year,
+                                  scheduler.month,
+                                  scheduler.day,
+                                  timeT!.hour,
+                                  timeT!.minute);
+                            }
+                          },
+                        ));
+                  });
             },
+            // TimeOfDay? timeT = await CupertinoTimerPicker(
+            //   mode: CupertinoTimerPickerMode.hm,
+            //     context: context,
+            //     initialTime: TimeOfDay.fromDateTime(DateTime.now()));
+            //   if (!mounted) return;
+            //   String timeString = timeT!.format(context);
+            //   daySelect = timeString;
+            //   cCont.text = timeString;
+            //   scheduler2 = DateTime(scheduler.year, scheduler.month,
+            //       scheduler.day, timeT.hour, timeT.minute);
+            // },
             icon: const Icon(
               FontAwesomeIcons.clock,
               size: 20,
