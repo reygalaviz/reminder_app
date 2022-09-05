@@ -27,7 +27,6 @@ class _SettingsTabState extends State<SettingsTab> {
     if (notifSet.isNotEmpty) {
       notifChoice = notifSet[0].choice;
     }
-
     super.initState();
   }
 
@@ -39,7 +38,7 @@ class _SettingsTabState extends State<SettingsTab> {
               builder: (context2) => Builder(
                   builder: (context) => CupertinoPageScaffold(
                       navigationBar: CupertinoNavigationBar(
-                        backgroundColor: col,
+                        backgroundColor: Theme.of(context).backgroundColor,
                         middle: Text(
                           'Settings',
                           style: TextStyle(
@@ -177,7 +176,8 @@ class _SettingsTabState extends State<SettingsTab> {
                                     thickness: 1.0,
                                     endIndent: 5.0,
                                   ),
-                                  buildHelpSupportOption(context, 'Support'),
+                                  buildHelpSupportOption(
+                                      context, 'Contact Support'),
                                   buildHelpFAQOption(context, 'FAQ'),
                                   buildHelpSuggestOption(
                                       context, 'Suggest a Feature'),
@@ -221,9 +221,14 @@ class _SettingsTabState extends State<SettingsTab> {
       onTap: () {
         setState(() {
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const CupertinoPageScaffold(
+              builder: (context) => CupertinoPageScaffold(
                   navigationBar: CupertinoNavigationBar(
-                    middle: Text('Language'),
+                    backgroundColor: Theme.of(context).backgroundColor,
+                    middle: Text(
+                      'Language',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor, fontSize: 20),
+                    ),
                   ),
                   child: SettingsLanguage())));
         });
@@ -257,10 +262,15 @@ class _SettingsTabState extends State<SettingsTab> {
       onTap: () {
         setState(() {
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const CupertinoPageScaffold(
+              builder: (context) => CupertinoPageScaffold(
                   navigationBar: CupertinoNavigationBar(
-                    middle: Text('Support'),
-                  ),
+                      middle: Text(
+                        'Contact Support',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 20),
+                      ),
+                      backgroundColor: Theme.of(context).backgroundColor),
                   child: SettingsSupport())));
         });
       },
