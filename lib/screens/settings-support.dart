@@ -21,7 +21,6 @@ class _SettingsSupportState extends State<SettingsSupport> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Padding(
                           padding: EdgeInsets.all(8.0),
@@ -39,7 +38,7 @@ class _SettingsSupportState extends State<SettingsSupport> {
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(
                                     'Describe the problem you are having',
-                                    style: TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 15),
                                   ),
                                 ),
                                 Padding(
@@ -64,7 +63,7 @@ class _SettingsSupportState extends State<SettingsSupport> {
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(
                                     'Give us more details',
-                                    style: TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 15),
                                   ),
                                 ),
                                 Padding(
@@ -89,7 +88,7 @@ class _SettingsSupportState extends State<SettingsSupport> {
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(
                                     'Enter email',
-                                    style: TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 15),
                                   ),
                                 ),
                                 Padding(
@@ -110,6 +109,11 @@ class _SettingsSupportState extends State<SettingsSupport> {
                                     ),
                                   ),
                                 ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ElevatedButton(
+                                      onPressed: () {}, child: Text('Submit')),
+                                )
                               ],
                             )),
                       ],
