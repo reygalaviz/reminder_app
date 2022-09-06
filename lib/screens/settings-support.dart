@@ -16,7 +16,8 @@ class _SettingsSupportState extends State<SettingsSupport> {
   Widget build(BuildContext context) {
     return Material(
       child: LayoutBuilder(
-          builder: (context, constraints) => SafeArea(
+          builder: (context, constraints) => Container(
+                color: Theme.of(context).backgroundColor,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
