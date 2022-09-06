@@ -119,7 +119,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                 if (a != -1) {
                   suggestions.removeAt(a);
                 }
-                done.remove(DateTime.parse(item.date));
+
                 int b = searchResults.indexWhere((val) => val.id == item.id);
                 if (b != -1) {
                   searchResults.removeAt(b);
@@ -159,9 +159,13 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
 
                 if (boop == true) {
                   completed.add(note);
+                  done.remove(DateTime.parse(item.date));
                 } else {
                   uncompleted.add(note);
                   completed.removeWhere((element) => element.id == widget.id);
+                  if (done.contains(DateTime.parse(note.date))) {
+                    done.add(DateTime.parse(note.date));
+                  }
                 }
 
                 all_notes.items.putIfAbsent(id1, () => note);
