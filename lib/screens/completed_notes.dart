@@ -58,52 +58,53 @@ class _CompletedNotesState extends State<CompletedNotes> {
                     SlidableAction(
                       onPressed: (context) async {
                         await _showDialog(item);
-                        notes.remove(item.id);
-                        if (res == true) {
-                          setState(() {
-                            int b = searchResults
-                                .indexWhere((val) => val.id == item.id);
-                            if (b != -1) {
-                              searchResults.removeAt(b);
-                            }
-                            int c = uncompleted
-                                .indexWhere((val) => val.id == item.id);
-                            if (c != -1) {
-                              uncompleted.removeAt(c);
-                            }
-                            all_notes.items.remove(item.id);
-                            int d = items1
-                                .indexWhere((element) => element.id == item.id);
-                            if (d != -1) {
-                              items1.removeAt(d);
-                            }
 
-                            notes.removeWhere((element) => element == item.id);
+                        // if (res == true) {
+                        //   setState(() {
+                        //     int b = searchResults
+                        //         .indexWhere((val) => val.id == item.id);
+                        //     if (b != -1) {
+                        //       searchResults.removeAt(b);
+                        //     }
+                        //     int c = uncompleted
+                        //         .indexWhere((val) => val.id == item.id);
+                        //     if (c != -1) {
+                        //       uncompleted.removeAt(c);
+                        //     }
+                        //     all_notes.items.remove(item.id);
+                        //     int d = items1
+                        //         .indexWhere((element) => element.id == item.id);
+                        //     if (d != -1) {
+                        //       items1.removeAt(d);
+                        //     }
 
-                            int e = completed
-                                .indexWhere((element) => element.id == item.id);
-                            if (e != -1) {
-                              completed.removeAt(e);
-                            }
+                        //     notes.removeWhere((element) => element == item.id);
 
-                            item.delete();
+                        //     int e = completed
+                        //         .indexWhere((element) => element.id == item.id);
+                        //     if (e != -1) {
+                        //       completed.removeAt(e);
+                        //     }
 
-                            if (all_notes.notifs[item.id] == null) {
-                              String not = all_notes.notifs[item.id]!.id2;
-                              NotificationService().deleteNotif(not);
-                            }
-                            all_notes.items.remove(item.id);
-                            res = false;
-                            done.clear();
-                            items1.clear();
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Home(
-                                          key: UniqueKey(),
-                                        )));
-                          });
-                        }
+                        //     item.delete();
+
+                        //     if (all_notes.notifs[item.id] == null) {
+                        //       String not = all_notes.notifs[item.id]!.id2;
+                        //       NotificationService().deleteNotif(not);
+                        //     }
+                        //     all_notes.items.remove(item.id);
+                        //     res = false;
+                        //     done.clear();
+                        //     items1.clear();
+                        //     Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //             builder: (context) => Home(
+                        //                   key: UniqueKey(),
+                        //))
+
+                        //   });
+                        // }
                       },
                       borderRadius: const BorderRadius.only(
                           topRight: Radius.circular(10.0),
@@ -143,7 +144,7 @@ class _CompletedNotesState extends State<CompletedNotes> {
     );
   }
 
-  Future<bool?> _showDialog(final item) async {
+  Future<bool?> _showDialog(Notes item) async {
     return showDialog<bool>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -172,9 +173,44 @@ class _CompletedNotesState extends State<CompletedNotes> {
             ),
             TextButton(
                 onPressed: () {
-                  res = true;
+                  setState(() {
+                    int b =
+                        searchResults.indexWhere((val) => val.id == item.id);
+                    if (b != -1) {
+                      searchResults.removeAt(b);
+                    }
+                    int c = uncompleted.indexWhere((val) => val.id == item.id);
+                    if (c != -1) {
+                      uncompleted.removeAt(c);
+                    }
+                    all_notes.items.remove(item.id);
+                    int d =
+                        items1.indexWhere((element) => element.id == item.id);
+                    if (d != -1) {
+                      items1.removeAt(d);
+                    }
 
-                  Navigator.of(context).pop();
+                    notes.removeWhere((element) => element == item.id);
+                    //notes.remove(item.id);
+                    int e = completed
+                        .indexWhere((element) => element.id == item.id);
+                    if (e != -1) {
+                      completed.removeAt(e);
+                    }
+
+                    item.delete();
+
+                    if (all_notes.notifs[item.id] == null) {
+                      String not = all_notes.notifs[item.id]!.id2;
+                      NotificationService().deleteNotif(not);
+                    }
+                    all_notes.items.remove(item.id);
+                    res = false;
+                    done.clear();
+                    items1.clear();
+
+                    Navigator.of(context).pop();
+                  });
                 },
                 child:
                     const Text("Delete", style: TextStyle(color: Colors.red)))
