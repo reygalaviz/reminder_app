@@ -270,10 +270,10 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   // }
 
   String texter({required store.Notes item2}) {
-    if (item2.data == '') {
-      return '${item2.date} ${item2.time}';
+    if (item2.data.isNotEmpty) {
+      return '${item2.date} ${item2.time} ${item2.data}';
     } else {
-      return item2.data;
+      return '${item2.date} ${item2.time}';
     }
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:reminder_app/main.dart';
 import 'package:reminder_app/screens/settings-language.dart';
+import 'package:reminder_app/screens/settings_faq.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:provider/provider.dart';
 import '../themes/theme_model.dart';
@@ -35,6 +36,7 @@ class _SettingsTabState extends State<SettingsTab> {
     super.initState();
   }
 
+  @override
   Widget build(BuildContext rootContext) {
     if (notifSet.isNotEmpty) {
       ball = notifSet[0].choice;
@@ -222,7 +224,7 @@ class _SettingsTabState extends State<SettingsTab> {
   }
 
   GestureDetector buildGeneralLanguageOption(
-      BuildContext rootContext, String title) {
+      BuildContext context, String title) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -262,8 +264,7 @@ class _SettingsTabState extends State<SettingsTab> {
     );
   }
 
-  GestureDetector buildHelpSupportOption(
-      BuildContext rootContext, String title) {
+  GestureDetector buildHelpSupportOption(BuildContext context, String title) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -305,7 +306,22 @@ class _SettingsTabState extends State<SettingsTab> {
 
   GestureDetector buildHelpFAQOption(BuildContext context, String title) {
     return GestureDetector(
-      onTap: () {},
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        setState(() {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => CupertinoPageScaffold(
+                  navigationBar: CupertinoNavigationBar(
+                      middle: Text(
+                        'FAQ',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 20),
+                      ),
+                      backgroundColor: Theme.of(context).backgroundColor),
+                  child: SettingsFAQ())));
+        });
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(

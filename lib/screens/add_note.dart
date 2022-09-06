@@ -380,7 +380,7 @@ class _AddNoteState extends State<AddNote> {
       child: IconButton(
           onPressed: () {
             count.channelCounter++;
-            print(count.notifChoice);
+            // print(count.notifChoice);
             if (repeat == "One-Time") {
               Notifs notif = Notifs(
                 id: id,

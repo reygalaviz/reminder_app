@@ -43,8 +43,8 @@ class _SettingsLanguageState extends State<SettingsLanguage> {
   Widget build(BuildContext context) {
     return Material(
       child: LayoutBuilder(
-          builder: (context, constraints) => SizedBox(
-                height: constraints.maxHeight * .92,
+          builder: (context, constraints) => Container(
+                color: Theme.of(context).backgroundColor,
                 child: Column(
                   children: [
                     Expanded(
