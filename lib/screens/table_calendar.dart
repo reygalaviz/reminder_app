@@ -670,7 +670,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                     if (d != -1) {
                       items1.removeAt(d);
                     }
-
+                    done.remove(DateTime.parse(item.date));
                     notes.removeWhere((element) => element == item.id);
 
                     item.delete();

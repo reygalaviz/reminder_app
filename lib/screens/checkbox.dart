@@ -119,6 +119,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                 if (a != -1) {
                   suggestions.removeAt(a);
                 }
+                done.remove(DateTime.parse(item.date));
                 int b = searchResults.indexWhere((val) => val.id == item.id);
                 if (b != -1) {
                   searchResults.removeAt(b);

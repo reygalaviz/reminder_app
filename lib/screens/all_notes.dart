@@ -810,7 +810,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                     }
 
                     notes.removeWhere((element) => element == item2.id);
-
+                    done.remove(DateTime.parse(item2.date));
                     int e = completed
                         .indexWhere((element) => element.id == item2.id);
                     if (e != -1) {
