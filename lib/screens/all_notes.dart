@@ -114,79 +114,83 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
           shrinkWrap: true,
           itemCount: events1.length,
           itemBuilder: (context, index) {
-            DateTime ind = done[index];
-            String ind1 = DateFormat.MMMMEEEEd().format(ind);
-            List<Notes> x = events1[ind] ?? [];
-            return Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: Column(
-                  children: [
-                    Text(
-                      ind1,
-                      style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                    ),
-                    ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: x.length,
-                        itemBuilder: (context, index) {
-                          final item = x[index];
+            if (done.isNotEmpty) {
+              DateTime ind = done[index];
+              String ind1 = DateFormat.MMMMEEEEd().format(ind);
+              List<Notes> x = events1[ind] ?? [];
+              return Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    children: [
+                      Text(
+                        ind1,
+                        style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: x.length,
+                          itemBuilder: (context, index) {
+                            final item = x[index];
 
-                          return Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Slidable(
-                              endActionPane: ActionPane(
-                                motion: const ScrollMotion(),
-                                children: [
-                                  SlidableAction(
-                                    onPressed: (context) async {
-                                      await _showDialog(item);
-                                    },
-                                    borderRadius: const BorderRadius.only(
-                                        topRight: Radius.circular(10.0),
-                                        bottomRight: Radius.circular(10.0)),
-                                    backgroundColor: Colors.red,
-                                    foregroundColor: Colors.white,
-                                    icon: FontAwesomeIcons.trash,
+                            return Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Slidable(
+                                endActionPane: ActionPane(
+                                  motion: const ScrollMotion(),
+                                  children: [
+                                    SlidableAction(
+                                      onPressed: (context) async {
+                                        await _showDialog(item);
+                                      },
+                                      borderRadius: const BorderRadius.only(
+                                          topRight: Radius.circular(10.0),
+                                          bottomRight: Radius.circular(10.0)),
+                                      backgroundColor: Colors.red,
+                                      foregroundColor: Colors.white,
+                                      icon: FontAwesomeIcons.trash,
+                                    ),
+                                  ],
+                                ),
+                                child: ListTile(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  title: Text(
+                                    item.title,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
                                   ),
-                                ],
-                              ),
-                              child: ListTile(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                title: Text(
-                                  item.title,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black),
+                                  subtitle: Text(
+                                    texter(item2: item),
+                                    maxLines: 2,
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                  tileColor: Color(int.parse(item.color))
+                                      .withOpacity(1),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditNote(id: item.id)));
+                                  },
+                                  trailing: Wrap(children: <Widget>[
+                                    CheckBoxNote(id: item.id)
+                                  ]),
                                 ),
-                                subtitle: Text(
-                                  texter(item2: item),
-                                  maxLines: 2,
-                                  style: const TextStyle(color: Colors.black),
-                                ),
-                                tileColor:
-                                    Color(int.parse(item.color)).withOpacity(1),
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              EditNote(id: item.id)));
-                                },
-                                trailing: Wrap(children: <Widget>[
-                                  CheckBoxNote(id: item.id)
-                                ]),
                               ),
-                            ),
-                          );
-                        })
-                  ],
-                ));
+                            );
+                          })
+                    ],
+                  ));
+            } else {
+              return Container();
+            }
           }),
     );
   }
@@ -823,7 +827,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                     NotificationService().deleteNotif(not);
                     if (!mounted) return;
                     Navigator.pop(context);
-
+                    items1.clear();
                     res = true;
                   });
                 },
