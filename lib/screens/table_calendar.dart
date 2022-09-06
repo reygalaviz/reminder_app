@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
@@ -57,16 +58,9 @@ class Table_CalendarState extends State<Table_Calendar> {
   @override
   void initState() {
     super.initState();
-    items1.clear();
+    //items1.clear();
     _selectedDay = DateTime.now();
     _selectedEvents = [];
-    _db.collection('repeat').get().then((value) =>
-        _subscription = _db.collection('repeat').stream.listen((event) {
-          // setState(() {
-          final item = Repeat.fromMap(event);
-          items3.putIfAbsent(item.id, () => item);
-          // });
-        }));
   }
 
   Future addEvents() async {
@@ -87,8 +81,6 @@ class Table_CalendarState extends State<Table_Calendar> {
                 if (rex!.option == "Daily") {
                   var selectDate2 = note1.date;
                   Notes lastNote = note1;
-                  //items1.add(lastNote);
-
                   for (var i = 1; i <= 100; i++) {
                     DateTime g = DateTime.parse(selectDate2);
                     DateTime h = DateTime(g.year, g.month, g.day + 1);
@@ -103,12 +95,31 @@ class Table_CalendarState extends State<Table_Calendar> {
                         NotificationService().deleteNotif(ter);
                       }
 
+                      int hour = 0;
+                      int minute = 0;
+                      String ampm = note1.time.substring(note1.time.length - 2);
+                      String result =
+                          note1.time.substring(0, note1.time.indexOf(' '));
+                      if (ampm == 'AM' &&
+                          int.parse(result.split(":")[1]) != 12) {
+                        hour = int.parse(result.split(':')[0]);
+                        if (hour == 12) hour = 0;
+                        minute = int.parse(result.split(":")[1]);
+                      } else {
+                        hour = int.parse(result.split(':')[0]) - 12;
+                        if (hour <= 0) {
+                          hour = 24 + hour;
+                        }
+                        minute = int.parse(result.split(":")[1]);
+                      }
+                      DateTime he =
+                          h.add(Duration(hours: hour, minutes: minute));
                       if (notifChoice == true) {
                         NotificationService().displayScheduleNotif(
-                            body: body,
+                            body: note1.data,
                             channel: channelCounter,
-                            title: title,
-                            date: h);
+                            title: note1.title,
+                            date: he);
                       }
 
                       lastNote.delete();
@@ -177,14 +188,8 @@ class Table_CalendarState extends State<Table_Calendar> {
                       lastNote = note;
                     }
 
-                    bool biff = true;
-                    for (int k = 0; k < done.length; k++) {
-                      if (done[k] == h) {
-                        biff = false;
-                      }
-                    }
-
-                    if (biff == true) {
+                    bool biff = done.contains(h);
+                    if (biff == false) {
                       setState(() {
                         done.add(h);
                       });
@@ -206,13 +211,31 @@ class Table_CalendarState extends State<Table_Calendar> {
                       String ter = notifs[lastNote.id]!.id2;
 
                       NotificationService().deleteNotif(ter);
-
+                      int hour = 0;
+                      int minute = 0;
+                      String ampm = note1.time.substring(note1.time.length - 2);
+                      String result =
+                          note1.time.substring(0, note1.time.indexOf(' '));
+                      if (ampm == 'AM' &&
+                          int.parse(result.split(":")[1]) != 12) {
+                        hour = int.parse(result.split(':')[0]);
+                        if (hour == 12) hour = 0;
+                        minute = int.parse(result.split(":")[1]);
+                      } else {
+                        hour = int.parse(result.split(':')[0]) - 12;
+                        if (hour <= 0) {
+                          hour = 24 + hour;
+                        }
+                        minute = int.parse(result.split(":")[1]);
+                      }
+                      DateTime he =
+                          h.add(Duration(hours: hour, minutes: minute));
                       if (notifChoice == true) {
                         NotificationService().displayScheduleNotif(
-                            body: body,
+                            body: note1.data,
                             channel: channelCounter,
-                            title: title,
-                            date: h);
+                            title: note1.title,
+                            date: he);
                       }
 
                       lastNote.delete();
@@ -286,14 +309,8 @@ class Table_CalendarState extends State<Table_Calendar> {
                       lastNote = note;
                     }
 
-                    bool biff = true;
-                    for (int k = 0; k < done.length; k++) {
-                      if (done[k] == h) {
-                        biff = false;
-                      }
-                    }
-
-                    if (biff == true) {
+                    bool biff = done.contains(h);
+                    if (biff == false) {
                       setState(() {
                         done.add(h);
                       });
@@ -315,15 +332,33 @@ class Table_CalendarState extends State<Table_Calendar> {
                         String ter = notifs[lastNote.id]!.id2;
 
                         NotificationService().deleteNotif(ter);
-
+                        int hour = 0;
+                        int minute = 0;
+                        String ampm =
+                            note1.time.substring(note1.time.length - 2);
+                        String result =
+                            note1.time.substring(0, note1.time.indexOf(' '));
+                        if (ampm == 'AM' &&
+                            int.parse(result.split(":")[1]) != 12) {
+                          hour = int.parse(result.split(':')[0]);
+                          if (hour == 12) hour = 0;
+                          minute = int.parse(result.split(":")[1]);
+                        } else {
+                          hour = int.parse(result.split(':')[0]) - 12;
+                          if (hour <= 0) {
+                            hour = 24 + hour;
+                          }
+                          minute = int.parse(result.split(":")[1]);
+                        }
+                        DateTime he =
+                            h.add(Duration(hours: hour, minutes: minute));
                         if (notifChoice == true) {
                           NotificationService().displayScheduleNotif(
-                              body: body,
+                              body: note1.data,
                               channel: channelCounter,
-                              title: title,
-                              date: h);
+                              title: note1.title,
+                              date: he);
                         }
-
                         lastNote.delete();
                         // items1.remove(lastNote);
                         int b = searchResults
@@ -394,14 +429,8 @@ class Table_CalendarState extends State<Table_Calendar> {
                       });
                       lastNote = note;
                     }
-                    bool biff = true;
-                    for (int k = 0; k < done.length; k++) {
-                      if (done[k] == h) {
-                        biff = false;
-                      }
-                    }
-
-                    if (biff == true) {
+                    bool biff = done.contains(h);
+                    if (biff == false) {
                       setState(() {
                         done.add(h);
                       });
@@ -422,13 +451,32 @@ class Table_CalendarState extends State<Table_Calendar> {
                         String ter = notifs[lastNote.id]!.id2;
 
                         NotificationService().deleteNotif(ter);
-
+                        int hour = 0;
+                        int minute = 0;
+                        String ampm =
+                            note1.time.substring(note1.time.length - 2);
+                        String result =
+                            note1.time.substring(0, note1.time.indexOf(' '));
+                        if (ampm == 'AM' &&
+                            int.parse(result.split(":")[1]) != 12) {
+                          hour = int.parse(result.split(':')[0]);
+                          if (hour == 12) hour = 0;
+                          minute = int.parse(result.split(":")[1]);
+                        } else {
+                          hour = int.parse(result.split(':')[0]) - 12;
+                          if (hour <= 0) {
+                            hour = 24 + hour;
+                          }
+                          minute = int.parse(result.split(":")[1]);
+                        }
+                        DateTime he =
+                            h.add(Duration(hours: hour, minutes: minute));
                         if (notifChoice == true) {
                           NotificationService().displayScheduleNotif(
-                              body: body,
+                              body: note1.data,
                               channel: channelCounter,
-                              title: title,
-                              date: h);
+                              title: note1.title,
+                              date: he);
                         }
 
                         lastNote.delete();
