@@ -26,7 +26,7 @@ StreamSubscription<Map<String, dynamic>>? _subscription;
 List<Notes> items1 = [];
 final items3 = <String, Repeat>{};
 List<DateTime> done = [];
-
+DateTime calSelect = DateTime.now();
 // late final ValueNotifier<List<Notes>> _selectedEvents;
 //
 
@@ -622,6 +622,7 @@ class Table_CalendarState extends State<Table_Calendar> {
       setState(() {
         _focusedDay = focusedDay;
         _selectedDay = selectedDay;
+        calSelect = selectedDay;
         _selectedEvents = _getEventsForDay(selectedDay);
       });
     }
