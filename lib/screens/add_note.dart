@@ -675,7 +675,7 @@ class _AddNoteState extends State<AddNote> {
   @override
   Widget build(BuildContext context) {
     if (selectDate == "") {
-      selectDate = format.format(DateTime.now()).toString();
+      selectDate = format.format(calSelect).toString();
     }
     if (daySelect == "") {
       daySelect = TimeOfDay.now().format(context);
