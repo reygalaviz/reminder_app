@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         title: Text(
-          'RemindMe',
+          'Te.',
           style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 25),
         ),
         actions: [
