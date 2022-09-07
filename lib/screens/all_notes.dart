@@ -111,7 +111,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   Widget notesCard() {
     return SizedBox(
       child: ListView.builder(
-          shrinkWrap: true,
+          shrinkWrap: false,
           itemCount: events1.length,
           itemBuilder: (context, index) {
             if (done.isNotEmpty) {
@@ -133,6 +133,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                       ListView.builder(
                           shrinkWrap: true,
                           itemCount: x.length,
+                          physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             final item = x[index];
 
@@ -216,7 +217,11 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    items1.clear();
     items.forEach((key, value) {
+      if (items1.indexWhere((element) => element.id == value.id) == -1) {
+        items1.add(value);
+      }
       Repeat? ider = items3[key];
       if (ider != null) {
         Notes? note1 = value;
