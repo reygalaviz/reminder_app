@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:ffi';
 import 'package:flutter/material.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:reminder_app/controllers/notifications.dart';
 import 'package:localstore/localstore.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:reminder_app/screens/add_note.dart';
@@ -12,8 +15,11 @@ import 'package:reminder_app/screens/settings.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:reminder_app/screens/table_calendar.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
-
+import 'package:reminder_app/models/notif_option.dart';
+import 'package:reminder_app/models/repeat_store.dart';
+import 'package:reminder_app/models/notif_data_store.dart';
 import '../models/note_data_store.dart';
+import 'package:reminder_app/main.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -24,7 +30,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String body = "";
-
+  DateFormat format2 = DateFormat("yyyy-MM-dd");
   final _db = Localstore.instance;
   PageController pageController = PageController();
   int _selectedIndex = 0;
@@ -36,14 +42,56 @@ class _HomeState extends State<Home> {
   StreamSubscription<Map<String, dynamic>>? _subscription;
   // @override
   // void initState() {
-  //   super.initState();
-  //   db.collection('notes').get().then((value) {
-  //     _subscription = db.collection('notes').stream.listen((event) {
+  //super.initState();
+
+  //   _db.collection('notes').get().then((value) {
+  //     _subscription = _db.collection('notes').stream.listen((event) {
   //       final item = store.Notes.fromMap(event);
-  //       itemList.add(item);
-  //       //_items.putIfAbsent(item.id, () => item);
+  //       if (!notes.contains(item.id)) {
+  //         notes.add(item.id);
+  //         searchResults.add(item);
+
+  //         if (item.done == false) {
+  //           if (uncompleted.indexWhere((element) => element.id == item.id) ==
+  //               -1) {
+  //             uncompleted.add(item);
+  //           }
+  //         }
+  //       }
+  //       DateTime dateOfNote = DateTime.parse(item.date);
+  //       if (items1.indexWhere((element) => element.id == item.id) == -1) {
+  //         items1.add(item);
+  //       }
+  //       bool biff = done.contains(dateOfNote);
+  //       if (biff == false) {
+  //         done.add(dateOfNote);
+  //       }
+
+  //       items.putIfAbsent(item.id, () => item);
   //     });
   //   });
+
+  //   _db
+  //       .collection("notifs")
+  //       .doc()
+  //       .get()
+  //       .then((value) => _db.collection('notifs').stream.listen((event) {
+  //             final item = Notifs.fromMap(event);
+  //             notifs.putIfAbsent(item.id, () => item);
+  //           }));
+
+  //   _db
+  //       .collection('notifOption')
+  //       .get()
+  //       .then((value) => _db.collection("notifOption").stream.listen((event) {
+  //             final item = NotifSetting.fromMap(event);
+  //             notifSet.add(item);
+  //           }));
+  //   _db.collection('repeat').get().then((value) =>
+  //       _subscription = _db.collection('repeat').stream.listen((event) {
+  //         final item = Repeat.fromMap(event);
+  //         items3.putIfAbsent(item.id, () => item);
+  //       }));
   // }
 
   void onTapped(int index) {
@@ -55,6 +103,25 @@ class _HomeState extends State<Home> {
         pageController.jumpToPage(index);
       }
     });
+  }
+
+  DateTime timeConvert(String normTime) {
+    int hour;
+    int minute;
+    String ampm = normTime.substring(normTime.length - 2);
+    String result = normTime.substring(0, normTime.indexOf(' '));
+    if (ampm == 'AM' && int.parse(result.split(":")[1]) != 12) {
+      hour = int.parse(result.split(':')[0]);
+      if (hour == 12) hour = 0;
+      minute = int.parse(result.split(":")[1]);
+    } else {
+      hour = int.parse(result.split(':')[0]) - 12;
+      if (hour <= 0) {
+        hour = 24 + hour;
+      }
+      minute = int.parse(result.split(":")[1]);
+    }
+    return DateTime(2022, 1, 1, hour, minute);
   }
 
   @override

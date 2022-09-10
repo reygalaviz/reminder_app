@@ -50,8 +50,6 @@ class _AddNoteState extends State<AddNote> {
 
   late DateTime scheduler = DateTime.now();
   late DateTime scheduler2 = DateTime.now();
-  DismissDirection direct = DismissDirection.endToStart;
-  var generator = Random(5);
   final id = Localstore.instance.collection("notes").doc().id;
   String priority = 'high';
   Widget eventColorTest() {
@@ -354,17 +352,6 @@ class _AddNoteState extends State<AddNote> {
                         ));
                   });
             },
-            // TimeOfDay? timeT = await CupertinoTimerPicker(
-            //   mode: CupertinoTimerPickerMode.hm,
-            //     context: context,
-            //     initialTime: TimeOfDay.fromDateTime(DateTime.now()));
-            //   if (!mounted) return;
-            //   String timeString = timeT!.format(context);
-            //   daySelect = timeString;
-            //   cCont.text = timeString;
-            //   scheduler2 = DateTime(scheduler.year, scheduler.month,
-            //       scheduler.day, timeT.hour, timeT.minute);
-            // },
             icon: const Icon(
               FontAwesomeIcons.clock,
               size: 20,
@@ -380,7 +367,7 @@ class _AddNoteState extends State<AddNote> {
       child: IconButton(
           onPressed: () {
             count.channelCounter++;
-            // print(count.notifChoice);
+
             if (repeat == "One-Time") {
               Notifs notif = Notifs(
                 id: id,
@@ -437,26 +424,26 @@ class _AddNoteState extends State<AddNote> {
                 colPick.value.toString(),
               );
               if (scheduler2.isAfter(DateTime.now())) {
-                for (var i = 1; i <= 100; i++) {
-                  DateTime g = DateTime.parse(selectDate);
-                  DateTime h = DateTime(g.year, g.month, g.day + 1);
-                  selectDate = format.format(h);
-                  if (done.indexWhere((element) => element == g) == -1) {
-                    done.add(g);
-                  }
-                  Notes note = Notes(
-                      id: id,
-                      title: title,
-                      data: body,
-                      date: selectDate,
-                      time: daySelect,
-                      priority: priority,
-                      color: colPick.value.toString(),
-                      done: false);
-                  setState(() {
-                    items1.add(note);
-                  });
-                }
+                // for (var i = 1; i <= 100; i++) {
+                //   DateTime g = DateTime.parse(selectDate);
+                //   DateTime h = DateTime(g.year, g.month, g.day + 1);
+                //   selectDate = format.format(h);
+                //   if (done.indexWhere((element) => element == g) == -1) {
+                //     done.add(g);
+                //   }
+                //   Notes note = Notes(
+                //       id: id,
+                //       title: title,
+                //       data: body,
+                //       date: selectDate,
+                //       time: daySelect,
+                //       priority: priority,
+                //       color: colPick.value.toString(),
+                //       done: false);
+                //   setState(() {
+                //     items1.add(note);
+                //   });
+                // }
                 if (count.notifChoice == true) {
                   NotificationService().displayScheduleNotif(
                       body: body,
@@ -491,26 +478,26 @@ class _AddNoteState extends State<AddNote> {
                 priority,
                 colPick.value.toString(),
               );
-              for (var i = 1; i <= 24; i++) {
-                DateTime g = DateTime.parse(selectDate);
-                DateTime h = DateTime(g.year, g.month + 1, g.day);
-                selectDate = format.format(h);
-                if (done.indexWhere((element) => element == g) == -1) {
-                  done.add(g);
-                }
-                Notes note = Notes(
-                    id: id,
-                    title: title,
-                    data: body,
-                    date: selectDate,
-                    time: daySelect,
-                    priority: priority,
-                    color: colPick.value.toString(),
-                    done: false);
-                setState(() {
-                  items1.add(note);
-                });
-              }
+              // for (var i = 1; i <= 24; i++) {
+              //   DateTime g = DateTime.parse(selectDate);
+              //   DateTime h = DateTime(g.year, g.month + 1, g.day);
+              //   selectDate = format.format(h);
+              //   if (done.indexWhere((element) => element == g) == -1) {
+              //     done.add(g);
+              //   }
+              //   Notes note = Notes(
+              //       id: id,
+              //       title: title,
+              //       data: body,
+              //       date: selectDate,
+              //       time: daySelect,
+              //       priority: priority,
+              //       color: colPick.value.toString(),
+              //       done: false);
+              //   setState(() {
+              //     items1.add(note);
+              //   });
+              // }
               if (count.notifChoice == true) {
                 NotificationService().displayScheduleNotif(
                     body: body,
@@ -545,26 +532,26 @@ class _AddNoteState extends State<AddNote> {
                 priority,
                 colPick.value.toString(),
               );
-              for (var i = 1; i <= 50; i++) {
-                DateTime g = DateTime.parse(selectDate);
-                DateTime h = DateTime(g.year, g.month, g.day + 7);
-                selectDate = format.format(h);
-                if (done.indexWhere((element) => element == g) == -1) {
-                  done.add(g);
-                }
-                Notes note = Notes(
-                    id: id,
-                    title: title,
-                    data: body,
-                    date: selectDate,
-                    time: daySelect,
-                    priority: priority,
-                    color: colPick.value.toString(),
-                    done: false);
-                setState(() {
-                  items1.add(note);
-                });
-              }
+              // for (var i = 1; i <= 50; i++) {
+              //   DateTime g = DateTime.parse(selectDate);
+              //   DateTime h = DateTime(g.year, g.month, g.day + 7);
+              //   selectDate = format.format(h);
+              //   if (done.indexWhere((element) => element == g) == -1) {
+              //     done.add(g);
+              //   }
+              //   Notes note = Notes(
+              //       id: id,
+              //       title: title,
+              //       data: body,
+              //       date: selectDate,
+              //       time: daySelect,
+              //       priority: priority,
+              //       color: colPick.value.toString(),
+              //       done: false);
+              //   setState(() {
+              //     items1.add(note);
+              //   });
+              // }
               if (count.notifChoice == true) {
                 NotificationService().displayScheduleNotif(
                     body: body,
@@ -598,26 +585,26 @@ class _AddNoteState extends State<AddNote> {
                 priority,
                 colPick.value.toString(),
               );
-              for (var i = 1; i <= 5; i++) {
-                DateTime g = DateTime.parse(selectDate);
-                DateTime h = DateTime(g.year + 1, g.month, g.day);
-                selectDate = format.format(h);
-                if (done.indexWhere((element) => element == g) == -1) {
-                  done.add(g);
-                }
-                Notes note = Notes(
-                    id: id,
-                    title: title,
-                    data: body,
-                    date: selectDate,
-                    time: daySelect,
-                    priority: priority,
-                    color: colPick.value.toString(),
-                    done: false);
-                setState(() {
-                  items1.add(note);
-                });
-              }
+              // for (var i = 1; i <= 5; i++) {
+              //   DateTime g = DateTime.parse(selectDate);
+              //   DateTime h = DateTime(g.year + 1, g.month, g.day);
+              //   selectDate = format.format(h);
+              //   if (done.indexWhere((element) => element == g) == -1) {
+              //     done.add(g);
+              //   }
+              //   Notes note = Notes(
+              //       id: id,
+              //       title: title,
+              //       data: body,
+              //       date: selectDate,
+              //       time: daySelect,
+              //       priority: priority,
+              //       color: colPick.value.toString(),
+              //       done: false);
+              //   setState(() {
+              //     items1.add(note);
+              //   });
+              // }
               if (count.notifChoice == true) {
                 NotificationService().displayScheduleNotif(
                     body: body,
@@ -628,7 +615,7 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
 
-              Navigator.pop(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Home(key: UniqueKey())));
