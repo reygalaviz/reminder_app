@@ -81,19 +81,18 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
               notifs.putIfAbsent(item.id, () => item);
             }));
 
-    _db
-        .collection('notifOption')
-        .get()
-        .then((value) => _db.collection("notifOption").stream.listen((event) {
-              final item = NotifSetting.fromMap(event);
-              notifSet.add(item);
-            }));
     _db.collection('repeat').get().then((value) {
       _subscription = _db.collection('repeat').stream.listen((event) {
         final item = Repeat.fromMap(event);
         items3.putIfAbsent(item.id, () => item);
       });
-      calculate();
+      _db.collection('notifOption').get().then((value) {
+        _db.collection("notifOption").stream.listen((event) {
+          final item = NotifSetting.fromMap(event);
+          notifSet.add(item);
+        });
+        calculate();
+      });
     });
 
     _tabController = TabController(length: 2, vsync: this);
@@ -101,8 +100,8 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
   Future<void> calculate() async {
     // items1.clear();
-    print(items1);
-    print(done);
+    print(items.keys);
+    print(items3);
     List<String> items5 = [];
     Map<String, Notes> items6 = {};
 
@@ -734,7 +733,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    calculate();
+    //calculate();
 
     //events1.removeWhere((key, value) => value.isEmpty);
 
