@@ -11,6 +11,7 @@ import 'package:reminder_app/main.dart' as count;
 import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/models/notif_data_store.dart';
 import 'package:reminder_app/models/repeat_store.dart';
+import 'package:reminder_app/screens/all_notes.dart';
 import 'package:reminder_app/screens/home.dart';
 import 'package:reminder_app/screens/table_calendar.dart';
 import 'package:reminder_app/models/note_data_store.dart';
@@ -396,9 +397,9 @@ class _AddNoteState extends State<AddNote> {
                       body: body, channel: count.channelCounter, title: title);
                 }
               }
-
+              done.add(scheduler);
               selectColor = const Color.fromARGB(255, 180, 175, 175);
-
+              ee.value = !ee.value;
               Navigator.pop(
                   context,
                   MaterialPageRoute(
@@ -412,6 +413,7 @@ class _AddNoteState extends State<AddNote> {
               notif.save();
               Repeat reeeeee = Repeat(id: id, option: "Daily");
               reeeeee.save();
+              items3.putIfAbsent(id, () => reeeeee);
 
               // for (var i = 1; i <= 365; i++) {
               Provider.of<NotesOperation>(context, listen: false).addNewNote(
@@ -423,6 +425,7 @@ class _AddNoteState extends State<AddNote> {
                 priority,
                 colPick.value.toString(),
               );
+              calSelect = DateTime.now();
               if (scheduler2.isAfter(DateTime.now())) {
                 // for (var i = 1; i <= 100; i++) {
                 //   DateTime g = DateTime.parse(selectDate);
@@ -575,6 +578,7 @@ class _AddNoteState extends State<AddNote> {
               notif.save();
               Repeat reeeeee = Repeat(id: id, option: "Yearly");
               reeeeee.save();
+              items3.putIfAbsent(id, () => reeeeee);
               // for (var i = 1; i <= 365; i++) {
               Provider.of<NotesOperation>(context, listen: false).addNewNote(
                 id,
@@ -614,7 +618,7 @@ class _AddNoteState extends State<AddNote> {
               }
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
-
+              ee.value = ee.value;
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -657,6 +661,13 @@ class _AddNoteState extends State<AddNote> {
               const PopupMenuItem<Select>(
                   value: Select.yearly, child: Text("Yearly")),
             ]);
+  }
+
+  @override
+  void dispose() {
+    cCont.dispose();
+    dCont.dispose();
+    super.dispose();
   }
 
   @override
