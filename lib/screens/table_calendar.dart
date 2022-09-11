@@ -57,6 +57,12 @@ class Table_CalendarState extends State<Table_Calendar> {
   @override
   void initState() {
     super.initState();
+    _db.collection('repeat').get().then((value) {
+      _subscription = _db.collection('repeat').stream.listen((event) {
+        final item = Repeat.fromMap(event);
+        items3.putIfAbsent(item.id, () => item);
+      });
+    });
     //items1.clear();
     _selectedDay = DateTime.now();
     _selectedEvents = [];
@@ -602,6 +608,9 @@ class Table_CalendarState extends State<Table_Calendar> {
 
   @override
   void dispose() {
+    if (_subscription != null) {
+      _subscription!.cancel();
+    }
     super.dispose();
   }
 
