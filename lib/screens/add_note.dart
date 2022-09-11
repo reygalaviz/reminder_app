@@ -457,6 +457,7 @@ class _AddNoteState extends State<AddNote> {
               }
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
+              ee.value = !ee.value;
               Navigator.pop(
                   context,
                   MaterialPageRoute(
@@ -510,6 +511,7 @@ class _AddNoteState extends State<AddNote> {
               }
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
+              ee.value = !ee.value;
               Navigator.pop(
                   context,
                   MaterialPageRoute(
@@ -564,7 +566,7 @@ class _AddNoteState extends State<AddNote> {
               }
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
-
+              ee.value = !ee.value;
               Navigator.pop(
                   context,
                   MaterialPageRoute(
