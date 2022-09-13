@@ -16,6 +16,8 @@ import 'completed_notes.dart' as comp;
 import 'package:reminder_app/screens/table_calendar.dart' as table;
 import 'package:reminder_app/models/repeat_store.dart';
 
+enum Select { oneTime, daily, weekly, monthly, yearly }
+
 Color col1 = const Color.fromARGB(255, 171, 222, 230);
 Color col2 = const Color.fromARGB(255, 203, 170, 203);
 Color col3 = const Color.fromARGB(255, 245, 214, 196);
@@ -37,7 +39,7 @@ class EditNote extends StatefulWidget {
 
 class _EditNoteState extends State<EditNote> {
   final _db = Localstore.instance;
-  final _items = <String, store.Notes>{};
+
   final _notifs = <String, Notifs>{};
   late DateTime scheduler = DateTime.now();
   late DateTime scheduler2 = DateTime.now();
@@ -52,19 +54,13 @@ class _EditNoteState extends State<EditNote> {
   String title = "";
   String body = "";
   String daySelect = "";
+  String repeat = "";
   Color selectColor = const Color.fromARGB(255, 180, 175, 174);
   String priority = "high";
   @override
   void initState() {
     super.initState();
-    _db.collection('notes').get().then((value) {
-      _subscription = _db.collection('notes').stream.listen((event) {
-        setState(() {
-          final item = store.Notes.fromMap(event);
-          _items.putIfAbsent(item.id, () => item);
-        });
-      });
-    });
+
     _db
         .collection("notifs")
         .doc(widget.id)
@@ -127,38 +123,6 @@ class _EditNoteState extends State<EditNote> {
 
         dCont.text = compForm;
       },
-
-      // children:[ TextFormField(
-      //   readOnly: true,
-      //   autocorrect: false,
-      //   enableSuggestions: false,
-      //   controller: dCont,
-      //   decoration: InputDecoration(
-      //     border: InputBorder.none,
-      //     prefixIcon: Container(
-      //       padding: const EdgeInsets.all(0.0),
-      //       child: IconButton(
-      //           onPressed: () async {
-      //             final DateTime? dateT = await showDatePicker(
-      //                 context: context,
-      //                 initialDate: DateTime.parse(selectDate),
-      //                 firstDate: DateTime(2022),
-      //                 lastDate: DateTime(2025));
-      //             String compForm = format.format(dateT!);
-      //             selectDate = compForm;
-      //             setState(() {
-      //               scheduler = dateT;
-      //             });
-
-      //             dCont.text = compForm;
-      //           },
-      //           icon: const Icon(
-      //             FontAwesomeIcons.calendar,
-      //             size: 20,
-      //           )),
-      //     ),
-      //   ),
-      // ),]
     );
   }
 
@@ -176,33 +140,37 @@ class _EditNoteState extends State<EditNote> {
         scheduler2 = DateTime(scheduler.year, scheduler.month, scheduler.day,
             timeT.hour, timeT.minute);
       },
-      // child: TextFormField(
-      //     autofocus: false,
-      //     readOnly: true,
-      //     maxLines: 1,
-      //     autocorrect: false,
-      //     enableSuggestions: false,
-      //     controller: cCont,
-      //     decoration: InputDecoration(
-      //       border: InputBorder.none,
-      //       prefixIcon: IconButton(
-      //         onPressed: () async {
-      //           TimeOfDay? timeT = await showTimePicker(
-      //               context: context, initialTime: TimeOfDay.now());
-      //           if (!mounted) return;
-      //           String timeString = timeT!.format(context);
-      //           daySelect = timeString;
-      //           cCont.text = timeString;
-      //           scheduler2 = DateTime(scheduler.year, scheduler.month,
-      //               scheduler.day, timeT.hour, timeT.minute);
-      //         },
-      //         icon: const Icon(
-      //           FontAwesomeIcons.clock,
-      //           size: 20,
-      //         ),
-      //       ),
-      //     )),
     );
+  }
+
+  Widget eventRepeat() {
+    return PopupMenuButton<Select>(
+        icon: Text(repeat),
+        onSelected: (value) {
+          if (value == Select.daily) {
+            repeat = "Daily";
+          } else if (value == Select.monthly) {
+            repeat = "Monthly";
+          } else if (value == Select.weekly) {
+            repeat = "Weekly";
+          } else if (value == Select.yearly) {
+            repeat = "Yearly";
+          } else if (value == Select.oneTime) {
+            repeat = "One-Time";
+          }
+        },
+        itemBuilder: (BuildContext context) => <PopupMenuEntry<Select>>[
+              const PopupMenuItem<Select>(
+                  value: Select.oneTime, child: Text("One-Time")),
+              const PopupMenuItem<Select>(
+                  value: Select.daily, child: Text("Daily")),
+              const PopupMenuItem<Select>(
+                  value: Select.weekly, child: Text("Weekly")),
+              const PopupMenuItem<Select>(
+                  value: Select.monthly, child: Text("Monthly")),
+              const PopupMenuItem<Select>(
+                  value: Select.yearly, child: Text("Yearly")),
+            ]);
   }
 
   Widget eventColor() {
@@ -397,85 +365,66 @@ class _EditNoteState extends State<EditNote> {
     );
   }
 
-  Widget eventSubmit() {
-    var item = items[widget.id]!;
-    return CircleAvatar(
-      radius: 20,
-      backgroundColor: Colors.red,
-      child: IconButton(
-        onPressed: () {
-          String ter = _notifs[widget.id]!.id2;
-
-          NotificationService().deleteNotif(ter);
-          if (scheduler2.isAfter(DateTime.now())) {
-            NotificationService().displayScheduleNotif(
-                body: body,
-                channel: count.channelCounter,
-                title: title,
-                date: scheduler2);
-          } else {
-            NotificationService().displayNotification(
-                body: body, channel: count.channelCounter, title: title);
-          }
-          bool bloop = item.done;
-          item.delete();
-          searchResults.remove(item);
-          uncompleted.remove(item);
-          items.remove(item.id);
-
-          //final id = Localstore.instance.collection("notes").doc().id;
-
-          final item1 = store.Notes(
-              id: item.id,
-              title: title,
-              data: body,
-              date: selectDate,
-              time: daySelect,
-              priority: priority,
-              color: colPick.value.toString(),
-              done: bloop);
-          item1.save();
-          searchResults.add(item1);
-          Notifs notif1 = Notifs(
-            id: item.id,
-            id2: count.channelCounter.toString(),
-          );
-          notif1.save();
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Home()),
-          );
-        },
-        icon: const Icon(
-          FontAwesomeIcons.arrowUp,
-          color: Colors.white,
-          size: 20,
-        ),
-      ),
-    );
-  }
-
-  Widget eventRepeat() {
-    return ListTile(
-      leading: const Icon(FontAwesomeIcons.repeat),
-      title: const Text('Repeat'),
-      onTap: () {
-        showModalBottomSheet(
-            isScrollControlled: true,
-            shape: const RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.vertical(top: Radius.circular(20.0))),
-            context: context,
-            builder: (context) {
-              return const RepeatNote();
+  Widget eventRepeat1() {
+    return PopupMenuButton<Select>(
+        icon: Text(repeat),
+        onSelected: (value) {
+          if (value == Select.daily) {
+            setState(() {
+              repeat = "Daily";
             });
-      },
-    );
+          } else if (value == Select.monthly) {
+            setState(() {
+              repeat = "Monthly";
+            });
+          } else if (value == Select.weekly) {
+            setState(() {
+              repeat = "Weekly";
+            });
+          } else if (value == Select.yearly) {
+            setState(() {
+              repeat = "Yearly";
+            });
+          } else if (value == Select.oneTime) {
+            setState(() {
+              repeat = "One-Time";
+            });
+          }
+        },
+        itemBuilder: (BuildContext context) => <PopupMenuEntry<Select>>[
+              const PopupMenuItem<Select>(
+                  value: Select.oneTime, child: Text("One-Time")),
+              const PopupMenuItem<Select>(
+                  value: Select.daily, child: Text("Daily")),
+              const PopupMenuItem<Select>(
+                  value: Select.weekly, child: Text("Weekly")),
+              const PopupMenuItem<Select>(
+                  value: Select.monthly, child: Text("Monthly")),
+              const PopupMenuItem<Select>(
+                  value: Select.yearly, child: Text("Yearly")),
+            ]);
+    // });
+    // },
+    // );
   }
 
   @override
   Widget build(BuildContext context) {
-    var item = items[widget.id]!;
+    store.Notes item;
+    if (items[widget.id] != null) {
+      item = items[widget.id]!;
+    } else {
+      item = table.items1.firstWhere((element) => element.id == widget.id,
+          orElse: (() => item = store.Notes(
+              id: "",
+              title: title,
+              data: "",
+              date: "",
+              time: "",
+              priority: priority,
+              color: "",
+              done: false)));
+    }
     if (selectDate == "") {
       selectDate = item.date;
     }
@@ -487,6 +436,12 @@ class _EditNoteState extends State<EditNote> {
     }
     if (daySelect == "") {
       daySelect = item.time;
+    }
+    var obj = table.items3[item.id];
+    if (repeat == "") {
+      if (obj != null) {
+        repeat = obj.option;
+      }
     }
 
     //DateTime? dateT = DateTime.now();
@@ -531,10 +486,10 @@ class _EditNoteState extends State<EditNote> {
                   }
                 }
 
-                var obj = table.items3[item.id];
                 if (obj != null) {
                   obj.delete();
                 }
+
                 bool bloop = item.done;
                 setState(() {
                   int a = comp.completed
@@ -558,7 +513,6 @@ class _EditNoteState extends State<EditNote> {
                   }
 
                   notes.removeWhere((element) => element == item.id);
-                  _items.remove(item.id);
                 });
                 item.delete();
                 final id = Localstore.instance.collection("notes").doc().id;
@@ -578,8 +532,14 @@ class _EditNoteState extends State<EditNote> {
                   id: id,
                   id2: count.channelCounter.toString(),
                 );
-                Repeat reeeeee = Repeat(id: id, option: "Daily");
+                // String k;
+
+                // k = repeat;
+
+                print(repeat);
+                Repeat reeeeee = Repeat(id: id, option: repeat);
                 reeeeee.save();
+                table.items3.putIfAbsent(id, () => reeeeee);
                 notif1.save();
 
                 searchResults.add(item1);
@@ -590,14 +550,9 @@ class _EditNoteState extends State<EditNote> {
                 }
                 allNotes.items.putIfAbsent(id, () => item1);
                 table.items1.add(item1);
-                _items.putIfAbsent(item1.id, () => item1);
 
+                ee.value = !ee.value;
                 Navigator.pop(context);
-                bool b = true;
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => Home(key: UniqueKey())));
               },
               child: const Text(
                 'Save',
@@ -624,7 +579,7 @@ class _EditNoteState extends State<EditNote> {
                               eventDate(),
                               eventTime(),
                               eventColor(),
-                              eventRepeat(),
+                              eventRepeat1(),
                             ],
                           ),
                         ),
@@ -640,6 +595,7 @@ class _EditNoteState extends State<EditNote> {
   void dispose() {
     if (_subscription != null) _subscription?.cancel();
     // Clean up the controller when the widget is removed
+    cCont.dispose();
     dCont.dispose();
     super.dispose();
   }

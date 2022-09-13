@@ -325,31 +325,42 @@ class _AddNoteState extends State<AddNote> {
               showCupertinoModalPopup(
                   context: context,
                   builder: (BuildContext builder) {
-                    Radius radi = const Radius.circular(6);
                     return Container(
                         width: 200,
-                        height: 300,
+                        height: 500,
                         padding: const EdgeInsets.only(
                             top: 20.0, left: 10.0, right: 10.0, bottom: 60.0),
-                        child: CupertinoDatePicker(
-                          mode: CupertinoDatePickerMode.time,
-                          initialDateTime: DateTime.now(),
-                          backgroundColor: Colors.white,
-                          onDateTimeChanged: (value) {
-                            timeT = TimeOfDay.fromDateTime(value);
-                            if (!mounted) return;
-                            if (timeT != null) {
-                              String timeString = timeT!.format(context);
-                              daySelect = timeString;
-                              cCont.text = timeString;
-                              scheduler2 = DateTime(
-                                  scheduler.year,
-                                  scheduler.month,
-                                  scheduler.day,
-                                  timeT!.hour,
-                                  timeT!.minute);
-                            }
-                          },
+                        child: Column(
+                          children: [
+                            SizedBox(
+                                height: 300,
+                                width: 200,
+                                child: CupertinoDatePicker(
+                                  mode: CupertinoDatePickerMode.time,
+                                  initialDateTime: DateTime.now(),
+                                  backgroundColor: Colors.white,
+                                  onDateTimeChanged: (value) {
+                                    timeT = TimeOfDay.fromDateTime(value);
+                                    if (!mounted) return;
+                                    if (timeT != null) {
+                                      String timeString =
+                                          timeT!.format(context);
+                                      daySelect = timeString;
+                                      cCont.text = timeString;
+                                      scheduler2 = DateTime(
+                                          scheduler.year,
+                                          scheduler.month,
+                                          scheduler.day,
+                                          timeT!.hour,
+                                          timeT!.minute);
+                                    }
+                                  },
+                                )),
+                            CupertinoButton(
+                              child: const Text('Ok'),
+                              onPressed: () => Navigator.of(context).pop(),
+                            )
+                          ],
                         ));
                   });
             },

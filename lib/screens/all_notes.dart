@@ -71,22 +71,15 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
         items.putIfAbsent(item.id, () => item);
       });
-    });
+      _db
+          .collection("notifs")
+          .doc()
+          .get()
+          .then((value) => _db.collection('notifs').stream.listen((event) {
+                final item = Notifs.fromMap(event);
+                notifs.putIfAbsent(item.id, () => item);
+              }));
 
-    _db
-        .collection("notifs")
-        .doc()
-        .get()
-        .then((value) => _db.collection('notifs').stream.listen((event) {
-              final item = Notifs.fromMap(event);
-              notifs.putIfAbsent(item.id, () => item);
-            }));
-
-    _db.collection('repeat').get().then((value) {
-      _subscription = _db.collection('repeat').stream.listen((event) {
-        final item = Repeat.fromMap(event);
-        items3.putIfAbsent(item.id, () => item);
-      });
       _db.collection('notifOption').get().then((value) {
         _db.collection("notifOption").stream.listen((event) {
           final item = NotifSetting.fromMap(event);
@@ -100,23 +93,17 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   }
 
   Future<void> calculate() async {
-    // items1.clear();
-    // print(items.keys);
-    // print(items3);
-    // print(done);
-    // print(events1.keys);
     events1.clear();
-    // events1.removeWhere((key, value) => value.isEmpty);
     List<String> items5 = [];
     Map<String, Notes> items6 = {};
-    print(items);
+
     items.forEach((key, value) {
       if (items1.indexWhere((element) => element.id == value.id) == -1) {
         setState(() {
           items1.add(value);
         });
       }
-      print(items1);
+      // print(items1);
       Repeat? ider = items3[key];
       if (ider != null) {
         Notes? note1 = value;
@@ -615,40 +602,27 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
         } else if (list.isNotEmpty) {
           events1.putIfAbsent(value, () => list);
         }
-        //events1.removeWhere((key, value) => value.isEmpty);
-        // List<DateTime> j = [];
-        // events1.forEach((key, value) {
-        //   if (done.indexWhere((element) => element == key) == -1) {
-        //     j.add(key);
-        //   }
-        // });
-        // for (var element in j) {
-        //   events1.remove(element);
-        // }
       }
     });
   }
 
   Future<void> calculate2() async {
-    // items1.clear();
-    // print(items.keys);
-    // print(items3);
-    // print(done);
-    // print(events1.keys);
     events1.clear();
-    // events1.removeWhere((key, value) => value.isEmpty);
+    items1.clear();
     List<String> items5 = [];
     Map<String, Notes> items6 = {};
 
     items.forEach((key, value) {
       if (items1.indexWhere((element) => element.id == key) == -1) {
         Repeat? ider = items3[key];
+
         if (ider != null) {
           Notes? note1 = value;
 
           if (ider.option == "Daily") {
             var selectDate2 = note1.date;
             Notes lastNote = note1;
+            items1.add(lastNote);
             for (var i = 1; i <= 100; i++) {
               DateTime g = DateTime.parse(selectDate2);
               DateTime h = DateTime(g.year, g.month, g.day + 1);
@@ -686,6 +660,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                       title: note1.title,
                       date: he);
                 }
+                done.removeWhere((element) => element == g);
 
                 lastNote.delete();
                 int b =
@@ -761,9 +736,10 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
           }
 
           if (ider.option == "Weekly") {
+            print(note1.date);
             var selectDate2 = note1.date;
             Notes lastNote = note1;
-            //items1.add(lastNote);
+            items1.add(lastNote);
             for (var i = 1; i <= 50; i++) {
               DateTime g = DateTime.parse(selectDate2);
               DateTime h = DateTime(g.year, g.month, g.day + 7);
@@ -771,6 +747,8 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
               if (g.isBefore(DateTime.now())) {
                 // if (g.day != DateTime.now().day) {
+                done.removeWhere((element) => element == g);
+
                 String ter = notifs[lastNote.id]!.id2;
 
                 NotificationService().deleteNotif(ter);
@@ -878,7 +856,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
           if (ider.option == "Monthly") {
             var selectDate2 = note1.date;
             Notes lastNote = note1;
-            //items1.add(lastNote);
+            items1.add(lastNote);
             for (var i = 1; i <= 24; i++) {
               DateTime g = DateTime.parse(selectDate2);
 
@@ -887,6 +865,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
               if (g.isBefore(DateTime.now())) {
                 if (g.day != DateTime.now().day) {
+                  done.removeWhere((element) => element == g);
                   String ter = notifs[lastNote.id]!.id2;
 
                   NotificationService().deleteNotif(ter);
@@ -995,13 +974,14 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
           if (ider.option == "Yearly") {
             var selectDate2 = note1.date;
             Notes lastNote = note1;
-
+            items1.add(lastNote);
             for (var i = 1; i <= 10; i++) {
               DateTime g = DateTime.parse(selectDate2);
               DateTime h = DateTime(g.year + 1, g.month, g.day);
               selectDate2 = format2.format(h);
               if (g.isBefore(DateTime.now())) {
                 if (g.day != DateTime.now().day) {
+                  done.removeWhere((element) => element == g);
                   String ter = notifs[lastNote.id]!.id2;
 
                   NotificationService().deleteNotif(ter);
