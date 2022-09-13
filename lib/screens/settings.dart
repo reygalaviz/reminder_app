@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:reminder_app/main.dart';
 import 'package:reminder_app/screens/settings-language.dart';
+import 'package:reminder_app/screens/settings_acks.dart';
 import 'package:reminder_app/screens/settings_faq.dart';
+import 'package:reminder_app/screens/settings_priv.dart';
+import 'package:reminder_app/screens/settings_sec.dart';
+import 'package:reminder_app/screens/settings_suggest.dart';
+import 'package:reminder_app/screens/settings_terms.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:provider/provider.dart';
 import '../themes/theme_model.dart';
@@ -346,32 +351,22 @@ class _SettingsTabState extends State<SettingsTab> {
 
   GestureDetector buildHelpSuggestOption(BuildContext context, String title) {
     return GestureDetector(
-      onTap: () {},
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                title,
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                    color: Theme.of(context).primaryColor),
-              ),
-              const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey,
-                size: 20,
-              )
-            ]),
-      ),
-    );
-  }
-
-  GestureDetector buildAboutOption(BuildContext context, String title) {
-    return GestureDetector(
-      onTap: () {},
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        setState(() {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => CupertinoPageScaffold(
+                  navigationBar: CupertinoNavigationBar(
+                      middle: Text(
+                        'Suggest a Feature',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 20),
+                      ),
+                      backgroundColor: Theme.of(context).backgroundColor),
+                  child: SettingsSuggest())));
+        });
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
@@ -396,7 +391,22 @@ class _SettingsTabState extends State<SettingsTab> {
 
   GestureDetector buildAboutPrivOption(BuildContext context, String title) {
     return GestureDetector(
-      onTap: () {},
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        setState(() {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => CupertinoPageScaffold(
+                  navigationBar: CupertinoNavigationBar(
+                      middle: Text(
+                        'Privacy Policy',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 20),
+                      ),
+                      backgroundColor: Theme.of(context).backgroundColor),
+                  child: SettingsPrivacy())));
+        });
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
@@ -421,7 +431,22 @@ class _SettingsTabState extends State<SettingsTab> {
 
   GestureDetector buildAboutSecOption(BuildContext context, String title) {
     return GestureDetector(
-      onTap: () {},
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        setState(() {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => CupertinoPageScaffold(
+                  navigationBar: CupertinoNavigationBar(
+                      middle: Text(
+                        'Security Policy',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 20),
+                      ),
+                      backgroundColor: Theme.of(context).backgroundColor),
+                  child: SettingsSecurity())));
+        });
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
@@ -446,7 +471,22 @@ class _SettingsTabState extends State<SettingsTab> {
 
   GestureDetector buildAboutTermsOption(BuildContext context, String title) {
     return GestureDetector(
-      onTap: () {},
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        setState(() {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => CupertinoPageScaffold(
+                  navigationBar: CupertinoNavigationBar(
+                      middle: Text(
+                        'Terms of Service',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 20),
+                      ),
+                      backgroundColor: Theme.of(context).backgroundColor),
+                  child: SettingsTerms())));
+        });
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
@@ -471,7 +511,22 @@ class _SettingsTabState extends State<SettingsTab> {
 
   GestureDetector buildAboutAckOption(BuildContext context, String title) {
     return GestureDetector(
-      onTap: () {},
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        setState(() {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => CupertinoPageScaffold(
+                  navigationBar: CupertinoNavigationBar(
+                      middle: Text(
+                        'Acknowledgments',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 20),
+                      ),
+                      backgroundColor: Theme.of(context).backgroundColor),
+                  child: SettingsAcknowledgements())));
+        });
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
