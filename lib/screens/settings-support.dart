@@ -21,17 +21,17 @@ class _SettingsSupportState extends State<SettingsSupport> {
   Widget build(BuildContext context) {
     _showSnackBar(BuildContext context) {
       final snackbar = SnackBar(
-        padding: EdgeInsets.only(top: 15),
+        padding: const EdgeInsets.only(top: 15),
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
-        duration: Duration(seconds: 3),
+        duration: const Duration(seconds: 3),
         content: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: const [
             Text(
-              'Form Submitted',
+              'Successfully Submitted',
               style: TextStyle(
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.black,
                   fontSize: 15,
                   fontWeight: FontWeight.bold),
             ),
@@ -242,9 +242,7 @@ class _SettingsSupportState extends State<SettingsSupport> {
                                       }
                                     },
                                     child: Text('Submit',
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .primaryColor))),
+                                        style: TextStyle(color: Colors.black))),
                               ),
                             ],
                           )),
