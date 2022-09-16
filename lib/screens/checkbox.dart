@@ -52,9 +52,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
       var obj = all.items[ovj];
 
       if (obj != null) {
-        if (!obj.done) {
-          boop = obj.done;
-        }
+        boop = obj.done;
       }
     }
 
@@ -288,6 +286,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                 );
                 notif1.save();
                 all.ee.value = !all.ee.value;
+                res.value = !res.value;
 
                 // Navigator.push(
                 //   context,
