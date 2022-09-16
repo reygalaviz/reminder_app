@@ -683,12 +683,12 @@ class Table_CalendarState extends State<Table_Calendar> {
                   });
                   String not = notifs[item.id]!.id2;
                   NotificationService().deleteNotif(not);
-                  Navigator.pushReplacement(
+                  // Navigator.pop(context);
+                  Navigator.pop(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
                               home.Home2(key: UniqueKey(), boo: true)));
-                  //  Navigator.pop(context);
                 },
                 child:
                     const Text("Delete", style: TextStyle(color: Colors.red)))

@@ -43,34 +43,30 @@ class _SettingsLanguageState extends State<SettingsLanguage> {
   Widget build(BuildContext context) {
     return Material(
       child: LayoutBuilder(
-          builder: (context, constraints) => SizedBox(
-                height: constraints.maxHeight * .92,
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: languages.length,
-                                itemBuilder: (context, index) {
-                                  return CheckboxListTile(
-                                      side: BorderSide(),
-                                      value: _checkedLang
-                                          .contains(languages[index]),
-                                      onChanged: (val) {
-                                        _onSelected(val!, languages[index]);
-                                      },
-                                      title: Text(languages[index]));
-                                }),
-                          ],
-                        ),
+          builder: (context, constraints) => Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: languages.length,
+                              itemBuilder: (context, index) {
+                                return CheckboxListTile(
+                                    value:
+                                        _checkedLang.contains(languages[index]),
+                                    onChanged: (val) {
+                                      _onSelected(val!, languages[index]);
+                                    },
+                                    title: Text(languages[index]));
+                              }),
+                        ],
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
               )),
     );
   }
