@@ -437,7 +437,7 @@ class _EditNoteState extends State<EditNote> {
     if (daySelect == "") {
       daySelect = item.time;
     }
-    var obj = table.items3[item.id];
+    var obj = allNotes.items3[item.id];
     if (repeat == "") {
       if (obj != null) {
         repeat = obj.option;
@@ -539,7 +539,7 @@ class _EditNoteState extends State<EditNote> {
                 print(repeat);
                 Repeat reeeeee = Repeat(id: id, option: repeat);
                 reeeeee.save();
-                table.items3.putIfAbsent(id, () => reeeeee);
+                allNotes.items3.putIfAbsent(id, () => reeeeee);
                 notif1.save();
 
                 searchResults.add(item1);

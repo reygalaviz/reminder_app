@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -23,10 +24,11 @@ int initNumber = 0;
 var items = <String, store.Notes>{};
 var notifs = <String, Notifs>{};
 List<NotifSetting> notifSet = <NotifSetting>[];
+final items3 = <String, Repeat>{};
 
 bool res = false;
 ValueNotifier<bool> ee = ValueNotifier(false);
-final Map<DateTime, List<Notes>> events1 = {};
+Map<DateTime, List<Notes>> events1 = {};
 
 class AllNotes extends StatefulWidget {
   const AllNotes({Key? key}) : super(key: key);
@@ -36,6 +38,8 @@ class AllNotes extends StatefulWidget {
 }
 
 class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
+  ValueNotifier<Map<DateTime, List<Notes>>> eventos1 = ValueNotifier({});
+
   String data = "No notes yet!";
   final _db = Localstore.instance;
   DateFormat format2 = DateFormat("yyyy-MM-dd");
@@ -45,10 +49,12 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   late TabController _tabController = TabController(length: 2, vsync: this);
   @override
   void initState() {
+    items.clear();
     super.initState();
     _db.collection('notes').get().then((value) {
       _subscription = _db.collection('notes').stream.listen((event) {
         final item = store.Notes.fromMap(event);
+        DateTime dateOfNote = DateTime.parse(item.date);
         if (!notes.contains(item.id)) {
           notes.add(item.id);
           searchResults.add(item);
@@ -58,15 +64,15 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                 -1) {
               uncompleted.add(item);
             }
+            bool biff = done.contains(dateOfNote);
+            if (biff == false) {
+              done.add(dateOfNote);
+            }
           }
         }
-        DateTime dateOfNote = DateTime.parse(item.date);
+
         if (items1.indexWhere((element) => element.id == item.id) == -1) {
           items1.add(item);
-        }
-        bool biff = done.contains(dateOfNote);
-        if (biff == false) {
-          done.add(dateOfNote);
         }
 
         items.putIfAbsent(item.id, () => item);
@@ -85,6 +91,12 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
           final item = NotifSetting.fromMap(event);
           notifSet.add(item);
         });
+      });
+      _db.collection('repeat').get().then((value) {
+        _subscription = _db.collection('repeat').stream.listen((event) {
+          final item = Repeat.fromMap(event);
+          items3.putIfAbsent(item.id, () => item);
+        });
         calculate();
       });
     });
@@ -93,536 +105,34 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
   }
 
   Future<void> calculate() async {
+    //void calculate() {
     events1.clear();
     List<String> items5 = [];
     Map<String, Notes> items6 = {};
-
+    print(items3);
     items.forEach((key, value) {
       if (items1.indexWhere((element) => element.id == value.id) == -1) {
         setState(() {
           items1.add(value);
         });
       }
-      // print(items1);
-      Repeat? ider = items3[key];
-      if (ider != null) {
-        Notes? note1 = value;
-
-        if (ider.option == "Daily") {
-          var selectDate2 = note1.date;
-          Notes lastNote = note1;
-          for (var i = 1; i <= 100; i++) {
-            DateTime g = DateTime.parse(selectDate2);
-            DateTime h = DateTime(g.year, g.month, g.day + 1);
-            selectDate2 = format2.format(h);
-
-            if (g.isBefore(DateTime.now())) {
-              String ter = channelCounter.toString();
-              //if (g.day != DateTime.now().day) {
-              if (notifs[lastNote.id] != null) {
-                ter = notifs[lastNote.id]!.id2;
-
-                NotificationService().deleteNotif(ter);
-              }
-              int hour = 0;
-              int minute = 0;
-              String ampm = note1.time.substring(note1.time.length - 2);
-              String result = note1.time.substring(0, note1.time.indexOf(' '));
-              if (ampm == 'AM' && int.parse(result.split(":")[1]) != 12) {
-                hour = int.parse(result.split(':')[0]);
-                if (hour == 12) hour = 0;
-                minute = int.parse(result.split(":")[1]);
-              } else {
-                hour = int.parse(result.split(':')[0]) - 12;
-                if (hour <= 0) {
-                  hour = 24 + hour;
-                }
-                minute = int.parse(result.split(":")[1]);
-              }
-              DateTime he = h.add(Duration(hours: hour, minutes: minute));
-              if (notifChoice == true) {
-                NotificationService().displayScheduleNotif(
-                    body: note1.data,
-                    channel: channelCounter,
-                    title: note1.title,
-                    date: he);
-              }
-
-              lastNote.delete();
-              int b = searchResults.indexWhere((val) => val.id == lastNote.id);
-              if (b != -1) {
-                searchResults.removeAt(b);
-              }
-              int c = uncompleted.indexWhere((val) => val.id == lastNote.id);
-              if (c != -1) {
-                uncompleted.removeAt(c);
-              }
-              //items.remove(lastNote.id);
-              items5.add(lastNote.id);
-              int d = items1.indexWhere((element) => element.id == lastNote.id);
-              if (d != -1) {
-                items1.removeAt(d);
-              }
-
-              Repeat? f = items3[lastNote.id];
-              if (f != null) {
-                f.delete();
-              }
-              items3.remove(lastNote.id);
-              String id1 = store.db.collection('notes').doc().id;
-              //  id = id1;
-              Notes note = Notes(
-                  id: id1,
-                  title: note1.title,
-                  data: note1.data,
-                  date: selectDate2,
-                  time: note1.time,
-                  priority: note1.priority,
-                  color: note1.color,
-                  done: note1.done);
-
-              items1.add(note);
-
-              note.save();
-              Notifs notif = Notifs(
-                id: id1,
-                id2: ter,
-              );
-              notif.save();
-              searchResults.add(note);
-              uncompleted.add(note);
-              items6.putIfAbsent(id1, () => note);
-
-              Repeat r = Repeat(id: id1, option: "Daily");
-              r.save();
-              lastNote = note;
-            } else {
-              Notes note = Notes(
-                  id: note1.id,
-                  title: note1.title,
-                  data: note1.data,
-                  date: selectDate2,
-                  time: note1.time,
-                  priority: note1.priority,
-                  color: note1.color,
-                  done: note1.done);
-
-              items1.add(note);
-
-              lastNote = note;
-            }
-
-            bool biff = done.contains(h);
-            if (biff == false) {
-              setState(() {
-                done.add(h);
-              });
-            }
-          }
+      DateTime q = DateTime.parse(value.date);
+      if (value.done == false) {
+        bool biff = done.contains(q);
+        if (biff == false) {
+          setState(() {
+            done.add(q);
+          });
         }
 
-        if (ider.option == "Weekly") {
-          var selectDate2 = note1.date;
-          Notes lastNote = note1;
-          //items1.add(lastNote);
-          for (var i = 1; i <= 50; i++) {
-            DateTime g = DateTime.parse(selectDate2);
-            DateTime h = DateTime(g.year, g.month, g.day + 7);
-            selectDate2 = format2.format(h);
-
-            if (g.isBefore(DateTime.now())) {
-              // if (g.day != DateTime.now().day) {
-              String ter = notifs[lastNote.id]!.id2;
-
-              NotificationService().deleteNotif(ter);
-              int hour = 0;
-              int minute = 0;
-              String ampm = note1.time.substring(note1.time.length - 2);
-              String result = note1.time.substring(0, note1.time.indexOf(' '));
-              if (ampm == 'AM' && int.parse(result.split(":")[1]) != 12) {
-                hour = int.parse(result.split(':')[0]);
-                if (hour == 12) hour = 0;
-                minute = int.parse(result.split(":")[1]);
-              } else {
-                hour = int.parse(result.split(':')[0]) - 12;
-                if (hour <= 0) {
-                  hour = 24 + hour;
-                }
-                minute = int.parse(result.split(":")[1]);
-              }
-              DateTime he = h.add(Duration(hours: hour, minutes: minute));
-              if (notifChoice == true) {
-                NotificationService().displayScheduleNotif(
-                    body: note1.data,
-                    channel: channelCounter,
-                    title: note1.title,
-                    date: he);
-              }
-              lastNote.delete();
-              // items1.remove(lastNote);
-              int b = searchResults.indexWhere((val) => val.id == lastNote.id);
-              if (b != -1) {
-                searchResults.removeAt(b);
-              }
-              int c = uncompleted.indexWhere((val) => val.id == lastNote.id);
-              if (c != -1) {
-                uncompleted.removeAt(c);
-              }
-              // items.remove(lastNote.id);
-              items5.add(lastNote.id);
-              int d = items1.indexWhere((element) => element.id == lastNote.id);
-              if (d != -1) {
-                items1.removeAt(d);
-              }
-              var x = items3[lastNote.id];
-              Repeat? f = items3[lastNote.id];
-              if (f != null) {
-                f.delete();
-              }
-              if (x != null) {
-                x.delete;
-              }
-              items3.remove(lastNote.id);
-              final id1 = store.db.collection('notes').doc().id;
-              // id = id1;
-              Notes note = Notes(
-                  id: id1,
-                  title: note1.title,
-                  data: note1.data,
-                  date: selectDate2,
-                  time: note1.time,
-                  priority: note1.priority,
-                  color: note1.color,
-                  done: note1.done);
-
-              items1.add(note);
-
-              note.save();
-              Notifs notif = Notifs(
-                id: id1,
-                id2: ter,
-              );
-              notif.save();
-              searchResults.add(note);
-              uncompleted.add(note);
-              items6.putIfAbsent(id1, () => note);
-              Repeat r = Repeat(id: id1, option: "Weekly");
-              r.save();
-              items3.putIfAbsent(r.id, () => r);
-              lastNote = note;
-              // }
-            } else {
-              Notes note = Notes(
-                  id: note1.id,
-                  title: note1.title,
-                  data: note1.data,
-                  date: selectDate2,
-                  time: note1.time,
-                  priority: note1.priority,
-                  color: note1.color,
-                  done: note1.done);
-
-              items1.add(note);
-
-              lastNote = note;
-            }
-
-            bool biff = done.contains(h);
-            if (biff == false) {
-              setState(() {
-                done.add(h);
-              });
-            }
-          }
-        }
-        if (ider.option == "Monthly") {
-          var selectDate2 = note1.date;
-          Notes lastNote = note1;
-          //items1.add(lastNote);
-          for (var i = 1; i <= 24; i++) {
-            DateTime g = DateTime.parse(selectDate2);
-
-            DateTime h = DateTime(g.year, g.month + 1, g.day);
-            selectDate2 = format2.format(h);
-
-            if (g.isBefore(DateTime.now())) {
-              if (g.day != DateTime.now().day) {
-                String ter = notifs[lastNote.id]!.id2;
-
-                NotificationService().deleteNotif(ter);
-                int hour = 0;
-                int minute = 0;
-                String ampm = note1.time.substring(note1.time.length - 2);
-                String result =
-                    note1.time.substring(0, note1.time.indexOf(' '));
-                if (ampm == 'AM' && int.parse(result.split(":")[1]) != 12) {
-                  hour = int.parse(result.split(':')[0]);
-                  if (hour == 12) hour = 0;
-                  minute = int.parse(result.split(":")[1]);
-                } else {
-                  hour = int.parse(result.split(':')[0]) - 12;
-                  if (hour <= 0) {
-                    hour = 24 + hour;
-                  }
-                  minute = int.parse(result.split(":")[1]);
-                }
-                DateTime he = h.add(Duration(hours: hour, minutes: minute));
-                if (notifChoice == true) {
-                  NotificationService().displayScheduleNotif(
-                      body: note1.data,
-                      channel: channelCounter,
-                      title: note1.title,
-                      date: he);
-                }
-
-                lastNote.delete();
-                // items1.remove(lastNote);
-                int b =
-                    searchResults.indexWhere((val) => val.id == lastNote.id);
-                if (b != -1) {
-                  searchResults.removeAt(b);
-                }
-                int c = uncompleted.indexWhere((val) => val.id == lastNote.id);
-                if (c != -1) {
-                  uncompleted.removeAt(c);
-                }
-                // items.remove(lastNote.id);
-                items5.add(lastNote.id);
-                int d =
-                    items1.indexWhere((element) => element.id == lastNote.id);
-                if (d != -1) {
-                  items1.removeAt(d);
-                }
-                var x = items3[lastNote.id];
-                if (x != null) {
-                  x.delete;
-                }
-                Repeat? f = items3[lastNote.id];
-                if (f != null) {
-                  f.delete();
-                }
-                items3.remove(lastNote.id);
-
-                final id1 = store.db.collection('notes').doc().id;
-                // id = id1;
-                Notes note = Notes(
-                    id: id1,
-                    title: note1.title,
-                    data: note1.data,
-                    date: selectDate2,
-                    time: note1.time,
-                    priority: note1.priority,
-                    color: note1.color,
-                    done: note1.done);
-
-                items1.add(note);
-
-                note.save();
-                Notifs notif = Notifs(
-                  id: id1,
-                  id2: ter,
-                );
-                notif.save();
-                searchResults.add(note);
-                uncompleted.add(note);
-                items6.putIfAbsent(id1, () => note);
-                Repeat r = Repeat(id: id1, option: "Monthly");
-                r.save();
-                lastNote = note;
-              }
-            } else {
-              Notes note = Notes(
-                  id: note1.id,
-                  title: note1.title,
-                  data: note1.data,
-                  date: selectDate2,
-                  time: note1.time,
-                  priority: note1.priority,
-                  color: note1.color,
-                  done: note1.done);
-
-              items1.add(note);
-
-              lastNote = note;
-            }
-            bool biff = done.contains(h);
-            if (biff == false) {
-              setState(() {
-                done.add(h);
-              });
-            }
-          }
-        }
-        if (ider.option == "Yearly") {
-          var selectDate2 = note1.date;
-          Notes lastNote = note1;
-
-          for (var i = 1; i <= 10; i++) {
-            DateTime g = DateTime.parse(selectDate2);
-            DateTime h = DateTime(g.year + 1, g.month, g.day);
-            selectDate2 = format2.format(h);
-            if (g.isBefore(DateTime.now())) {
-              if (g.day != DateTime.now().day) {
-                String ter = notifs[lastNote.id]!.id2;
-
-                NotificationService().deleteNotif(ter);
-                int hour = 0;
-                int minute = 0;
-                String ampm = note1.time.substring(note1.time.length - 2);
-                String result =
-                    note1.time.substring(0, note1.time.indexOf(' '));
-                if (ampm == 'AM' && int.parse(result.split(":")[1]) != 12) {
-                  hour = int.parse(result.split(':')[0]);
-                  if (hour == 12) hour = 0;
-                  minute = int.parse(result.split(":")[1]);
-                } else {
-                  hour = int.parse(result.split(':')[0]) - 12;
-                  if (hour <= 0) {
-                    hour = 24 + hour;
-                  }
-                  minute = int.parse(result.split(":")[1]);
-                }
-                DateTime he = h.add(Duration(hours: hour, minutes: minute));
-                if (notifChoice == true) {
-                  NotificationService().displayScheduleNotif(
-                      body: note1.data,
-                      channel: channelCounter,
-                      title: note1.title,
-                      date: he);
-                }
-
-                lastNote.delete();
-                // items1.remove(lastNote);
-
-                int b =
-                    searchResults.indexWhere((val) => val.id == lastNote.id);
-                if (b != -1) {
-                  searchResults.removeAt(b);
-                }
-                int c = uncompleted.indexWhere((val) => val.id == lastNote.id);
-                if (c != -1) {
-                  uncompleted.removeAt(c);
-                }
-                // items.remove(lastNote.id);
-                items5.add(lastNote.id);
-                int d =
-                    items1.indexWhere((element) => element.id == lastNote.id);
-                if (d != -1) {
-                  items1.removeAt(d);
-                }
-                var x = items3[lastNote.id];
-                if (x != null) {
-                  x.delete;
-                }
-                Repeat? f = items3[lastNote.id];
-                if (f != null) {
-                  f.delete();
-                }
-                items3.remove(lastNote.id);
-                final id1 = store.db.collection('notes').doc().id;
-                //id = id1;
-                Notes note = Notes(
-                    id: id1,
-                    title: note1.title,
-                    data: note1.data,
-                    date: selectDate2,
-                    time: note1.time,
-                    priority: note1.priority,
-                    color: note1.color,
-                    done: note1.done);
-
-                items1.add(note);
-
-                note.save();
-                Notifs notif = Notifs(
-                  id: id1,
-                  id2: ter,
-                );
-                notif.save();
-                searchResults.add(note);
-                uncompleted.add(note);
-                items6.putIfAbsent(id1, () => note);
-                Repeat r = Repeat(id: id1, option: "Yearly");
-                r.save();
-                lastNote = note;
-              }
-            } else {
-              Notes note = Notes(
-                  id: note1.id,
-                  title: note1.title,
-                  data: note1.data,
-                  date: selectDate2,
-                  time: note1.time,
-                  priority: note1.priority,
-                  color: note1.color,
-                  done: note1.done);
-
-              items1.add(note);
-
-              lastNote = note;
-            }
-            bool biff = done.contains(h);
-            if (biff == false) {
-              setState(() {
-                done.add(h);
-              });
-            }
-          }
-        }
-      }
-    });
-    setState(() {
-      for (int j = 0; j < items5.length; j++) {
-        var element = items5[j];
-        items.removeWhere((key, value) => key == element);
-      }
-      items6.forEach((key, value) {
-        items.putIfAbsent(key, () => value);
-      });
-      if (items6.isNotEmpty) {
-        items6.clear();
-      }
-      items5.clear();
-      // initNumber = items.keys.length;
-      done.sort(((a, b) => a.compareTo(b)));
-      for (var value in done) {
-        List<Notes> list = [];
-
-        for (var ite in items1) {
-          final parsDate = DateTime.parse(ite.date);
-          if (parsDate == value && ite.done == false) {
-            list.add(ite);
-          }
-        }
-
-        list.sort(
-            ((a, b) => timeConvert(a.time).compareTo(timeConvert(b.time))));
-        if (events1.containsKey(value)) {
-          events1.update(value, (value) => list);
-        } else if (list.isNotEmpty) {
-          events1.putIfAbsent(value, () => list);
-        }
-      }
-    });
-  }
-
-  Future<void> calculate2() async {
-    events1.clear();
-    items1.clear();
-    List<String> items5 = [];
-    Map<String, Notes> items6 = {};
-
-    items.forEach((key, value) {
-      if (items1.indexWhere((element) => element.id == key) == -1) {
+        // print(items1);
         Repeat? ider = items3[key];
-
         if (ider != null) {
           Notes? note1 = value;
 
           if (ider.option == "Daily") {
             var selectDate2 = note1.date;
             Notes lastNote = note1;
-            items1.add(lastNote);
             for (var i = 1; i <= 100; i++) {
               DateTime g = DateTime.parse(selectDate2);
               DateTime h = DateTime(g.year, g.month, g.day + 1);
@@ -660,7 +170,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                       title: note1.title,
                       date: he);
                 }
-                done.removeWhere((element) => element == g);
 
                 lastNote.delete();
                 int b =
@@ -730,16 +239,17 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
               bool biff = done.contains(h);
               if (biff == false) {
-                done.add(h);
+                setState(() {
+                  done.add(h);
+                });
               }
             }
           }
 
           if (ider.option == "Weekly") {
-            print(note1.date);
             var selectDate2 = note1.date;
             Notes lastNote = note1;
-            items1.add(lastNote);
+            //items1.add(lastNote);
             for (var i = 1; i <= 50; i++) {
               DateTime g = DateTime.parse(selectDate2);
               DateTime h = DateTime(g.year, g.month, g.day + 7);
@@ -747,8 +257,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
               if (g.isBefore(DateTime.now())) {
                 // if (g.day != DateTime.now().day) {
-                done.removeWhere((element) => element == g);
-
                 String ter = notifs[lastNote.id]!.id2;
 
                 NotificationService().deleteNotif(ter);
@@ -849,14 +357,16 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
               bool biff = done.contains(h);
               if (biff == false) {
-                done.add(h);
+                setState(() {
+                  done.add(h);
+                });
               }
             }
           }
           if (ider.option == "Monthly") {
             var selectDate2 = note1.date;
             Notes lastNote = note1;
-            items1.add(lastNote);
+            //items1.add(lastNote);
             for (var i = 1; i <= 24; i++) {
               DateTime g = DateTime.parse(selectDate2);
 
@@ -865,7 +375,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
               if (g.isBefore(DateTime.now())) {
                 if (g.day != DateTime.now().day) {
-                  done.removeWhere((element) => element == g);
                   String ter = notifs[lastNote.id]!.id2;
 
                   NotificationService().deleteNotif(ter);
@@ -967,21 +476,22 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
               }
               bool biff = done.contains(h);
               if (biff == false) {
-                done.add(h);
+                setState(() {
+                  done.add(h);
+                });
               }
             }
           }
           if (ider.option == "Yearly") {
             var selectDate2 = note1.date;
             Notes lastNote = note1;
-            items1.add(lastNote);
+
             for (var i = 1; i <= 10; i++) {
               DateTime g = DateTime.parse(selectDate2);
               DateTime h = DateTime(g.year + 1, g.month, g.day);
               selectDate2 = format2.format(h);
               if (g.isBefore(DateTime.now())) {
                 if (g.day != DateTime.now().day) {
-                  done.removeWhere((element) => element == g);
                   String ter = notifs[lastNote.id]!.id2;
 
                   NotificationService().deleteNotif(ter);
@@ -1083,7 +593,541 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
               }
               bool biff = done.contains(h);
               if (biff == false) {
-                done.add(h);
+                setState(() {
+                  done.add(h);
+                });
+              }
+            }
+          }
+        }
+      }
+    });
+    setState(() {
+      for (int j = 0; j < items5.length; j++) {
+        var element = items5[j];
+        items.removeWhere((key, value) => key == element);
+      }
+      items6.forEach((key, value) {
+        items.putIfAbsent(key, () => value);
+      });
+      if (items6.isNotEmpty) {
+        items6.clear();
+      }
+      items5.clear();
+      // initNumber = items.keys.length;
+      done.sort(((a, b) => a.compareTo(b)));
+      for (var value in done) {
+        List<Notes> list = [];
+
+        for (var ite in items1) {
+          final parsDate = DateTime.parse(ite.date);
+          if (parsDate == value && ite.done == false) {
+            list.add(ite);
+          }
+        }
+
+        list.sort(
+            ((a, b) => timeConvert(a.time).compareTo(timeConvert(b.time))));
+        if (events1.containsKey(value)) {
+          events1.update(value, (value) => list);
+        } else if (list.isNotEmpty) {
+          events1.putIfAbsent(value, () => list);
+        }
+      }
+    });
+    ee.value = !ee.value;
+  }
+
+  Future<void> calculate2() async {
+    // Map<DateTime, List<Notes>> calculate2() {
+    // void calculate2() {
+    events1.clear();
+    items1.clear();
+    //done.clear();
+    List<String> items5 = [];
+    Map<String, Notes> items6 = {};
+
+    items.forEach((key, value) {
+      if (items1.indexWhere((element) => element.id == key) == -1) {
+        Repeat? ider = items3[key];
+        DateTime q = DateTime.parse(value.date);
+        if (value.done == false) {
+          bool biff = done.contains(q);
+          if (biff == false) {
+            done.add(q);
+          }
+
+          if (ider != null) {
+            Notes? note1 = value;
+
+            if (ider.option == "Daily") {
+              var selectDate2 = note1.date;
+              Notes lastNote = note1;
+              items1.add(lastNote);
+              for (var i = 1; i <= 100; i++) {
+                DateTime g = DateTime.parse(selectDate2);
+                DateTime h = DateTime(g.year, g.month, g.day + 1);
+                selectDate2 = format2.format(h);
+
+                if (g.isBefore(DateTime.now())) {
+                  String ter = channelCounter.toString();
+                  //if (g.day != DateTime.now().day) {
+                  if (notifs[lastNote.id] != null) {
+                    ter = notifs[lastNote.id]!.id2;
+
+                    NotificationService().deleteNotif(ter);
+                  }
+                  int hour = 0;
+                  int minute = 0;
+                  String ampm = note1.time.substring(note1.time.length - 2);
+                  String result =
+                      note1.time.substring(0, note1.time.indexOf(' '));
+                  if (ampm == 'AM' && int.parse(result.split(":")[1]) != 12) {
+                    hour = int.parse(result.split(':')[0]);
+                    if (hour == 12) hour = 0;
+                    minute = int.parse(result.split(":")[1]);
+                  } else {
+                    hour = int.parse(result.split(':')[0]) - 12;
+                    if (hour <= 0) {
+                      hour = 24 + hour;
+                    }
+                    minute = int.parse(result.split(":")[1]);
+                  }
+                  DateTime he = h.add(Duration(hours: hour, minutes: minute));
+                  if (notifChoice == true) {
+                    NotificationService().displayScheduleNotif(
+                        body: note1.data,
+                        channel: channelCounter,
+                        title: note1.title,
+                        date: he);
+                  }
+                  done.removeWhere((element) => element == g);
+
+                  lastNote.delete();
+                  int b =
+                      searchResults.indexWhere((val) => val.id == lastNote.id);
+                  if (b != -1) {
+                    searchResults.removeAt(b);
+                  }
+                  int c =
+                      uncompleted.indexWhere((val) => val.id == lastNote.id);
+                  if (c != -1) {
+                    uncompleted.removeAt(c);
+                  }
+                  //items.remove(lastNote.id);
+                  items5.add(lastNote.id);
+                  int d =
+                      items1.indexWhere((element) => element.id == lastNote.id);
+                  if (d != -1) {
+                    items1.removeAt(d);
+                  }
+
+                  Repeat? f = items3[lastNote.id];
+                  if (f != null) {
+                    f.delete();
+                  }
+                  items3.remove(lastNote.id);
+                  String id1 = store.db.collection('notes').doc().id;
+                  //  id = id1;
+                  Notes note = Notes(
+                      id: id1,
+                      title: note1.title,
+                      data: note1.data,
+                      date: selectDate2,
+                      time: note1.time,
+                      priority: note1.priority,
+                      color: note1.color,
+                      done: note1.done);
+
+                  items1.add(note);
+
+                  note.save();
+                  Notifs notif = Notifs(
+                    id: id1,
+                    id2: ter,
+                  );
+                  notif.save();
+                  searchResults.add(note);
+                  uncompleted.add(note);
+                  items6.putIfAbsent(id1, () => note);
+
+                  Repeat r = Repeat(id: id1, option: "Daily");
+                  r.save();
+                  lastNote = note;
+                } else {
+                  Notes note = Notes(
+                      id: note1.id,
+                      title: note1.title,
+                      data: note1.data,
+                      date: selectDate2,
+                      time: note1.time,
+                      priority: note1.priority,
+                      color: note1.color,
+                      done: note1.done);
+
+                  items1.add(note);
+
+                  lastNote = note;
+                }
+
+                bool biff = done.contains(h);
+                if (biff == false) {
+                  done.add(h);
+                }
+              }
+            }
+
+            if (ider.option == "Weekly") {
+              print(note1.date);
+              var selectDate2 = note1.date;
+              Notes lastNote = note1;
+              items1.add(lastNote);
+              for (var i = 1; i <= 50; i++) {
+                DateTime g = DateTime.parse(selectDate2);
+                DateTime h = DateTime(g.year, g.month, g.day + 7);
+                selectDate2 = format2.format(h);
+
+                if (g.isBefore(DateTime.now())) {
+                  // if (g.day != DateTime.now().day) {
+                  done.removeWhere((element) => element == g);
+
+                  String ter = notifs[lastNote.id]!.id2;
+
+                  NotificationService().deleteNotif(ter);
+                  int hour = 0;
+                  int minute = 0;
+                  String ampm = note1.time.substring(note1.time.length - 2);
+                  String result =
+                      note1.time.substring(0, note1.time.indexOf(' '));
+                  if (ampm == 'AM' && int.parse(result.split(":")[1]) != 12) {
+                    hour = int.parse(result.split(':')[0]);
+                    if (hour == 12) hour = 0;
+                    minute = int.parse(result.split(":")[1]);
+                  } else {
+                    hour = int.parse(result.split(':')[0]) - 12;
+                    if (hour <= 0) {
+                      hour = 24 + hour;
+                    }
+                    minute = int.parse(result.split(":")[1]);
+                  }
+                  DateTime he = h.add(Duration(hours: hour, minutes: minute));
+                  if (notifChoice == true) {
+                    NotificationService().displayScheduleNotif(
+                        body: note1.data,
+                        channel: channelCounter,
+                        title: note1.title,
+                        date: he);
+                  }
+                  lastNote.delete();
+                  // items1.remove(lastNote);
+                  int b =
+                      searchResults.indexWhere((val) => val.id == lastNote.id);
+                  if (b != -1) {
+                    searchResults.removeAt(b);
+                  }
+                  int c =
+                      uncompleted.indexWhere((val) => val.id == lastNote.id);
+                  if (c != -1) {
+                    uncompleted.removeAt(c);
+                  }
+                  // items.remove(lastNote.id);
+                  items5.add(lastNote.id);
+                  int d =
+                      items1.indexWhere((element) => element.id == lastNote.id);
+                  if (d != -1) {
+                    items1.removeAt(d);
+                  }
+                  var x = items3[lastNote.id];
+                  Repeat? f = items3[lastNote.id];
+                  if (f != null) {
+                    f.delete();
+                  }
+                  if (x != null) {
+                    x.delete;
+                  }
+                  items3.remove(lastNote.id);
+                  final id1 = store.db.collection('notes').doc().id;
+                  // id = id1;
+                  Notes note = Notes(
+                      id: id1,
+                      title: note1.title,
+                      data: note1.data,
+                      date: selectDate2,
+                      time: note1.time,
+                      priority: note1.priority,
+                      color: note1.color,
+                      done: note1.done);
+
+                  items1.add(note);
+
+                  note.save();
+                  Notifs notif = Notifs(
+                    id: id1,
+                    id2: ter,
+                  );
+                  notif.save();
+                  searchResults.add(note);
+                  uncompleted.add(note);
+                  items6.putIfAbsent(id1, () => note);
+                  Repeat r = Repeat(id: id1, option: "Weekly");
+                  r.save();
+                  items3.putIfAbsent(r.id, () => r);
+                  lastNote = note;
+                  // }
+                } else {
+                  Notes note = Notes(
+                      id: note1.id,
+                      title: note1.title,
+                      data: note1.data,
+                      date: selectDate2,
+                      time: note1.time,
+                      priority: note1.priority,
+                      color: note1.color,
+                      done: note1.done);
+
+                  items1.add(note);
+
+                  lastNote = note;
+                }
+
+                bool biff = done.contains(h);
+                if (biff == false) {
+                  done.add(h);
+                }
+              }
+            }
+            if (ider.option == "Monthly") {
+              var selectDate2 = note1.date;
+              Notes lastNote = note1;
+              items1.add(lastNote);
+              for (var i = 1; i <= 24; i++) {
+                DateTime g = DateTime.parse(selectDate2);
+
+                DateTime h = DateTime(g.year, g.month + 1, g.day);
+                selectDate2 = format2.format(h);
+
+                if (g.isBefore(DateTime.now())) {
+                  if (g.day != DateTime.now().day) {
+                    done.removeWhere((element) => element == g);
+                    String ter = notifs[lastNote.id]!.id2;
+
+                    NotificationService().deleteNotif(ter);
+                    int hour = 0;
+                    int minute = 0;
+                    String ampm = note1.time.substring(note1.time.length - 2);
+                    String result =
+                        note1.time.substring(0, note1.time.indexOf(' '));
+                    if (ampm == 'AM' && int.parse(result.split(":")[1]) != 12) {
+                      hour = int.parse(result.split(':')[0]);
+                      if (hour == 12) hour = 0;
+                      minute = int.parse(result.split(":")[1]);
+                    } else {
+                      hour = int.parse(result.split(':')[0]) - 12;
+                      if (hour <= 0) {
+                        hour = 24 + hour;
+                      }
+                      minute = int.parse(result.split(":")[1]);
+                    }
+                    DateTime he = h.add(Duration(hours: hour, minutes: minute));
+                    if (notifChoice == true) {
+                      NotificationService().displayScheduleNotif(
+                          body: note1.data,
+                          channel: channelCounter,
+                          title: note1.title,
+                          date: he);
+                    }
+
+                    lastNote.delete();
+                    // items1.remove(lastNote);
+                    int b = searchResults
+                        .indexWhere((val) => val.id == lastNote.id);
+                    if (b != -1) {
+                      searchResults.removeAt(b);
+                    }
+                    int c =
+                        uncompleted.indexWhere((val) => val.id == lastNote.id);
+                    if (c != -1) {
+                      uncompleted.removeAt(c);
+                    }
+                    // items.remove(lastNote.id);
+                    items5.add(lastNote.id);
+                    int d = items1
+                        .indexWhere((element) => element.id == lastNote.id);
+                    if (d != -1) {
+                      items1.removeAt(d);
+                    }
+                    var x = items3[lastNote.id];
+                    if (x != null) {
+                      x.delete;
+                    }
+                    Repeat? f = items3[lastNote.id];
+                    if (f != null) {
+                      f.delete();
+                    }
+                    items3.remove(lastNote.id);
+
+                    final id1 = store.db.collection('notes').doc().id;
+                    // id = id1;
+                    Notes note = Notes(
+                        id: id1,
+                        title: note1.title,
+                        data: note1.data,
+                        date: selectDate2,
+                        time: note1.time,
+                        priority: note1.priority,
+                        color: note1.color,
+                        done: note1.done);
+
+                    items1.add(note);
+
+                    note.save();
+                    Notifs notif = Notifs(
+                      id: id1,
+                      id2: ter,
+                    );
+                    notif.save();
+                    searchResults.add(note);
+                    uncompleted.add(note);
+                    items6.putIfAbsent(id1, () => note);
+                    Repeat r = Repeat(id: id1, option: "Monthly");
+                    r.save();
+                    lastNote = note;
+                  }
+                } else {
+                  Notes note = Notes(
+                      id: note1.id,
+                      title: note1.title,
+                      data: note1.data,
+                      date: selectDate2,
+                      time: note1.time,
+                      priority: note1.priority,
+                      color: note1.color,
+                      done: note1.done);
+
+                  items1.add(note);
+
+                  lastNote = note;
+                }
+                bool biff = done.contains(h);
+                if (biff == false) {
+                  done.add(h);
+                }
+              }
+            }
+            if (ider.option == "Yearly") {
+              var selectDate2 = note1.date;
+              Notes lastNote = note1;
+              items1.add(lastNote);
+              for (var i = 1; i <= 10; i++) {
+                DateTime g = DateTime.parse(selectDate2);
+                DateTime h = DateTime(g.year + 1, g.month, g.day);
+                selectDate2 = format2.format(h);
+                if (g.isBefore(DateTime.now())) {
+                  if (g.day != DateTime.now().day) {
+                    done.removeWhere((element) => element == g);
+                    String ter = notifs[lastNote.id]!.id2;
+
+                    NotificationService().deleteNotif(ter);
+                    int hour = 0;
+                    int minute = 0;
+                    String ampm = note1.time.substring(note1.time.length - 2);
+                    String result =
+                        note1.time.substring(0, note1.time.indexOf(' '));
+                    if (ampm == 'AM' && int.parse(result.split(":")[1]) != 12) {
+                      hour = int.parse(result.split(':')[0]);
+                      if (hour == 12) hour = 0;
+                      minute = int.parse(result.split(":")[1]);
+                    } else {
+                      hour = int.parse(result.split(':')[0]) - 12;
+                      if (hour <= 0) {
+                        hour = 24 + hour;
+                      }
+                      minute = int.parse(result.split(":")[1]);
+                    }
+                    DateTime he = h.add(Duration(hours: hour, minutes: minute));
+                    if (notifChoice == true) {
+                      NotificationService().displayScheduleNotif(
+                          body: note1.data,
+                          channel: channelCounter,
+                          title: note1.title,
+                          date: he);
+                    }
+
+                    lastNote.delete();
+                    // items1.remove(lastNote);
+
+                    int b = searchResults
+                        .indexWhere((val) => val.id == lastNote.id);
+                    if (b != -1) {
+                      searchResults.removeAt(b);
+                    }
+                    int c =
+                        uncompleted.indexWhere((val) => val.id == lastNote.id);
+                    if (c != -1) {
+                      uncompleted.removeAt(c);
+                    }
+                    // items.remove(lastNote.id);
+                    items5.add(lastNote.id);
+                    int d = items1
+                        .indexWhere((element) => element.id == lastNote.id);
+                    if (d != -1) {
+                      items1.removeAt(d);
+                    }
+                    var x = items3[lastNote.id];
+                    if (x != null) {
+                      x.delete;
+                    }
+                    Repeat? f = items3[lastNote.id];
+                    if (f != null) {
+                      f.delete();
+                    }
+                    items3.remove(lastNote.id);
+                    final id1 = store.db.collection('notes').doc().id;
+                    //id = id1;
+                    Notes note = Notes(
+                        id: id1,
+                        title: note1.title,
+                        data: note1.data,
+                        date: selectDate2,
+                        time: note1.time,
+                        priority: note1.priority,
+                        color: note1.color,
+                        done: note1.done);
+
+                    items1.add(note);
+
+                    note.save();
+                    Notifs notif = Notifs(
+                      id: id1,
+                      id2: ter,
+                    );
+                    notif.save();
+                    searchResults.add(note);
+                    uncompleted.add(note);
+                    items6.putIfAbsent(id1, () => note);
+                    Repeat r = Repeat(id: id1, option: "Yearly");
+                    r.save();
+                    lastNote = note;
+                  }
+                } else {
+                  Notes note = Notes(
+                      id: note1.id,
+                      title: note1.title,
+                      data: note1.data,
+                      date: selectDate2,
+                      time: note1.time,
+                      priority: note1.priority,
+                      color: note1.color,
+                      done: note1.done);
+
+                  items1.add(note);
+
+                  lastNote = note;
+                }
+                bool biff = done.contains(h);
+                if (biff == false) {
+                  done.add(h);
+                }
               }
             }
           }
@@ -1134,6 +1178,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
       //   events1.remove(element);
       // }
     }
+    // ee.value = !ee.value;
   }
 
   Widget notesCard() {
@@ -1142,6 +1187,8 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
             valueListenable: ee,
             builder: (context, ee, _) {
               calculate2();
+              // valueListenable: eventos1,
+              // builder: (context, ee, _) {
               return ListView.builder(
                   shrinkWrap: false,
                   itemCount: events1.length,
@@ -1236,6 +1283,8 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                     }
                   });
             }));
+    // }
+    //));
   }
 
   DateTime timeConvert(String normTime) {
@@ -1259,7 +1308,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    //calculate();
+    //calculate2();
 
     //events1.removeWhere((key, value) => value.isEmpty);
 

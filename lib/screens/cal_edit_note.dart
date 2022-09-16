@@ -415,7 +415,7 @@ class _EditNoteState extends State<EditNote> {
                   }
                 }
 
-                var obj = table.items3[item.id];
+                var obj = allNotes.items3[item.id];
                 if (obj != null) {
                   obj.delete();
                 }
