@@ -24,7 +24,7 @@ Color colPick = Colors.white;
 StreamSubscription<Map<String, dynamic>>? _subscription;
 //final items1 = <String, store.Notes>{};
 List<Notes> items1 = [];
-final items3 = <String, Repeat>{};
+
 List<DateTime> done = [];
 DateTime calSelect = DateTime.now();
 // late final ValueNotifier<List<Notes>> _selectedEvents;
@@ -57,12 +57,7 @@ class Table_CalendarState extends State<Table_Calendar> {
   @override
   void initState() {
     super.initState();
-    _db.collection('repeat').get().then((value) {
-      _subscription = _db.collection('repeat').stream.listen((event) {
-        final item = Repeat.fromMap(event);
-        items3.putIfAbsent(item.id, () => item);
-      });
-    });
+
     //items1.clear();
     _selectedDay = DateTime.now();
     _selectedEvents = [];

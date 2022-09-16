@@ -171,11 +171,11 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                 done.clear();
                 all_notes.items.putIfAbsent(id1, () => note);
                 notes.add(note.id);
-                if (items3[item.id] != null) {
-                  var repea = items3[item.id];
+                if (all.items3[item.id] != null) {
+                  var repea = all.items3[item.id];
                   if (repea!.option == "Daily") {
                     Repeat r = Repeat(id: note.id, option: "Daily");
-                    items3.putIfAbsent(note.id, () => r);
+                    all.items3.putIfAbsent(note.id, () => r);
                     r.save();
 
                     // for (var i = 1; i <= 100; i++) {
@@ -202,7 +202,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                     // }
                   } else if (repea.option == "Weekly") {
                     Repeat r = Repeat(id: note.id, option: "Weekly");
-                    items3.putIfAbsent(note.id, () => r);
+                    all.items3.putIfAbsent(note.id, () => r);
                     r.save();
                     // for (var i = 1; i <= 50; i++) {
                     //   DateTime g = DateTime.parse(selectDate);
@@ -228,7 +228,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                     // }
                   } else if (repea.option == "Monthly") {
                     Repeat r = Repeat(id: note.id, option: "Monthly");
-                    items3.putIfAbsent(note.id, () => r);
+                    all.items3.putIfAbsent(note.id, () => r);
                     r.save();
                     // for (var i = 1; i <= 24; i++) {
                     //   DateTime g = DateTime.parse(selectDate);
@@ -254,7 +254,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                     // }
                   } else if (repea.option == "Yearly") {
                     Repeat r = Repeat(id: note.id, option: "Yearly");
-                    items3.putIfAbsent(note.id, () => r);
+                    all.items3.putIfAbsent(note.id, () => r);
                     r.save();
 
                     // for (var i = 1; i <= 5; i++) {

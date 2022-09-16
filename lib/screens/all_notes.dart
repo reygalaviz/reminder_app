@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -23,10 +24,11 @@ int initNumber = 0;
 var items = <String, store.Notes>{};
 var notifs = <String, Notifs>{};
 List<NotifSetting> notifSet = <NotifSetting>[];
+final items3 = <String, Repeat>{};
 
 bool res = false;
 ValueNotifier<bool> ee = ValueNotifier(false);
-final Map<DateTime, List<Notes>> events1 = {};
+Map<DateTime, List<Notes>> events1 = {};
 
 class AllNotes extends StatefulWidget {
   const AllNotes({Key? key}) : super(key: key);
@@ -36,6 +38,8 @@ class AllNotes extends StatefulWidget {
 }
 
 class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
+  ValueNotifier<Map<DateTime, List<Notes>>> eventos1 = ValueNotifier({});
+
   String data = "No notes yet!";
   final _db = Localstore.instance;
   DateFormat format2 = DateFormat("yyyy-MM-dd");
@@ -60,10 +64,10 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                 -1) {
               uncompleted.add(item);
             }
-          }
-          bool biff = done.contains(dateOfNote);
-          if (biff == false) {
-            done.add(dateOfNote);
+            bool biff = done.contains(dateOfNote);
+            if (biff == false) {
+              done.add(dateOfNote);
+            }
           }
         }
 
@@ -87,6 +91,12 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
           final item = NotifSetting.fromMap(event);
           notifSet.add(item);
         });
+      });
+      _db.collection('repeat').get().then((value) {
+        _subscription = _db.collection('repeat').stream.listen((event) {
+          final item = Repeat.fromMap(event);
+          items3.putIfAbsent(item.id, () => item);
+        });
         calculate();
       });
     });
@@ -99,7 +109,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
     events1.clear();
     List<String> items5 = [];
     Map<String, Notes> items6 = {};
-
+    print(items3);
     items.forEach((key, value) {
       if (items1.indexWhere((element) => element.id == value.id) == -1) {
         setState(() {
@@ -625,13 +635,15 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
         }
       }
     });
+    ee.value = !ee.value;
   }
 
   Future<void> calculate2() async {
+    // Map<DateTime, List<Notes>> calculate2() {
     // void calculate2() {
     events1.clear();
     items1.clear();
-    done.clear();
+    //done.clear();
     List<String> items5 = [];
     Map<String, Notes> items6 = {};
 
@@ -1166,6 +1178,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
       //   events1.remove(element);
       // }
     }
+    // ee.value = !ee.value;
   }
 
   Widget notesCard() {
@@ -1174,6 +1187,8 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
             valueListenable: ee,
             builder: (context, ee, _) {
               calculate2();
+              // valueListenable: eventos1,
+              // builder: (context, ee, _) {
               return ListView.builder(
                   shrinkWrap: false,
                   itemCount: events1.length,
@@ -1268,6 +1283,8 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                     }
                   });
             }));
+    // }
+    //));
   }
 
   DateTime timeConvert(String normTime) {
@@ -1291,7 +1308,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    //calculate();
+    //calculate2();
 
     //events1.removeWhere((key, value) => value.isEmpty);
 
