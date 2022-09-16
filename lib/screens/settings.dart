@@ -5,6 +5,7 @@ import 'package:reminder_app/main.dart';
 import 'package:reminder_app/screens/settings-language.dart';
 import 'package:reminder_app/screens/settings_acks.dart';
 import 'package:reminder_app/screens/settings_faq.dart';
+import 'package:reminder_app/screens/settings_policies.dart';
 import 'package:reminder_app/screens/settings_priv.dart';
 import 'package:reminder_app/screens/settings_sec.dart';
 import 'package:reminder_app/screens/settings_suggest.dart';
@@ -404,7 +405,9 @@ class _SettingsTabState extends State<SettingsTab> {
                             fontSize: 20),
                       ),
                       backgroundColor: Theme.of(context).backgroundColor),
-                  child: SettingsPrivacy())));
+                  child: SettingsPolicies(
+                    mdFileName: 'privacy_policy.md',
+                  ))));
         });
       },
       child: Padding(
@@ -484,7 +487,9 @@ class _SettingsTabState extends State<SettingsTab> {
                             fontSize: 20),
                       ),
                       backgroundColor: Theme.of(context).backgroundColor),
-                  child: SettingsTerms())));
+                  child: SettingsPolicies(
+                    mdFileName: 'terms_conditions.md',
+                  ))));
         });
       },
       child: Padding(
