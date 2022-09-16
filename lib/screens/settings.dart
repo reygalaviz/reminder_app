@@ -3,13 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:reminder_app/main.dart';
 import 'package:reminder_app/screens/settings-language.dart';
-import 'package:reminder_app/screens/settings_acks.dart';
 import 'package:reminder_app/screens/settings_faq.dart';
 import 'package:reminder_app/screens/settings_policies.dart';
-import 'package:reminder_app/screens/settings_priv.dart';
 import 'package:reminder_app/screens/settings_sec.dart';
 import 'package:reminder_app/screens/settings_suggest.dart';
-import 'package:reminder_app/screens/settings_terms.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:provider/provider.dart';
 import '../themes/theme_model.dart';
@@ -529,7 +526,9 @@ class _SettingsTabState extends State<SettingsTab> {
                             fontSize: 20),
                       ),
                       backgroundColor: Theme.of(context).backgroundColor),
-                  child: SettingsAcknowledgements())));
+                  child: SettingsPolicies(
+                    mdFileName: 'acknowledgments.md',
+                  ))));
         });
       },
       child: Padding(
