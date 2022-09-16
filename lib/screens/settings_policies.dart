@@ -11,6 +11,10 @@ class SettingsPolicies extends StatelessWidget {
 
   final String mdFileName;
 
+  Future<dynamic> loadAsset() async {
+    return await rootBundle.loadString('assets/$mdFileName');
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -18,8 +22,8 @@ class SettingsPolicies extends StatelessWidget {
               children: [
                 Expanded(
                     child: FutureBuilder(
-                        future: rootBundle.loadString('assets/$mdFileName'),
-                        builder: (context, AsyncSnapshot<String> snapshot) {
+                        future: loadAsset(),
+                        builder: (context, AsyncSnapshot<dynamic> snapshot) {
                           return Markdown(data: (snapshot.data ?? ''));
                         }))
               ],
