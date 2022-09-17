@@ -375,7 +375,7 @@ class _AddNoteState extends State<AddNote> {
   Widget eventSub() {
     return CircleAvatar(
       radius: 20,
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.blue[700],
       child: IconButton(
           onPressed: () {
             count.channelCounter++;

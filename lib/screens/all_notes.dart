@@ -1198,86 +1198,89 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
                       String ind1 = DateFormat.MMMMEEEEd().format(ind);
                       List<Notes> x = events1[ind] ?? [];
-                      return Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Column(
-                            children: [
-                              Text(
-                                ind1,
-                                style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                              ),
-                              ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: x.length,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    final item = x[index];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text(
+                              ind1,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.normal,
+                                  color: Theme.of(context).primaryColor),
+                            ),
+                          ),
+                          ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: x.length,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                final item = x[index];
 
-                                    return Card(
+                                return Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Slidable(
+                                    endActionPane: ActionPane(
+                                      motion: const ScrollMotion(),
+                                      children: [
+                                        SlidableAction(
+                                          onPressed: (context) async {
+                                            await _showDialog(item);
+                                            setState(() {});
+                                          },
+                                          borderRadius: const BorderRadius.only(
+                                              topRight: Radius.circular(10.0),
+                                              bottomRight:
+                                                  Radius.circular(10.0)),
+                                          backgroundColor: Colors.red,
+                                          foregroundColor: Colors.white,
+                                          icon: FontAwesomeIcons.trash,
+                                        ),
+                                      ],
+                                    ),
+                                    child: ListTile(
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10)),
-                                      child: Slidable(
-                                        endActionPane: ActionPane(
-                                          motion: const ScrollMotion(),
-                                          children: [
-                                            SlidableAction(
-                                              onPressed: (context) async {
-                                                await _showDialog(item);
-                                                setState(() {});
-                                              },
-                                              borderRadius:
-                                                  const BorderRadius.only(
-                                                      topRight:
-                                                          Radius.circular(10.0),
-                                                      bottomRight:
-                                                          Radius.circular(
-                                                              10.0)),
-                                              backgroundColor: Colors.red,
-                                              foregroundColor: Colors.white,
-                                              icon: FontAwesomeIcons.trash,
-                                            ),
-                                          ],
-                                        ),
-                                        child: ListTile(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          title: Text(
-                                            item.title,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black),
-                                          ),
-                                          subtitle: Text(
-                                            texter(item2: item),
-                                            maxLines: 2,
-                                            style: const TextStyle(
-                                                color: Colors.black),
-                                          ),
-                                          tileColor:
-                                              Color(int.parse(item.color))
-                                                  .withOpacity(1),
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        EditNote(id: item.id)));
-                                          },
-                                          trailing: Wrap(children: <Widget>[
-                                            CheckBoxNote(id: item.id)
-                                          ]),
+                                      title: Padding(
+                                        padding: const EdgeInsets.only(top: 5),
+                                        child: Text(
+                                          item.title,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
                                         ),
                                       ),
-                                    );
-                                  })
-                            ],
-                          ));
+                                      subtitle: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 8),
+                                        child: Text(
+                                          texter(item2: item),
+                                          maxLines: 2,
+                                          style: const TextStyle(
+                                              color: Colors.black),
+                                        ),
+                                      ),
+                                      tileColor: Color(int.parse(item.color))
+                                          .withOpacity(1),
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    EditNote(id: item.id)));
+                                      },
+                                      trailing: Wrap(children: <Widget>[
+                                        CheckBoxNote(id: item.id)
+                                      ]),
+                                    ),
+                                  ),
+                                );
+                              })
+                        ],
+                      );
                     } else {
                       return Container();
                     }
@@ -1325,7 +1328,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                 ),
                 const Text(
                   'Today',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
                   height: 3.0,

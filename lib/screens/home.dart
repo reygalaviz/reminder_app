@@ -155,6 +155,8 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.blue[700],
         elevation: 2,
         onPressed: () {
           return showTextboxKeyboard();
@@ -168,7 +170,7 @@ class _HomeState extends State<Home> {
             topRight: Radius.circular(30),
           ),
           boxShadow: [
-            BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),
+            BoxShadow(color: Colors.black38, spreadRadius: 1, blurRadius: 5),
           ],
         ),
         child: ClipRRect(
@@ -306,6 +308,8 @@ class _Home2State extends State<Home2> {
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
               floatingActionButton: FloatingActionButton(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue[700],
                 elevation: 2,
                 onPressed: () {
                   return showTextboxKeyboard();
@@ -320,7 +324,7 @@ class _Home2State extends State<Home2> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                        color: Colors.black38, spreadRadius: 0, blurRadius: 10),
+                        color: Colors.black38, spreadRadius: 1, blurRadius: 5),
                   ],
                 ),
                 child: ClipRRect(

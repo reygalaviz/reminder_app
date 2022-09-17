@@ -166,8 +166,6 @@ class _SettingsTabState extends State<SettingsTab> {
                                                 notifChoice = value;
                                                 ball = value;
                                               });
-
-                                              print(ball);
                                             }),
                                       )
                                     ],
