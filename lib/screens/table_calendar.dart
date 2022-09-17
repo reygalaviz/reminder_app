@@ -736,12 +736,12 @@ class Table_CalendarState extends State<Table_Calendar> {
                 const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             leftChevronIcon: Icon(
               Icons.arrow_back_ios,
-              size: 15,
+              size: 20,
               color: Theme.of(context).primaryColor,
             ),
             rightChevronIcon: Icon(
               Icons.arrow_forward_ios,
-              size: 15,
+              size: 20,
               color: Theme.of(context).primaryColor,
             ),
           ),
@@ -761,14 +761,15 @@ class Table_CalendarState extends State<Table_Calendar> {
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(5.0)),
               selectedDecoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Colors.blue[700],
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(5.0)),
               todayDecoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   color: const Color.fromARGB(255, 255, 171, 75),
                   borderRadius: BorderRadius.circular(5.0)),
-              selectedTextStyle: const TextStyle(fontWeight: FontWeight.w600),
+              selectedTextStyle: const TextStyle(
+                  fontWeight: FontWeight.w600, color: Colors.white),
               // weekendTextStyle: const TextStyle(color: Colors.red),
               todayTextStyle: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -855,6 +856,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                                   ),
                                   subtitle: Text(
                                     "${item.time}     ${item.data}",
+                                    maxLines: 2,
                                     style: const TextStyle(color: Colors.black),
                                   ),
                                   tileColor: invisColor(item),
