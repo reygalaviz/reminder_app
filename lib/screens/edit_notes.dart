@@ -44,17 +44,18 @@ class _EditNoteState extends State<EditNote> {
   late DateTime scheduler = DateTime.now();
   late DateTime scheduler2 = DateTime.now();
   StreamSubscription<Map<String, dynamic>>? _subscription;
-  // var item;
+
   DateFormat format = DateFormat("yyyy-MM-dd");
   final dCont = TextEditingController();
   final cCont = TextEditingController();
+  final eCont = TextEditingController();
   Color colPick = const Color.fromARGB(255, 255, 254, 254);
   final formatter = DateFormat().add_jm();
   String selectDate = "";
   String title = "";
   String body = "";
   String daySelect = "";
-  String repeat = "";
+  String repeat = "One-Time";
   Color selectColor = const Color.fromARGB(255, 180, 175, 174);
   String priority = "high";
   @override
@@ -367,7 +368,7 @@ class _EditNoteState extends State<EditNote> {
 
   Widget eventRepeat1() {
     return PopupMenuButton<Select>(
-        icon: Text(repeat),
+        icon: Text(eCont.text),
         onSelected: (value) {
           if (value == Select.daily) {
             setState(() {
@@ -438,11 +439,12 @@ class _EditNoteState extends State<EditNote> {
       daySelect = item.time;
     }
     var obj = allNotes.items3[item.id];
-    if (repeat == "") {
+    if (repeat == "One-Time") {
       if (obj != null) {
         repeat = obj.option;
       }
     }
+    eCont.text = repeat;
 
     //DateTime? dateT = DateTime.now();
     dCont.text = selectDate;
@@ -597,6 +599,7 @@ class _EditNoteState extends State<EditNote> {
     // Clean up the controller when the widget is removed
     cCont.dispose();
     dCont.dispose();
+    eCont.dispose();
     super.dispose();
   }
 }
