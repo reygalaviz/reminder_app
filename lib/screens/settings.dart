@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:reminder_app/main.dart';
 import 'package:reminder_app/screens/settings-language.dart';
@@ -26,9 +27,6 @@ class SettingsTab extends StatefulWidget {
 }
 
 class _SettingsTabState extends State<SettingsTab> {
-  int currentview = 0;
-  late List<Widget> pages;
-
   bool ball = false;
 
   @override
@@ -235,7 +233,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   navigationBar: CupertinoNavigationBar(
                     backgroundColor: Theme.of(context).backgroundColor,
                     middle: Text(
-                      'Language',
+                      'language'.tr,
                       style: TextStyle(
                           color: Theme.of(context).primaryColor, fontSize: 20),
                     ),

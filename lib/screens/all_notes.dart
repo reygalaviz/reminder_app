@@ -1219,11 +1219,16 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                                 final item = x[index];
 
                                 return Card(
+                                  color: Color(int.parse(item.color))
+                                      .withOpacity(1),
+                                  borderOnForeground: true,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Slidable(
+                                    direction: Axis.horizontal,
                                     endActionPane: ActionPane(
-                                      motion: const ScrollMotion(),
+                                      extentRatio: 0.3,
+                                      motion: ScrollMotion(),
                                       children: [
                                         SlidableAction(
                                           onPressed: (context) async {
@@ -1235,8 +1240,9 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                                               bottomRight:
                                                   Radius.circular(10.0)),
                                           backgroundColor: Colors.red,
+                                          autoClose: true,
                                           foregroundColor: Colors.white,
-                                          icon: FontAwesomeIcons.trash,
+                                          icon: FontAwesomeIcons.solidTrashCan,
                                         ),
                                       ],
                                     ),
@@ -1266,6 +1272,8 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                                       tileColor: Color(int.parse(item.color))
                                           .withOpacity(1),
                                       onTap: () {
+                                        final slidable = Slidable.of(context);
+                                        // final isClosed = slidable.ren
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
