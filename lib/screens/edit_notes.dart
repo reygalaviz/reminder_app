@@ -1,3 +1,6 @@
+import 'package:bottom_picker/bottom_picker.dart';
+import 'package:bottom_picker/resources/arrays.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
@@ -45,7 +48,9 @@ class _EditNoteState extends State<EditNote> {
   late DateTime scheduler2 = DateTime.now();
   StreamSubscription<Map<String, dynamic>>? _subscription;
 
+
   DateFormat format = DateFormat("yyyy-MM-dd");
+
   final dCont = TextEditingController();
   final cCont = TextEditingController();
   final eCont = TextEditingController();
@@ -107,6 +112,7 @@ class _EditNoteState extends State<EditNote> {
   }
 
   Widget eventDate() {
+    DateTime date = DateTime.now();
     return ListTile(
       leading: const Icon(FontAwesomeIcons.calendar),
       title: Text(dCont.text),
@@ -368,7 +374,9 @@ class _EditNoteState extends State<EditNote> {
 
   Widget eventRepeat1() {
     return PopupMenuButton<Select>(
+
         icon: Text(eCont.text),
+
         onSelected: (value) {
           if (value == Select.daily) {
             setState(() {
@@ -462,7 +470,10 @@ class _EditNoteState extends State<EditNote> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Theme.of(context).backgroundColor,
-        title: Text(item.title),
+        title: Text(
+          item.title,
+          style: TextStyle(color: Theme.of(context).primaryColor),
+        ),
         actions: [
           TextButton(
               onPressed: () {
@@ -569,6 +580,7 @@ class _EditNoteState extends State<EditNote> {
           builder: (context, constraints) => Form(
                 child: SingleChildScrollView(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -580,8 +592,10 @@ class _EditNoteState extends State<EditNote> {
                               ListTile(title: eventBody()),
                               eventDate(),
                               eventTime(),
-                              eventColor(),
-                              eventRepeat1(),
+                              ListTile(
+                                leading: eventColor(),
+                              ),
+                              ListTile(leading: eventRepeat1()),
                             ],
                           ),
                         ),

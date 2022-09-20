@@ -12,6 +12,14 @@ List<Notes> suggestions = [];
 
 class MySearchDelegate extends SearchDelegate {
   //List<Notes> searchResults = <Notes>[];
+  // ThemeData appBarTheme(BuildContext context) {
+  //   return ThemeData(
+  //     backgroundColor: Theme.of(context).backgroundColor,
+  //     textSelectionTheme: TextSelectionThemeData(
+  //       cursorColor: Theme.of(context).primaryColor,
+  //     ),
+  //   );
+  // }
 
   @override
   Widget? buildLeading(BuildContext context) => IconButton(

@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/screens/home.dart';
+import 'package:reminder_app/screens/settings-language.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +65,7 @@ class MyApp extends StatelessWidget {
           )
         ],
         child: Consumer(
-          builder: (context, ThemeModel themeModel, child) => MaterialApp(
+          builder: (context, ThemeModel themeModel, child) => GetMaterialApp(
             builder: (context, child) => ResponsiveWrapper.builder(
               BouncingScrollWrapper.builder(context, child!),
               maxWidth: 1200,
@@ -80,6 +82,9 @@ class MyApp extends StatelessWidget {
             theme: themeModel.isDark
                 ? ThemeModel.darkTheme
                 : ThemeModel.lightTheme,
+            translations: LocalizationService(),
+            locale: Locale('en', 'US'),
+            fallbackLocale: Locale('en', 'US'),
             home: const Home(),
             debugShowCheckedModeBanner: false,
           ),
