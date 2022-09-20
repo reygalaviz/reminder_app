@@ -327,7 +327,8 @@ class _SettingsSupportState extends State<SettingsSupport> {
                                             const OutlineInputBorder(
                                                 borderSide: BorderSide(
                                                     color: Colors.red)),
-                                        contentPadding: EdgeInsets.all(6.0),
+                                        contentPadding:
+                                            const EdgeInsets.all(6.0),
                                         enabledBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
                                                 color: Theme.of(context)
