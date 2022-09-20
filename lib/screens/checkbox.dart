@@ -75,223 +75,235 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
             value: boop,
             onChanged: (val) {
               setState(() {
+                print(all.items.keys);
+
                 if (id4 == "") {
                   id4 = widget.id;
                 }
-                store.Notes item = all.items[id4]!;
-                if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
-                  colPick = Color(int.parse(item.color));
-                }
-                if (selectDate == "") {
-                  selectDate = item.date;
-                }
-                if (title == "") {
-                  title = item.title;
-                }
-                if (body == "") {
-                  body = item.data;
-                }
-                if (daySelect == "") {
-                  daySelect = item.time;
-                }
+                print(id4);
+                if (all.items.containsKey(id4) == true) {
+                  store.Notes item = all.items[id4]!;
 
-                if (item.done == true) {
-                  boop = false;
+                  if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
+                    colPick = Color(int.parse(item.color));
+                  }
+                  if (selectDate == "") {
+                    selectDate = item.date;
+                  }
+                  if (title == "") {
+                    title = item.title;
+                  }
+                  if (body == "") {
+                    body = item.data;
+                  }
+                  if (daySelect == "") {
+                    daySelect = item.time;
+                  }
 
-                  val = true;
-                } else {
-                  boop = true;
-                  val = false;
-                }
-                // if (all_notes.notifs[item.id] != null) {
-                //   ter = all_notes.notifs[item.id]!.id2;
-                // }
-                if (all.notifs[widget.id] != null) {
-                  var tert = all.notifs[widget.id]!;
-                  ter = tert.id2;
-                  all_notes.notifs.remove(tert.id);
-                  tert.delete();
-                  NotificationService().deleteNotif(ter);
-                }
-                int a = suggestions.indexWhere((val) => val.id == item.id);
-                if (a != -1) {
-                  suggestions.removeAt(a);
-                }
+                  if (item.done == true) {
+                    boop = false;
 
-                int b = searchResults.indexWhere((val) => val.id == item.id);
-                if (b != -1) {
-                  searchResults.removeAt(b);
-                }
-                int c = uncompleted.indexWhere((val) => val.id == item.id);
-                if (c != -1) {
-                  uncompleted.removeAt(c);
-                }
-                all_notes.items.remove(item.id);
-                int d =
-                    table.items1.indexWhere((element) => element.id == item.id);
-                if (d != -1) {
-                  table.items1.removeAt(d);
-                }
-                int e =
-                    completed.indexWhere((element) => element.id == item.id);
-                if (e != -1) {
-                  completed.removeAt(e);
-                }
+                    val = true;
+                  } else {
+                    boop = true;
+                    val = false;
+                  }
+                  // if (all_notes.notifs[item.id] != null) {
+                  //   ter = all_notes.notifs[item.id]!.id2;
+                  // }
+                  if (all.notifs[widget.id] != null) {
+                    var tert = all.notifs[widget.id]!;
+                    ter = tert.id2;
+                    all_notes.notifs.remove(tert.id);
+                    tert.delete();
+                    NotificationService().deleteNotif(ter);
+                  }
+                  int a = suggestions.indexWhere((val) => val.id == item.id);
+                  if (a != -1) {
+                    suggestions.removeAt(a);
+                  }
 
-                item.delete();
-                final id1 = store.db.collection('notes').doc().id;
+                  int b = searchResults.indexWhere((val) => val.id == item.id);
+                  if (b != -1) {
+                    searchResults.removeAt(b);
+                  }
+                  int c = uncompleted.indexWhere((val) => val.id == item.id);
+                  if (c != -1) {
+                    uncompleted.removeAt(c);
+                  }
+                  all_notes.items.remove(item.id);
+                  int d = table.items1
+                      .indexWhere((element) => element.id == item.id);
+                  if (d != -1) {
+                    table.items1.removeAt(d);
+                  }
+                  int e =
+                      completed.indexWhere((element) => element.id == item.id);
+                  if (e != -1) {
+                    completed.removeAt(e);
+                  }
 
-                Notes note = Notes(
+                  item.delete();
+                  final id1 = store.db.collection('notes').doc().id;
+
+                  Notes note = Notes(
+                      id: id1,
+                      title: title,
+                      data: body,
+                      date: selectDate,
+                      time: daySelect,
+                      priority: priority,
+                      color: colPick.value.toString(),
+                      done: boop);
+
+                  items1.add(note);
+                  searchResults.add(note);
+
+                  note.save();
+
+                  if (boop == true) {
+                    completed.add(note);
+                    done.remove(DateTime.parse(item.date));
+                  } else {
+                    uncompleted.add(note);
+                    completed.removeWhere((element) => element.id == widget.id);
+                    if (!done.contains(DateTime.parse(note.date))) {
+                      done.add(DateTime.parse(note.date));
+                    }
+                  }
+                  done.clear();
+                  all.items.putIfAbsent(id1, () => note);
+                  notes.add(note.id);
+                  if (all.items3[item.id] != null) {
+                    var repea = all.items3[item.id];
+                    if (repea!.option == "Daily") {
+                      Repeat r = Repeat(id: note.id, option: "Daily");
+                      all.items3.putIfAbsent(note.id, () => r);
+                      r.save();
+
+                      // for (var i = 1; i <= 100; i++) {
+                      //   DateTime g = DateTime.parse(selectDate);
+                      //   DateTime h = DateTime(g.year, g.month, g.day + 1);
+                      //   selectDate = format.format(h);
+                      //   if (done.indexWhere((element) => element == g) == -1) {
+                      //     done.add(g);
+                      //   }
+                      //   if (boop == false) {
+                      //     Notes note = Notes(
+                      //         id: id,
+                      //         title: title,
+                      //         data: body,
+                      //         date: selectDate,
+                      //         time: daySelect,
+                      //         priority: priority,
+                      //         color: colPick.value.toString(),
+                      //         done: false);
+                      //     setState(() {
+                      //       items1.add(note);
+                      //     });
+                      //   }
+                      // }
+                    } else if (repea.option == "Weekly") {
+                      Repeat r = Repeat(id: note.id, option: "Weekly");
+                      all.items3.putIfAbsent(note.id, () => r);
+                      r.save();
+                      // for (var i = 1; i <= 50; i++) {
+                      //   DateTime g = DateTime.parse(selectDate);
+                      //   DateTime h = DateTime(g.year, g.month, g.day + 7);
+                      //   selectDate = format.format(h);
+                      //   if (done.indexWhere((element) => element == g) == -1) {
+                      //     done.add(g);
+                      //   }
+                      //   if (boop == false) {
+                      //     Notes note = Notes(
+                      //         id: id,
+                      //         title: title,
+                      //         data: body,
+                      //         date: selectDate,
+                      //         time: daySelect,
+                      //         priority: priority,
+                      //         color: colPick.value.toString(),
+                      //         done: false);
+                      //     setState(() {
+                      //       items1.add(note);
+                      //     });
+                      //   }
+                      // }
+                    } else if (repea.option == "Monthly") {
+                      Repeat r = Repeat(id: note.id, option: "Monthly");
+                      all.items3.putIfAbsent(note.id, () => r);
+                      r.save();
+                      // for (var i = 1; i <= 24; i++) {
+                      //   DateTime g = DateTime.parse(selectDate);
+                      //   DateTime h = DateTime(g.year, g.month + 1, g.day);
+                      //   selectDate = format.format(h);
+                      //   if (done.indexWhere((element) => element == g) == -1) {
+                      //     done.add(g);
+                      //   }
+                      //   if (boop == false) {
+                      //     Notes note = Notes(
+                      //         id: id,
+                      //         title: title,
+                      //         data: body,
+                      //         date: selectDate,
+                      //         time: daySelect,
+                      //         priority: priority,
+                      //         color: colPick.value.toString(),
+                      //         done: false);
+                      //     setState(() {
+                      //       items1.add(note);
+                      //     });
+                      //   }
+                      // }
+                    } else if (repea.option == "Yearly") {
+                      Repeat r = Repeat(id: note.id, option: "Yearly");
+                      all.items3.putIfAbsent(note.id, () => r);
+                      r.save();
+
+                      // for (var i = 1; i <= 5; i++) {
+                      //   DateTime g = DateTime.parse(selectDate);
+                      //   DateTime h = DateTime(g.year + 1, g.month, g.day);
+                      //   selectDate = format.format(h);
+                      //   if (done.indexWhere((element) => element == g) == -1) {
+                      //     done.add(g);
+                      //   }
+                      //   if (boop == false) {
+                      //     Notes note = Notes(
+                      //         id: id,
+                      //         title: title,
+                      //         data: body,
+                      //         date: selectDate,
+                      //         time: daySelect,
+                      //         priority: priority,
+                      //         color: colPick.value.toString(),
+                      //         done: false);
+                      //     setState(() {
+                      //       items1.add(note);
+                      //     });
+                      //   }
+                      // }
+                    }
+                  }
+
+                  Notifs notif1 = Notifs(
                     id: id1,
-                    title: title,
-                    data: body,
-                    date: selectDate,
-                    time: daySelect,
-                    priority: priority,
-                    color: colPick.value.toString(),
-                    done: boop);
+                    id2: count.channelCounter.toString(),
+                  );
+                  notif1.save();
+                  all.ee.value = !all.ee.value;
+                  res.value = !res.value;
+                  id4 = "";
+                  colPick == const Color.fromARGB(255, 255, 254, 254);
+                  daySelect = "";
+                  selectDate = "";
+                  title = "";
+                  body = "";
 
-                items1.add(note);
-                searchResults.add(note);
-
-                note.save();
-
-                if (boop == true) {
-                  completed.add(note);
-                  done.remove(DateTime.parse(item.date));
-                } else {
-                  uncompleted.add(note);
-                  completed.removeWhere((element) => element.id == widget.id);
-                  if (!done.contains(DateTime.parse(note.date))) {
-                    done.add(DateTime.parse(note.date));
-                  }
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => const Home()),
+                  // );
                 }
-                done.clear();
-                all_notes.items.putIfAbsent(id1, () => note);
-                notes.add(note.id);
-                if (all.items3[item.id] != null) {
-                  var repea = all.items3[item.id];
-                  if (repea!.option == "Daily") {
-                    Repeat r = Repeat(id: note.id, option: "Daily");
-                    all.items3.putIfAbsent(note.id, () => r);
-                    r.save();
-
-                    // for (var i = 1; i <= 100; i++) {
-                    //   DateTime g = DateTime.parse(selectDate);
-                    //   DateTime h = DateTime(g.year, g.month, g.day + 1);
-                    //   selectDate = format.format(h);
-                    //   if (done.indexWhere((element) => element == g) == -1) {
-                    //     done.add(g);
-                    //   }
-                    //   if (boop == false) {
-                    //     Notes note = Notes(
-                    //         id: id,
-                    //         title: title,
-                    //         data: body,
-                    //         date: selectDate,
-                    //         time: daySelect,
-                    //         priority: priority,
-                    //         color: colPick.value.toString(),
-                    //         done: false);
-                    //     setState(() {
-                    //       items1.add(note);
-                    //     });
-                    //   }
-                    // }
-                  } else if (repea.option == "Weekly") {
-                    Repeat r = Repeat(id: note.id, option: "Weekly");
-                    all.items3.putIfAbsent(note.id, () => r);
-                    r.save();
-                    // for (var i = 1; i <= 50; i++) {
-                    //   DateTime g = DateTime.parse(selectDate);
-                    //   DateTime h = DateTime(g.year, g.month, g.day + 7);
-                    //   selectDate = format.format(h);
-                    //   if (done.indexWhere((element) => element == g) == -1) {
-                    //     done.add(g);
-                    //   }
-                    //   if (boop == false) {
-                    //     Notes note = Notes(
-                    //         id: id,
-                    //         title: title,
-                    //         data: body,
-                    //         date: selectDate,
-                    //         time: daySelect,
-                    //         priority: priority,
-                    //         color: colPick.value.toString(),
-                    //         done: false);
-                    //     setState(() {
-                    //       items1.add(note);
-                    //     });
-                    //   }
-                    // }
-                  } else if (repea.option == "Monthly") {
-                    Repeat r = Repeat(id: note.id, option: "Monthly");
-                    all.items3.putIfAbsent(note.id, () => r);
-                    r.save();
-                    // for (var i = 1; i <= 24; i++) {
-                    //   DateTime g = DateTime.parse(selectDate);
-                    //   DateTime h = DateTime(g.year, g.month + 1, g.day);
-                    //   selectDate = format.format(h);
-                    //   if (done.indexWhere((element) => element == g) == -1) {
-                    //     done.add(g);
-                    //   }
-                    //   if (boop == false) {
-                    //     Notes note = Notes(
-                    //         id: id,
-                    //         title: title,
-                    //         data: body,
-                    //         date: selectDate,
-                    //         time: daySelect,
-                    //         priority: priority,
-                    //         color: colPick.value.toString(),
-                    //         done: false);
-                    //     setState(() {
-                    //       items1.add(note);
-                    //     });
-                    //   }
-                    // }
-                  } else if (repea.option == "Yearly") {
-                    Repeat r = Repeat(id: note.id, option: "Yearly");
-                    all.items3.putIfAbsent(note.id, () => r);
-                    r.save();
-
-                    // for (var i = 1; i <= 5; i++) {
-                    //   DateTime g = DateTime.parse(selectDate);
-                    //   DateTime h = DateTime(g.year + 1, g.month, g.day);
-                    //   selectDate = format.format(h);
-                    //   if (done.indexWhere((element) => element == g) == -1) {
-                    //     done.add(g);
-                    //   }
-                    //   if (boop == false) {
-                    //     Notes note = Notes(
-                    //         id: id,
-                    //         title: title,
-                    //         data: body,
-                    //         date: selectDate,
-                    //         time: daySelect,
-                    //         priority: priority,
-                    //         color: colPick.value.toString(),
-                    //         done: false);
-                    //     setState(() {
-                    //       items1.add(note);
-                    //     });
-                    //   }
-                    // }
-                  }
-                }
-
-                Notifs notif1 = Notifs(
-                  id: id1,
-                  id2: count.channelCounter.toString(),
-                );
-                notif1.save();
-                all.ee.value = !all.ee.value;
-                res.value = !res.value;
-
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => const Home()),
-                // );
               });
             }));
   }
