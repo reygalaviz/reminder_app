@@ -408,7 +408,10 @@ class _AddNoteState extends State<AddNote> {
                       body: body, channel: count.channelCounter, title: title);
                 }
               }
-              done.add(scheduler);
+              if (done.indexWhere((element) => (element == scheduler)) == -1) {
+                done.add(scheduler);
+              }
+
               selectColor = const Color.fromARGB(255, 180, 175, 175);
               ee.value = !ee.value;
               Navigator.pop(
