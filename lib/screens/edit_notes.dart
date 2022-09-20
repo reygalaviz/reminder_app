@@ -48,7 +48,6 @@ class _EditNoteState extends State<EditNote> {
   late DateTime scheduler2 = DateTime.now();
   StreamSubscription<Map<String, dynamic>>? _subscription;
 
-
   DateFormat format = DateFormat("yyyy-MM-dd");
 
   final dCont = TextEditingController();
@@ -374,9 +373,7 @@ class _EditNoteState extends State<EditNote> {
 
   Widget eventRepeat1() {
     return PopupMenuButton<Select>(
-
         icon: Text(eCont.text),
-
         onSelected: (value) {
           if (value == Select.daily) {
             setState(() {
@@ -592,10 +589,12 @@ class _EditNoteState extends State<EditNote> {
                               ListTile(title: eventBody()),
                               eventDate(),
                               eventTime(),
-                              ListTile(
-                                leading: eventColor(),
-                              ),
-                              ListTile(leading: eventRepeat1()),
+                              eventColor(),
+                              // ListTile(
+                              //   leading: eventColor(),
+                              // ),
+                              // ListTile(leading: eventRepeat1()),
+                              eventRepeat1(),
                             ],
                           ),
                         ),

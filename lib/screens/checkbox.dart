@@ -30,12 +30,11 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
   // StreamSubscription<Map<String, dynamic>>? _subscription;
   // final _notifs = <String, Notifs>{};
 
-  Color colPick = const Color.fromARGB(255, 255, 254, 254);
+  Color colPick2 = const Color.fromARGB(255, 255, 254, 254);
   String selectDate = "";
   String title = "";
   String body = "";
   String daySelect = "";
-  Color selectColor = const Color.fromARGB(255, 180, 175, 174);
   String priority = "high";
   String id4 = "";
   DateFormat format = DateFormat("yyyy-MM-dd");
@@ -69,24 +68,25 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
             }),
             side: MaterialStateBorderSide.resolveWith(
                 (states) => const BorderSide(width: .5, color: Colors.black)),
-            checkColor: colPick,
+            checkColor: Colors.black,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5.0))),
             value: boop,
             onChanged: (val) {
               setState(() {
-                print(all.items.keys);
+                print(colPick2.value);
 
                 if (id4 == "") {
                   id4 = widget.id;
                 }
-                print(id4);
+
                 if (all.items.containsKey(id4) == true) {
                   store.Notes item = all.items[id4]!;
 
-                  if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
-                    colPick = Color(int.parse(item.color));
-                  }
+                  // if (colPick2 == const Color.fromARGB(255, 255, 254, 254)) {
+                  colPick2 = Color(int.parse(item.color));
+                  //  }
+                  print(item.color);
                   if (selectDate == "") {
                     selectDate = item.date;
                   }
@@ -153,7 +153,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                       date: selectDate,
                       time: daySelect,
                       priority: priority,
-                      color: colPick.value.toString(),
+                      color: colPick2.value.toString(),
                       done: boop);
 
                   items1.add(note);
@@ -173,6 +173,7 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                   }
                   done.clear();
                   all.items.putIfAbsent(id1, () => note);
+                  colPick2 == const Color.fromARGB(255, 255, 254, 254);
                   notes.add(note.id);
                   if (all.items3[item.id] != null) {
                     var repea = all.items3[item.id];
@@ -180,108 +181,18 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                       Repeat r = Repeat(id: note.id, option: "Daily");
                       all.items3.putIfAbsent(note.id, () => r);
                       r.save();
-
-                      // for (var i = 1; i <= 100; i++) {
-                      //   DateTime g = DateTime.parse(selectDate);
-                      //   DateTime h = DateTime(g.year, g.month, g.day + 1);
-                      //   selectDate = format.format(h);
-                      //   if (done.indexWhere((element) => element == g) == -1) {
-                      //     done.add(g);
-                      //   }
-                      //   if (boop == false) {
-                      //     Notes note = Notes(
-                      //         id: id,
-                      //         title: title,
-                      //         data: body,
-                      //         date: selectDate,
-                      //         time: daySelect,
-                      //         priority: priority,
-                      //         color: colPick.value.toString(),
-                      //         done: false);
-                      //     setState(() {
-                      //       items1.add(note);
-                      //     });
-                      //   }
-                      // }
                     } else if (repea.option == "Weekly") {
                       Repeat r = Repeat(id: note.id, option: "Weekly");
                       all.items3.putIfAbsent(note.id, () => r);
                       r.save();
-                      // for (var i = 1; i <= 50; i++) {
-                      //   DateTime g = DateTime.parse(selectDate);
-                      //   DateTime h = DateTime(g.year, g.month, g.day + 7);
-                      //   selectDate = format.format(h);
-                      //   if (done.indexWhere((element) => element == g) == -1) {
-                      //     done.add(g);
-                      //   }
-                      //   if (boop == false) {
-                      //     Notes note = Notes(
-                      //         id: id,
-                      //         title: title,
-                      //         data: body,
-                      //         date: selectDate,
-                      //         time: daySelect,
-                      //         priority: priority,
-                      //         color: colPick.value.toString(),
-                      //         done: false);
-                      //     setState(() {
-                      //       items1.add(note);
-                      //     });
-                      //   }
-                      // }
                     } else if (repea.option == "Monthly") {
                       Repeat r = Repeat(id: note.id, option: "Monthly");
                       all.items3.putIfAbsent(note.id, () => r);
                       r.save();
-                      // for (var i = 1; i <= 24; i++) {
-                      //   DateTime g = DateTime.parse(selectDate);
-                      //   DateTime h = DateTime(g.year, g.month + 1, g.day);
-                      //   selectDate = format.format(h);
-                      //   if (done.indexWhere((element) => element == g) == -1) {
-                      //     done.add(g);
-                      //   }
-                      //   if (boop == false) {
-                      //     Notes note = Notes(
-                      //         id: id,
-                      //         title: title,
-                      //         data: body,
-                      //         date: selectDate,
-                      //         time: daySelect,
-                      //         priority: priority,
-                      //         color: colPick.value.toString(),
-                      //         done: false);
-                      //     setState(() {
-                      //       items1.add(note);
-                      //     });
-                      //   }
-                      // }
                     } else if (repea.option == "Yearly") {
                       Repeat r = Repeat(id: note.id, option: "Yearly");
                       all.items3.putIfAbsent(note.id, () => r);
                       r.save();
-
-                      // for (var i = 1; i <= 5; i++) {
-                      //   DateTime g = DateTime.parse(selectDate);
-                      //   DateTime h = DateTime(g.year + 1, g.month, g.day);
-                      //   selectDate = format.format(h);
-                      //   if (done.indexWhere((element) => element == g) == -1) {
-                      //     done.add(g);
-                      //   }
-                      //   if (boop == false) {
-                      //     Notes note = Notes(
-                      //         id: id,
-                      //         title: title,
-                      //         data: body,
-                      //         date: selectDate,
-                      //         time: daySelect,
-                      //         priority: priority,
-                      //         color: colPick.value.toString(),
-                      //         done: false);
-                      //     setState(() {
-                      //       items1.add(note);
-                      //     });
-                      //   }
-                      // }
                     }
                   }
 
@@ -293,16 +204,11 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
                   all.ee.value = !all.ee.value;
                   res.value = !res.value;
                   id4 = "";
-                  colPick == const Color.fromARGB(255, 255, 254, 254);
+
                   daySelect = "";
                   selectDate = "";
                   title = "";
                   body = "";
-
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => const Home()),
-                  // );
                 }
               });
             }));
