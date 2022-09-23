@@ -1467,6 +1467,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                     String not = notifs[item2.id]!.id2;
                     NotificationService().deleteNotif(not);
                     if (!mounted) return;
+                    calculate();
                     // Navigator.pop(
                     //     context,
                     //     MaterialPageRoute(
@@ -1474,7 +1475,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                     Navigator.of(context).pop();
                     items1.clear();
                     done.clear;
-                    calculate();
                   });
                 },
                 child: const Text(

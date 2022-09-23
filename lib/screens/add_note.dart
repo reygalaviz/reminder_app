@@ -321,48 +321,56 @@ class _AddNoteState extends State<AddNote> {
           border: InputBorder.none,
           prefixIcon: IconButton(
             onPressed: () async {
-              TimeOfDay? timeT = TimeOfDay.fromDateTime(DateTime.now());
-              showCupertinoModalPopup(
-                  context: context,
-                  builder: (BuildContext builder) {
-                    return Container(
-                        width: 200,
-                        height: 500,
-                        padding: const EdgeInsets.only(
-                            top: 20.0, left: 10.0, right: 10.0, bottom: 60.0),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                                height: 300,
-                                width: 200,
-                                child: CupertinoDatePicker(
-                                  mode: CupertinoDatePickerMode.time,
-                                  initialDateTime: DateTime.now(),
-                                  backgroundColor: Colors.white,
-                                  onDateTimeChanged: (value) {
-                                    timeT = TimeOfDay.fromDateTime(value);
-                                    if (!mounted) return;
-                                    if (timeT != null) {
-                                      String timeString =
-                                          timeT!.format(context);
-                                      daySelect = timeString;
-                                      cCont.text = timeString;
-                                      scheduler2 = DateTime(
-                                          scheduler.year,
-                                          scheduler.month,
-                                          scheduler.day,
-                                          timeT!.hour,
-                                          timeT!.minute);
-                                    }
-                                  },
-                                )),
-                            CupertinoButton(
-                              child: const Text('Ok'),
-                              onPressed: () => Navigator.of(context).pop(),
-                            )
-                          ],
-                        ));
-                  });
+              TimeOfDay? timeT = await showTimePicker(
+                  context: context, initialTime: TimeOfDay.now());
+              if (!mounted) return;
+              String timeString = timeT!.format(context);
+              daySelect = timeString;
+              cCont.text = timeString;
+              scheduler2 = DateTime(scheduler.year, scheduler.month,
+                  scheduler.day, timeT.hour, timeT.minute);
+              // TimeOfDay? timeT = TimeOfDay.fromDateTime(DateTime.now());
+              // showCupertinoModalPopup(
+              //     context: context,
+              //     builder: (BuildContext builder) {
+              //       return Container(
+              //           width: 200,
+              //           height: 500,
+              //           padding: const EdgeInsets.only(
+              //               top: 20.0, left: 10.0, right: 10.0, bottom: 60.0),
+              //           child: Column(
+              //             children: [
+              //               SizedBox(
+              //                   height: 300,
+              //                   width: 200,
+              //                   child: CupertinoDatePicker(
+              //                     mode: CupertinoDatePickerMode.time,
+              //                     initialDateTime: DateTime.now(),
+              //                     backgroundColor: Colors.white,
+              //                     onDateTimeChanged: (value) {
+              //                       timeT = TimeOfDay.fromDateTime(value);
+              //                       if (!mounted) return;
+              //                       if (timeT != null) {
+              //                         String timeString =
+              //                             timeT!.format(context);
+              //                         daySelect = timeString;
+              //                         cCont.text = timeString;
+              //                         scheduler2 = DateTime(
+              //                             scheduler.year,
+              //                             scheduler.month,
+              //                             scheduler.day,
+              //                             timeT!.hour,
+              //                             timeT!.minute);
+              //                       }
+              //                     },
+              //                   )),
+              //               CupertinoButton(
+              //                 child: const Text('Ok'),
+              //                 onPressed: () => Navigator.of(context).pop(),
+              //               )
+              //             ],
+              //           ));
+              //     });
             },
             icon: const Icon(
               FontAwesomeIcons.clock,
@@ -408,9 +416,9 @@ class _AddNoteState extends State<AddNote> {
                       body: body, channel: count.channelCounter, title: title);
                 }
               }
-              if (done.indexWhere((element) => (element == scheduler)) == -1) {
-                done.add(scheduler);
-              }
+              // if (done.indexWhere((element) => (element == scheduler)) == -1) {
+              //   done.add(scheduler);
+              // }
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
               ee.value = !ee.value;
