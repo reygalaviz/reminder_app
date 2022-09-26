@@ -474,8 +474,8 @@ class _EditNoteState extends State<EditNote> {
 
                 // Navigator.pop(context);
                 bool b = true;
-                Navigator.pop(context,
-                    MaterialPageRoute(builder: (context) => Home2(boo: b)));
+                allNotes.ee.value = !allNotes.ee.value;
+                Navigator.pop(context);
               },
               child: const Text(
                 'Save',
