@@ -112,41 +112,87 @@ class _EditNoteState extends State<EditNote> {
 
   Widget eventDate() {
     DateTime date = DateTime.now();
-    return ListTile(
-      leading: const Icon(FontAwesomeIcons.calendar),
-      title: Text(dCont.text),
-      onTap: () async {
-        final DateTime? dateT = await showDatePicker(
-            context: context,
-            initialDate: DateTime.parse(selectDate),
-            firstDate: DateTime(2022),
-            lastDate: DateTime(2025));
-        String compForm = format.format(dateT!);
-        selectDate = compForm;
-        setState(() {
-          scheduler = dateT;
-        });
+    return TextFormField(
+      controller: dCont..text = selectDate,
+      readOnly: true,
+      decoration: InputDecoration(
+          border: InputBorder.none,
+          prefixIcon: IconButton(
+              onPressed: () async {
+                final DateTime? dateT = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.parse(selectDate),
+                    firstDate: DateTime(2022),
+                    lastDate: DateTime(2025));
+                String compForm = format.format(dateT!);
+                selectDate = compForm;
+                setState(() {
+                  scheduler = dateT;
+                });
 
-        dCont.text = compForm;
-      },
+                dCont.text = compForm;
+              },
+              icon: Icon(
+                FontAwesomeIcons.calendar,
+                color: Colors.grey[500],
+              ))),
     );
+    // return ListTile(
+    //   leading: const Icon(FontAwesomeIcons.calendar),
+    //   title: Text(dCont.text),
+    //   onTap: () async {
+    //     final DateTime? dateT = await showDatePicker(
+    //         context: context,
+    //         initialDate: DateTime.parse(selectDate),
+    //         firstDate: DateTime(2022),
+    //         lastDate: DateTime(2025));
+    //     String compForm = format.format(dateT!);
+    //     selectDate = compForm;
+    //     setState(() {
+    //       scheduler = dateT;
+    //     });
+
+    //     dCont.text = compForm;
+    //   },
+    // );
   }
 
   Widget eventTime() {
-    return ListTile(
-      leading: const Icon(FontAwesomeIcons.clock),
-      title: Text(cCont.text),
-      onTap: () async {
-        TimeOfDay? timeT = await showTimePicker(
-            context: context, initialTime: TimeOfDay.now());
-        if (!mounted) return;
-        String timeString = timeT!.format(context);
-        daySelect = timeString;
-        cCont.text = timeString;
-        scheduler2 = DateTime(scheduler.year, scheduler.month, scheduler.day,
-            timeT.hour, timeT.minute);
-      },
+    return TextFormField(
+      controller: cCont..text = daySelect,
+      readOnly: true,
+      decoration: InputDecoration(
+          border: InputBorder.none,
+          prefixIcon: IconButton(
+              onPressed: () async {
+                TimeOfDay? timeT = await showTimePicker(
+                    context: context, initialTime: TimeOfDay.now());
+                if (!mounted) return;
+                String timeString = timeT!.format(context);
+                daySelect = timeString;
+                cCont.text = timeString;
+                scheduler2 = DateTime(scheduler.year, scheduler.month,
+                    scheduler.day, timeT.hour, timeT.minute);
+              },
+              icon: Icon(
+                FontAwesomeIcons.clock,
+                color: Colors.grey[500],
+              ))),
     );
+    // return ListTile(
+    //   leading: const Icon(FontAwesomeIcons.clock),
+    //   title: Text(cCont.text),
+    //   onTap: () async {
+    //     TimeOfDay? timeT = await showTimePicker(
+    //         context: context, initialTime: TimeOfDay.now());
+    //     if (!mounted) return;
+    //     String timeString = timeT!.format(context);
+    //     daySelect = timeString;
+    //     cCont.text = timeString;
+    //     scheduler2 = DateTime(scheduler.year, scheduler.month, scheduler.day,
+    //         timeT.hour, timeT.minute);
+    //   },
+    // );
   }
 
   Widget eventRepeat() {
@@ -177,6 +223,199 @@ class _EditNoteState extends State<EditNote> {
               const PopupMenuItem<Select>(
                   value: Select.yearly, child: Text("Yearly")),
             ]);
+  }
+
+  Widget eventColor1() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Expanded(
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: col1),
+              onPressed: () {
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 171, 222, 230);
+                });
+                colPick = const Color.fromARGB(255, 171, 222, 230);
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: col1,
+                ),
+              )),
+        ),
+        Expanded(
+          //2
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: col2),
+              onPressed: () {
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 203, 170, 203);
+                });
+                colPick = const Color.fromARGB(255, 203, 170, 203);
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: col2,
+                ),
+              )),
+        ),
+        Expanded(
+          //3
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: col3),
+              onPressed: () {
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 245, 214, 196);
+                });
+                colPick = const Color.fromARGB(255, 245, 214, 196);
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: col3,
+                ),
+              )),
+        ),
+        Expanded(
+          //4
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: col4),
+              onPressed: () {
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 222, 237, 213);
+                });
+                colPick = const Color.fromARGB(255, 222, 237, 213);
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: col4,
+                ),
+              )),
+        ),
+        Expanded(
+          //5
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: col5),
+              onPressed: () {
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 238, 206, 206);
+                });
+                colPick = const Color.fromARGB(255, 238, 206, 206);
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: col5,
+                ),
+              )),
+        ),
+        Expanded(
+          //6
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: col6),
+              onPressed: () {
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 197, 210, 114);
+                });
+                colPick = const Color.fromARGB(255, 197, 210, 114);
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: col6,
+                ),
+              )),
+        ),
+        Expanded(
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: col7),
+              onPressed: () {
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 245, 154, 142);
+                });
+                colPick = const Color.fromARGB(255, 245, 154, 142);
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: col7,
+                ),
+              )),
+        ),
+        Expanded(
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: col8),
+              onPressed: () {
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 116, 154, 214);
+                });
+                colPick = const Color.fromARGB(255, 116, 154, 214);
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: col8,
+                ),
+              )),
+        ),
+        Expanded(
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: Colors.white),
+              onPressed: () {
+                colPick = Colors.white;
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 180, 175, 175);
+                });
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                ),
+              )),
+        ),
+      ],
+    );
   }
 
   Widget eventColor() {
@@ -409,9 +648,6 @@ class _EditNoteState extends State<EditNote> {
               const PopupMenuItem<Select>(
                   value: Select.yearly, child: Text("Yearly")),
             ]);
-    // });
-    // },
-    // );
   }
 
   @override
@@ -462,148 +698,145 @@ class _EditNoteState extends State<EditNote> {
     if (selectColor == const Color.fromARGB(255, 180, 175, 174)) {
       selectColor = Color(int.parse(item.color));
     }
-
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).backgroundColor,
-        title: Text(
-          item.title,
-          style: TextStyle(color: Theme.of(context).primaryColor),
-        ),
-        actions: [
-          TextButton(
-              onPressed: () {
-                if (_notifs[widget.id] != null) {
-                  var ter = _notifs[widget.id];
-                  if (ter != null) {
-                    String tre = ter.id2;
-                    NotificationService().deleteNotif(tre);
-                  }
-                }
-                if (count.notifChoice == true) {
-                  if (scheduler2.isAfter(DateTime.now())) {
-                    NotificationService().displayScheduleNotif(
-                        body: body,
-                        channel: count.channelCounter,
-                        title: title,
-                        date: scheduler2);
-                  } else {
-                    NotificationService().displayNotification(
-                        body: body,
-                        channel: count.channelCounter,
-                        title: title);
-                  }
-                }
-
-                if (obj != null) {
-                  obj.delete();
-                }
-
-                bool bloop = item.done;
-                setState(() {
-                  int a = comp.completed
-                      .indexWhere((element) => element.id == item.id);
-                  if (a != -1) {
-                    comp.completed.removeAt(a);
-                  }
-                  int b = searchResults.indexWhere((val) => val.id == item.id);
-                  if (b != -1) {
-                    searchResults.removeAt(b);
-                  }
-                  int c = uncompleted.indexWhere((val) => val.id == item.id);
-                  if (c != -1) {
-                    uncompleted.removeAt(c);
-                  }
-                  allNotes.items.remove(item.id);
-                  int d = table.items1
-                      .indexWhere((element) => element.id == item.id);
-                  if (d != -1) {
-                    table.items1.removeAt(d);
-                  }
-
-                  notes.removeWhere((element) => element == item.id);
-                });
-                item.delete();
-                final id = Localstore.instance.collection("notes").doc().id;
-                // print(item.id);
-                final item1 = store.Notes(
-                    id: id,
-                    title: title,
-                    data: body,
-                    date: selectDate,
-                    time: daySelect,
-                    priority: priority,
-                    color: colPick.value.toString(),
-                    done: bloop);
-                item1.save();
-
-                Notifs notif1 = Notifs(
-                  id: id,
-                  id2: count.channelCounter.toString(),
-                );
-                // String k;
-
-                // k = repeat;
-
-                print(repeat);
-                Repeat reeeeee = Repeat(id: id, option: repeat);
-                reeeeee.save();
-                allNotes.items3.putIfAbsent(id, () => reeeeee);
-                notif1.save();
-
-                searchResults.add(item1);
-                if (item.done == true) {
-                  comp.completed.add(item1);
-                } else {
-                  uncompleted.add(item1);
-                }
-                allNotes.items.putIfAbsent(id, () => item1);
-                table.items1.add(item1);
-
-                ee.value = !ee.value;
-                Navigator.pop(context);
-              },
-              child: const Text(
-                'Save',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.blue),
-              ))
-        ],
-      ),
-      body: LayoutBuilder(
-          builder: (context, constraints) => Form(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    return LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: Padding(
+                  padding: EdgeInsets.all(constraints.maxWidth * .04),
+                  child: Form(
+                      child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: SizedBox(
-                          height: constraints.maxHeight * 1,
-                          child: ListView(
-                            children: <Widget>[
-                              ListTile(title: eventTitle()),
-                              ListTile(title: eventBody()),
-                              eventDate(),
-                              eventTime(),
-                              eventColor(),
-                              // ListTile(
-                              //   leading: eventColor(),
-                              // ),
-                              // ListTile(leading: eventRepeat1()),
-                              eventRepeat1(),
-                            ],
+                      eventTitle(),
+                      eventBody(),
+                      Row(children: [
+                        Expanded(child: eventDate()),
+                        Expanded(child: eventTime()),
+                        Expanded(child: eventRepeat())
+                      ]),
+                      eventColor1(),
+                      SizedBox(
+                        height: constraints.maxHeight * .04,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: Colors.blue[700],
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        child: IconButton(
+                          onPressed: () {
+                            if (_notifs[widget.id] != null) {
+                              var ter = _notifs[widget.id];
+                              if (ter != null) {
+                                String tre = ter.id2;
+                                NotificationService().deleteNotif(tre);
+                              }
+                            }
+                            if (count.notifChoice == true) {
+                              if (scheduler2.isAfter(DateTime.now())) {
+                                NotificationService().displayScheduleNotif(
+                                    body: body,
+                                    channel: count.channelCounter,
+                                    title: title,
+                                    date: scheduler2);
+                              } else {
+                                NotificationService().displayNotification(
+                                    body: body,
+                                    channel: count.channelCounter,
+                                    title: title);
+                              }
+                            }
+
+                            if (obj != null) {
+                              obj.delete();
+                            }
+
+                            bool bloop = item.done;
+                            setState(() {
+                              int a = comp.completed.indexWhere(
+                                  (element) => element.id == item.id);
+                              if (a != -1) {
+                                comp.completed.removeAt(a);
+                              }
+                              int b = searchResults
+                                  .indexWhere((val) => val.id == item.id);
+                              if (b != -1) {
+                                searchResults.removeAt(b);
+                              }
+                              int c = uncompleted
+                                  .indexWhere((val) => val.id == item.id);
+                              if (c != -1) {
+                                uncompleted.removeAt(c);
+                              }
+                              allNotes.items.remove(item.id);
+                              int d = table.items1.indexWhere(
+                                  (element) => element.id == item.id);
+                              if (d != -1) {
+                                table.items1.removeAt(d);
+                              }
+
+                              notes
+                                  .removeWhere((element) => element == item.id);
+                            });
+                            item.delete();
+                            final id = Localstore.instance
+                                .collection("notes")
+                                .doc()
+                                .id;
+                            // print(item.id);
+                            final item1 = store.Notes(
+                                id: id,
+                                title: title,
+                                data: body,
+                                date: selectDate,
+                                time: daySelect,
+                                priority: priority,
+                                color: colPick.value.toString(),
+                                done: bloop);
+                            item1.save();
+
+                            Notifs notif1 = Notifs(
+                              id: id,
+                              id2: count.channelCounter.toString(),
+                            );
+                            // String k;
+
+                            // k = repeat;
+
+                            if (repeat != "One-Time") {
+                              Repeat reeeeee = Repeat(id: id, option: repeat);
+                              reeeeee.save();
+
+                              allNotes.items3.putIfAbsent(id, () => reeeeee);
+                            }
+                            notif1.save();
+
+                            searchResults.add(item1);
+                            if (item.done == true) {
+                              comp.completed.add(item1);
+                            } else {
+                              uncompleted.add(item1);
+                            }
+                            allNotes.items.putIfAbsent(id, () => item1);
+                            table.items1.add(item1);
+
+                            ee.value = !ee.value;
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(
+                            FontAwesomeIcons.arrowUp,
+                            color: Colors.white,
+                            size: 20,
                           ),
                         ),
                       ),
                     ],
-                  ),
+                  )),
                 ),
-              )),
-    );
+              ),
+            ));
   }
 
   @override

@@ -98,25 +98,6 @@ class _SettingsTabState extends State<SettingsTab> {
                                     ],
                                   ),
                                   const SizedBox(height: 20),
-                                  Row(
-                                    children: const [
-                                      Text(
-                                        'General',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  ),
-                                  const Divider(
-                                    height: 30.0,
-                                    thickness: 1.0,
-                                    endIndent: 5.0,
-                                  ),
-                                  buildGeneralLanguageOption(
-                                    context,
-                                    'Language',
-                                  ),
                                   const SizedBox(height: 20),
                                   Row(
                                     children: const [
@@ -186,7 +167,6 @@ class _SettingsTabState extends State<SettingsTab> {
                                   ),
                                   buildHelpSupportOption(
                                       context, 'Contact Support'),
-                                  buildHelpFAQOption(context, 'FAQ'),
                                   buildHelpSuggestOption(
                                       context, 'Suggest a Feature'),
                                   const SizedBox(height: 20),
@@ -207,8 +187,6 @@ class _SettingsTabState extends State<SettingsTab> {
                                   ),
                                   buildAboutPrivOption(
                                       context, 'Privacy Policy'),
-                                  buildAboutSecOption(
-                                      context, 'Security Policy'),
                                   buildAboutTermsOption(
                                       context, 'Terms of Service'),
                                   buildAboutAckOption(
@@ -222,46 +200,46 @@ class _SettingsTabState extends State<SettingsTab> {
     );
   }
 
-  GestureDetector buildGeneralLanguageOption(
-      BuildContext context, String title) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        setState(() {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => CupertinoPageScaffold(
-                  navigationBar: CupertinoNavigationBar(
-                    backgroundColor: Theme.of(context).backgroundColor,
-                    middle: Text(
-                      'language'.tr,
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor, fontSize: 20),
-                    ),
-                  ),
-                  child: SettingsLanguage())));
-        });
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                title,
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                    color: Theme.of(context).primaryColor),
-              ),
-              const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey,
-                size: 20,
-              )
-            ]),
-      ),
-    );
-  }
+  // GestureDetector buildGeneralLanguageOption(
+  //     BuildContext context, String title) {
+  //   return GestureDetector(
+  //     behavior: HitTestBehavior.translucent,
+  //     onTap: () {
+  //       setState(() {
+  //         Navigator.of(context).push(MaterialPageRoute(
+  //             builder: (context) => CupertinoPageScaffold(
+  //                 navigationBar: CupertinoNavigationBar(
+  //                   backgroundColor: Theme.of(context).backgroundColor,
+  //                   middle: Text(
+  //                     'language'.tr,
+  //                     style: TextStyle(
+  //                         color: Theme.of(context).primaryColor, fontSize: 20),
+  //                   ),
+  //                 ),
+  //                 child: SettingsLanguage())));
+  //       });
+  //     },
+  //     child: Padding(
+  //       padding: const EdgeInsets.symmetric(vertical: 10),
+  //       child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: <Widget>[
+  //             Text(
+  //               title,
+  //               style: TextStyle(
+  //                   fontSize: 15,
+  //                   fontWeight: FontWeight.w400,
+  //                   color: Theme.of(context).primaryColor),
+  //             ),
+  //             const Icon(
+  //               Icons.arrow_forward_ios,
+  //               color: Colors.grey,
+  //               size: 20,
+  //             )
+  //           ]),
+  //     ),
+  //   );
+  // }
 
   GestureDetector buildHelpSupportOption(BuildContext context, String title) {
     return GestureDetector(
@@ -303,45 +281,45 @@ class _SettingsTabState extends State<SettingsTab> {
     );
   }
 
-  GestureDetector buildHelpFAQOption(BuildContext context, String title) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        setState(() {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => CupertinoPageScaffold(
-                  navigationBar: CupertinoNavigationBar(
-                      middle: Text(
-                        'FAQ',
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 20),
-                      ),
-                      backgroundColor: Theme.of(context).backgroundColor),
-                  child: SettingsFAQ())));
-        });
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                title,
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                    color: Theme.of(context).primaryColor),
-              ),
-              const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey,
-                size: 20,
-              )
-            ]),
-      ),
-    );
-  }
+  // GestureDetector buildHelpFAQOption(BuildContext context, String title) {
+  //   return GestureDetector(
+  //     behavior: HitTestBehavior.translucent,
+  //     onTap: () {
+  //       setState(() {
+  //         Navigator.of(context).push(MaterialPageRoute(
+  //             builder: (context) => CupertinoPageScaffold(
+  //                 navigationBar: CupertinoNavigationBar(
+  //                     middle: Text(
+  //                       'FAQ',
+  //                       style: TextStyle(
+  //                           color: Theme.of(context).primaryColor,
+  //                           fontSize: 20),
+  //                     ),
+  //                     backgroundColor: Theme.of(context).backgroundColor),
+  //                 child: SettingsFAQ())));
+  //       });
+  //     },
+  //     child: Padding(
+  //       padding: const EdgeInsets.symmetric(vertical: 10),
+  //       child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: <Widget>[
+  //             Text(
+  //               title,
+  //               style: TextStyle(
+  //                   fontSize: 15,
+  //                   fontWeight: FontWeight.w400,
+  //                   color: Theme.of(context).primaryColor),
+  //             ),
+  //             const Icon(
+  //               Icons.arrow_forward_ios,
+  //               color: Colors.grey,
+  //               size: 20,
+  //             )
+  //           ]),
+  //     ),
+  //   );
+  // }
 
   GestureDetector buildHelpSuggestOption(BuildContext context, String title) {
     return GestureDetector(

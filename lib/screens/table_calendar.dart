@@ -47,7 +47,7 @@ class Table_CalendarState extends State<Table_Calendar> {
   Color selectColor = const Color.fromARGB(255, 180, 175, 174);
   CalendarFormat format = CalendarFormat.month;
   final Map<DateTime, List<Notes>> _events = {};
-  DateTime _selectedDay = DateTime.now();
+  DateTime? _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
 
   List<Notes> _selectedEvents = [];
@@ -782,7 +782,7 @@ class Table_CalendarState extends State<Table_Calendar> {
   }
 
   Widget eventTitle() {
-    String formattedDate = DateFormat.MMMMEEEEd().format(_selectedDay);
+    String formattedDate = DateFormat.MMMMEEEEd().format(_selectedDay!);
     return LayoutBuilder(
       builder: (context, constraints) => Container(
         padding: EdgeInsets.only(left: constraints.maxWidth * .025),
@@ -823,7 +823,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                         var item = items1[index];
 
                         DateFormat format = DateFormat("yyyy-MM-dd");
-                        String day2 = format.format(_selectedDay);
+                        String day2 = format.format(_selectedDay!);
                         don = item.done;
                         String id5 = item.id;
                         if (item.date == day2 && item.done == false) {
@@ -865,11 +865,21 @@ class Table_CalendarState extends State<Table_Calendar> {
                                   onTap: () {
                                     id5 = item.id;
 
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                EditNote(id: id5)));
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             EditNote(id: id5)));
+                                    showModalBottomSheet(
+                                        enableDrag: true,
+                                        isScrollControlled: true,
+                                        context: context,
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.vertical(
+                                                top: Radius.circular(20.0))),
+                                        builder: (context) {
+                                          return EditNote(id: id5);
+                                        });
                                   },
                                   trailing: Wrap(children: <Widget>[
                                     CheckBoxNote(id: id5)

@@ -27,6 +27,7 @@ List<String> notes = <String>[];
 List<Notes> uncompleted = <Notes>[];
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await _configureLocalTimeZone();
   await NotificationService().init();
   var items = await store.db.collection('notes').get();

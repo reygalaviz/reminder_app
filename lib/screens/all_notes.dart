@@ -1187,8 +1187,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
             valueListenable: ee,
             builder: (context, ee, _) {
               calculate2();
-              // valueListenable: eventos1,
-              // builder: (context, ee, _) {
               return ListView.builder(
                   shrinkWrap: false,
                   itemCount: events1.length,
@@ -1274,11 +1272,23 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                                       onTap: () {
                                         final slidable = Slidable.of(context);
                                         // final isClosed = slidable.ren
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    EditNote(id: item.id)));
+                                        // Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             EditNote(id: item.id)));
+                                        showModalBottomSheet(
+                                            enableDrag: true,
+                                            isScrollControlled: true,
+                                            context: context,
+                                            shape: const RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                        top: Radius.circular(
+                                                            20.0))),
+                                            builder: (context) {
+                                              return EditNote(id: item.id);
+                                            });
                                       },
                                       trailing: Wrap(children: <Widget>[
                                         CheckBoxNote(id: item.id)
