@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:reminder_app/screens/settings_policies.dart';
 
 class SettingsFAQ extends StatefulWidget {
   const SettingsFAQ({super.key});
@@ -46,20 +47,8 @@ class _SettingsFAQState extends State<SettingsFAQ> {
                                         Theme.of(context).primaryColor,
                                     title: const Text('Adding a Reminder'),
                                     children: [
-                                      Container(
-                                        child: Column(
-                                          children: const [
-                                            Text(
-                                              'Adding a New Reminder\n\nTo create a new reminder:\n Simply press the +',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            SizedBox(
-                                              height: 10,
-                                            )
-                                          ],
-                                        ),
-                                      )
+                                      SettingsPolicies(
+                                          mdFileName: 'add_reminder.md')
                                     ],
                                   ),
                                   ExpansionTile(
