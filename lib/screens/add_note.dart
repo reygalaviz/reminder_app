@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -79,6 +80,199 @@ class _AddNoteState extends State<AddNote> {
             ),
           ),
         )
+      ],
+    );
+  }
+
+  Widget eventColor1() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Expanded(
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: col1),
+              onPressed: () {
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 171, 222, 230);
+                });
+                colPick = const Color.fromARGB(255, 171, 222, 230);
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: col1,
+                ),
+              )),
+        ),
+        Expanded(
+          //2
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: col2),
+              onPressed: () {
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 203, 170, 203);
+                });
+                colPick = const Color.fromARGB(255, 203, 170, 203);
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: col2,
+                ),
+              )),
+        ),
+        Expanded(
+          //3
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: col3),
+              onPressed: () {
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 245, 214, 196);
+                });
+                colPick = const Color.fromARGB(255, 245, 214, 196);
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: col3,
+                ),
+              )),
+        ),
+        Expanded(
+          //4
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: col4),
+              onPressed: () {
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 222, 237, 213);
+                });
+                colPick = const Color.fromARGB(255, 222, 237, 213);
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: col4,
+                ),
+              )),
+        ),
+        Expanded(
+          //5
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: col5),
+              onPressed: () {
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 238, 206, 206);
+                });
+                colPick = const Color.fromARGB(255, 238, 206, 206);
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: col5,
+                ),
+              )),
+        ),
+        Expanded(
+          //6
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: col6),
+              onPressed: () {
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 197, 210, 114);
+                });
+                colPick = const Color.fromARGB(255, 197, 210, 114);
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: col6,
+                ),
+              )),
+        ),
+        Expanded(
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: col7),
+              onPressed: () {
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 245, 154, 142);
+                });
+                colPick = const Color.fromARGB(255, 245, 154, 142);
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: col7,
+                ),
+              )),
+        ),
+        Expanded(
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: col8),
+              onPressed: () {
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 116, 154, 214);
+                });
+                colPick = const Color.fromARGB(255, 116, 154, 214);
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: col8,
+                ),
+              )),
+        ),
+        Expanded(
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(), backgroundColor: Colors.white),
+              onPressed: () {
+                colPick = Colors.white;
+                setState(() {
+                  selectColor = const Color.fromARGB(255, 180, 175, 175);
+                });
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                ),
+              )),
+        ),
       ],
     );
   }
@@ -277,36 +471,100 @@ class _AddNoteState extends State<AddNote> {
 
   Widget eventDate() {
     return TextFormField(
+      controller: dCont..text = selectDate,
       readOnly: true,
-      autocorrect: false,
-      enableSuggestions: false,
-      controller: dCont,
       decoration: InputDecoration(
-        border: InputBorder.none,
-        contentPadding: const EdgeInsets.only(left: 0),
-        prefixIconConstraints: const BoxConstraints(minWidth: 0),
-        prefixIcon: IconButton(
-            onPressed: () async {
-              final DateTime? dateT = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime(2029, 12, 12));
-              String compForm = format.format(dateT!);
-              setState(() {
-                scheduler = dateT;
-              });
+          border: InputBorder.none,
+          prefixIcon: IconButton(
+              onPressed: () async {
+                final DateTime? dateT = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime(2029, 12, 12));
+                String compForm = format.format(dateT!);
+                setState(() {
+                  scheduler = dateT;
+                });
 
-              selectDate = compForm;
+                selectDate = compForm;
 
-              dCont.text = compForm;
-            },
-            icon: const Icon(
-              FontAwesomeIcons.calendar,
-              size: 20,
-            )),
-      ),
+                dCont.text = compForm;
+              },
+              icon: Icon(
+                FontAwesomeIcons.calendar,
+                color: Colors.grey[500],
+              ))),
     );
+    // return GestureDetector(
+    //     onTap: () async {
+    //       final DateTime? dateT = await showDatePicker(
+    //           context: context,
+    //           initialDate: DateTime.now(),
+    //           firstDate: DateTime.now(),
+    //           lastDate: DateTime(2029, 12, 12));
+    //       String compForm = format.format(dateT!);
+    //       setState(() {
+    //         scheduler = dateT;
+    //       });
+
+    //       selectDate = compForm;
+
+    //       dCont.text = compForm;
+    //     },
+    //     child: FormBuilderDateTimePicker(
+    //       name: 'date',
+    //       format: DateFormat("yyyy-MM-dd"),
+    //       initialValue: DateTime.now(),
+    //       inputType: InputType.date,
+    //       onChanged: ((value) {
+    //         print(value);
+    //         if (value != null) {
+    //           setState(() {
+    //             scheduler = value;
+    //           });
+    //           String compForm = format.format(value);
+    //           selectDate = compForm;
+    //           dCont.text = DateFormat.MMMMEEEEd().format(value);
+    //         }
+    //       }),
+    //     ));
+    // return Container(
+    //   color: Colors.amber,
+    //   child: TextFormField(
+    //     readOnly: true,
+    //     autocorrect: false,
+    //     enableSuggestions: false,
+    //     controller: dCont,
+    //     decoration: InputDecoration(
+    //       border: InputBorder.none,
+    //       contentPadding: const EdgeInsets.only(left: 0),
+    //       prefixIconConstraints: const BoxConstraints(minWidth: 0),
+    //       prefixIcon: Icon(FontAwesomeIcons.calendar),
+
+    // prefixIcon: IconButton(
+    //     onPressed: () async {
+    //       final DateTime? dateT = await showDatePicker(
+    //           context: context,
+    //           initialDate: DateTime.now(),
+    //           firstDate: DateTime.now(),
+    //           lastDate: DateTime(2029, 12, 12));
+    //       String compForm = format.format(dateT!);
+    //       setState(() {
+    //         scheduler = dateT;
+    //       });
+
+    //       selectDate = compForm;
+
+    //       dCont.text = DateFormat.MMMEd().format(dateT);
+    //     },
+    //     icon: const Icon(
+    //       FontAwesomeIcons.calendar,
+    //       size: 20,
+    //     )),
+    //     ),
+    //   ),
+    // );
   }
 
   Widget eventTime() {
@@ -316,7 +574,7 @@ class _AddNoteState extends State<AddNote> {
         maxLines: 1,
         autocorrect: false,
         enableSuggestions: false,
-        controller: cCont,
+        controller: cCont..text = daySelect,
         decoration: InputDecoration(
           border: InputBorder.none,
           prefixIcon: IconButton(
@@ -364,18 +622,21 @@ class _AddNoteState extends State<AddNote> {
                         ));
                   });
             },
-            icon: const Icon(
+            icon: Icon(
               FontAwesomeIcons.clock,
               size: 20,
+              color: Colors.grey[500],
             ),
           ),
         ));
   }
 
   Widget eventSub() {
-    return CircleAvatar(
-      radius: 20,
-      backgroundColor: Colors.blue[700],
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.blue[700],
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      width: double.infinity,
       child: IconButton(
           onPressed: () {
             count.channelCounter++;
@@ -731,24 +992,17 @@ class _AddNoteState extends State<AddNote> {
                 ),
                 Row(children: [
                   Expanded(child: eventDate()),
-                  const SizedBox(
-                    width: 10,
-                  ),
                   Expanded(child: eventTime()),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(child: eventColor()),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  // Expanded(child:
-                  SizedBox(width: 80, child: eventRepeat()),
-                  const SizedBox(
-                    width: 150,
-                  ),
-                  Expanded(child: eventSub()),
+                  Expanded(child: eventRepeat())
                 ]),
+                eventColor1(),
+                SizedBox(
+                  height: constraints.maxHeight * .04,
+                ),
+                eventSub(),
+                SizedBox(
+                  height: constraints.maxHeight * .02,
+                ),
               ]),
             ),
           ),

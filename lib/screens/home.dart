@@ -234,7 +234,7 @@ class _HomeState extends State<Home> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
         context: context,
         builder: (context) {
-          return const AddNote();
+          return AddNote();
         });
   }
 }
@@ -393,7 +393,7 @@ class _Home2State extends State<Home2> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
         context: context,
         builder: (context) {
-          return const AddNote();
+          return AddNote();
         });
   }
 }
