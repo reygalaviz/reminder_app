@@ -752,9 +752,6 @@ class _EditNoteState extends State<EditNote> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: constraints.maxHeight * .02,
-                      ),
                     ],
                   )),
                 ),

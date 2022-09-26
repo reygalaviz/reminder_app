@@ -1280,6 +1280,8 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                                         //         builder: (context) =>
                                         //             EditNote(id: item.id)));
                                         showModalBottomSheet(
+                                            enableDrag: true,
+                                            isScrollControlled: true,
                                             context: context,
                                             shape: const RoundedRectangleBorder(
                                                 borderRadius:

@@ -871,6 +871,8 @@ class Table_CalendarState extends State<Table_Calendar> {
                                     //         builder: (context) =>
                                     //             EditNote(id: id5)));
                                     showModalBottomSheet(
+                                        enableDrag: true,
+                                        isScrollControlled: true,
                                         context: context,
                                         shape: const RoundedRectangleBorder(
                                             borderRadius: BorderRadius.vertical(
