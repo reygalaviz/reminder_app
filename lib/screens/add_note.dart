@@ -474,6 +474,7 @@ class _AddNoteState extends State<AddNote> {
       controller: dCont..text = selectDate,
       readOnly: true,
       decoration: InputDecoration(
+          contentPadding: EdgeInsetsDirectional.all(20),
           border: InputBorder.none,
           prefixIcon: IconButton(
               onPressed: () async {
@@ -491,9 +492,10 @@ class _AddNoteState extends State<AddNote> {
 
                 dCont.text = compForm;
               },
-              icon: Icon(
+              icon: const Icon(
                 FontAwesomeIcons.calendar,
-                color: Colors.grey[500],
+                color: Colors.white,
+                size: 20,
               ))),
     );
     // return GestureDetector(
@@ -999,7 +1001,9 @@ class _AddNoteState extends State<AddNote> {
                   autofocus: false,
                 ),
                 Row(children: [
-                  Expanded(child: eventDate()),
+                  Expanded(
+                    child: eventDate(),
+                  ),
                   Expanded(child: eventTime()),
                   Expanded(child: eventRepeat())
                 ]),
@@ -1008,9 +1012,6 @@ class _AddNoteState extends State<AddNote> {
                   height: constraints.maxHeight * .04,
                 ),
                 eventSub(),
-                SizedBox(
-                  height: constraints.maxHeight * .02,
-                ),
               ]),
             ),
           ),

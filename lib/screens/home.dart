@@ -387,7 +387,7 @@ class _Home2State extends State<Home2> {
   //keyboard textfield attachment
   void showTextboxKeyboard() {
     showModalBottomSheet(
-        enableDrag: false,
+        enableDrag: true,
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
