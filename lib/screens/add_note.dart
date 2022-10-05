@@ -507,8 +507,12 @@ class _AddNoteState extends State<AddNote> {
               },
               icon: Icon(
                 FontAwesomeIcons.calendar,
+<<<<<<<<< Temporary merge branch 1
+                color: Color.fromARGB(255, 110, 110, 110),
+=========
                 color: Colors.blue[700],
                 size: 20,
+>>>>>>>>> Temporary merge branch 2
               ))),
     );
     // return GestureDetector(

@@ -589,6 +589,7 @@ class _EditNoteState extends State<EditNote> {
   }
 
   Widget eventRepeat() {
+
     return TextFormField(
         controller: eCont,
         readOnly: true,
@@ -673,6 +674,7 @@ class _EditNoteState extends State<EditNote> {
                   FontAwesomeIcons.repeat,
                   color: Colors.blue[700],
                 ))));
+
   }
 
   @override
@@ -694,6 +696,7 @@ class _EditNoteState extends State<EditNote> {
 
       //DateTime? dateT = DateTime.now();
       dCont.text = selectDate;
+
 
       cCont.text = daySelect;
       //TimeOfDay timer = TimeOfDay.fromDateTime(formatter.parse(daySelect));
@@ -725,6 +728,7 @@ class _EditNoteState extends State<EditNote> {
                           height: constraints.maxHeight * .04,
                         ),
                         Container(
+
                           width: double.infinity,
                           decoration: BoxDecoration(
                               color: Colors.blue[700],
@@ -755,6 +759,13 @@ class _EditNoteState extends State<EditNote> {
                               }
 
                               var obj = allNotes.items3[item.id];
+
+                              if (repeat == "One-Time") {
+                                if (obj != null) {
+                                  repeat = obj.option;
+                                }
+                              }
+
                               if (obj != null) {
                                 obj.delete();
                               }
@@ -802,34 +813,62 @@ class _EditNoteState extends State<EditNote> {
                                 id: id,
                                 id2: count.channelCounter.toString(),
                               );
+
                               if (obj != null) {
                                 if (obj.option == "Daily") {
                                   Repeat reeeeee =
                                       Repeat(id: id, option: "Daily");
                                   reeeeee.save();
                                 }
+
+                              if (repeat != "One-Time") {
+                                Repeat reeeeee = Repeat(id: id, option: repeat);
+                                reeeeee.save();
+
                               }
                               notif1.save();
                               setState(() {
                                 searchResults.add(item1);
-                                uncompleted.add(item1);
+
+                                if (item.done == true) {
+                                  comp.completed.add(item1);
+                                } else {
+                                  uncompleted.add(item1);
+                                }
                                 allNotes.items.putIfAbsent(id, () => item1);
                                 table.items1.add(item1);
+
                                 _items.putIfAbsent(item1.id, () => item1);
                               });
+                              // table.items1.clear();
+                              // if (scheduler.day != DateTime.now().day ||
+                              //     scheduler.month != DateTime.now().month) {
+                              //   if (table.done.indexWhere(
+                              //           (element) => (element == scheduler)) ==
+                              //       -1) {
+                              //     table.done.add(scheduler);
+                              //   }
+                              // }
 
                               // Navigator.pop(context);
-                              bool b = true;
-                              Navigator.pop(
+
+                              allNotes.ee.value = !allNotes.ee.value;
+                              Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Home2(boo: b)));
+                                      builder: (context) => Home2(
+                                            key: UniqueKey(),
+                                            boo: true,
+                                          )));
+                              // Navigator.pop(context);
+
                             },
                             icon: const Icon(
                               FontAwesomeIcons.arrowUp,
                               color: Colors.white,
                               size: 20,
                             ),
+
                           ),
                         ),
                       ],
@@ -840,6 +879,7 @@ class _EditNoteState extends State<EditNote> {
     } else {
       return Container();
     }
+
   }
 
   @override
