@@ -1198,6 +1198,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
 
                       String ind1 = DateFormat.MMMMEEEEd().format(ind);
                       List<Notes> x = events1[ind] ?? [];
+
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -1218,34 +1219,29 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                               itemBuilder: (context, index) {
                                 final item = x[index];
 
-                                return Card(
-                                  color: Color(int.parse(item.color))
-                                      .withOpacity(1),
-                                  borderOnForeground: true,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Slidable(
-                                    direction: Axis.horizontal,
-                                    endActionPane: ActionPane(
-                                      extentRatio: 0.3,
-                                      motion: ScrollMotion(),
+                                return Slidable(
+                                  closeOnScroll: true,
+                                  endActionPane: ActionPane(
+                                      extentRatio: .3,
+                                      motion: StretchMotion(),
                                       children: [
                                         SlidableAction(
                                           onPressed: (context) async {
                                             await _showDialog(item);
-                                            setState(() {});
                                           },
-                                          borderRadius: const BorderRadius.only(
-                                              topRight: Radius.circular(10.0),
-                                              bottomRight:
-                                                  Radius.circular(10.0)),
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(10.0)),
                                           backgroundColor: Colors.red,
-                                          autoClose: true,
                                           foregroundColor: Colors.white,
-                                          icon: FontAwesomeIcons.solidTrashCan,
-                                        ),
-                                      ],
-                                    ),
+                                          icon: FontAwesomeIcons.trash,
+                                        )
+                                      ]),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Color(int.parse(item.color))
+                                            .withOpacity(1),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
                                     child: ListTile(
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -1269,11 +1265,9 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                                               color: Colors.black),
                                         ),
                                       ),
-                                      tileColor: Color(int.parse(item.color))
-                                          .withOpacity(1),
+                                      // tileColor: Color(int.parse(item.color))
+                                      //     .withOpacity(1),
                                       onTap: () {
-                                        final slidable = Slidable.of(context);
-                                        // final isClosed = slidable.ren
                                         // Navigator.push(
                                         //     context,
                                         //     MaterialPageRoute(

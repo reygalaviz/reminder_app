@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
+import 'package:reminder_app/screens/edit_notes.dart';
 import 'package:reminder_app/screens/home.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
@@ -43,6 +44,7 @@ class _EditNoteState extends State<EditNote> {
   StreamSubscription<Map<String, dynamic>>? _subscription;
   // var item;
   DateFormat format = DateFormat("yyyy-MM-dd");
+  final eCont = TextEditingController();
   final dCont = TextEditingController();
   final cCont = TextEditingController();
   Color colPick = const Color.fromARGB(255, 255, 254, 254);
@@ -54,6 +56,7 @@ class _EditNoteState extends State<EditNote> {
   Color selectColor = const Color.fromARGB(255, 180, 175, 174);
   String priority = "high";
   String be = "beak";
+  String repeat = "Once";
   @override
   void initState() {
     super.initState();
@@ -114,6 +117,9 @@ class _EditNoteState extends State<EditNote> {
       controller: dCont..text = selectDate,
       readOnly: true,
       decoration: InputDecoration(
+          isDense: true,
+          contentPadding:
+              EdgeInsets.only(left: -8.0, bottom: 8.0, top: 14.0, right: -8.0),
           border: InputBorder.none,
           prefixIcon: IconButton(
               onPressed: () async {
@@ -132,7 +138,8 @@ class _EditNoteState extends State<EditNote> {
               },
               icon: Icon(
                 FontAwesomeIcons.calendar,
-                color: Colors.grey[500],
+                color: Colors.blue[700],
+                size: 20,
               ))),
     );
     // return ListTile(
@@ -160,6 +167,8 @@ class _EditNoteState extends State<EditNote> {
       controller: cCont..text = daySelect,
       readOnly: true,
       decoration: InputDecoration(
+          contentPadding:
+              EdgeInsets.only(left: -8.0, bottom: 8.0, top: 14.0, right: -8.0),
           border: InputBorder.none,
           prefixIcon: IconButton(
               onPressed: () async {
@@ -174,7 +183,8 @@ class _EditNoteState extends State<EditNote> {
               },
               icon: Icon(
                 FontAwesomeIcons.clock,
-                color: Colors.grey[500],
+                color: Colors.blue[700],
+                size: 20,
               ))),
     );
     // return ListTile(
@@ -579,184 +589,257 @@ class _EditNoteState extends State<EditNote> {
   }
 
   Widget eventRepeat() {
-    return ListTile(
-      leading: const Icon(FontAwesomeIcons.repeat),
-      title: const Text('Repeat'),
-      onTap: () {
-        showModalBottomSheet(
-            isScrollControlled: true,
-            shape: const RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.vertical(top: Radius.circular(20.0))),
-            context: context,
-            builder: (context) {
-              return const RepeatNote();
-            });
-      },
-    );
+    return TextFormField(
+        controller: eCont,
+        readOnly: true,
+        decoration: InputDecoration(
+            isDense: true,
+            contentPadding: const EdgeInsets.only(
+                left: -8.0, bottom: 8.0, top: 14.0, right: -8.0),
+            border: InputBorder.none,
+            prefixIcon: IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return SimpleDialog(
+                          title: Text('Select an Option'),
+                          children: <Widget>[
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Once";
+                                Select.oneTime;
+                                eCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Once',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Daily";
+                                Select.daily;
+                                eCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Daily',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Weekly";
+                                Select.weekly;
+                                eCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Weekly',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Monthly";
+                                Select.monthly;
+                                eCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Monthly',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Yearly";
+                                Select.yearly;
+                                eCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Yearly',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ],
+                        );
+                      });
+                },
+                icon: Icon(
+                  FontAwesomeIcons.repeat,
+                  color: Colors.blue[700],
+                ))));
   }
 
   @override
   Widget build(BuildContext context) {
-    var item = _items[widget.id]!;
-    if (selectDate == "") {
-      selectDate = item.date;
-    }
-    if (title == "") {
-      title = item.title;
-    }
-    if (body == "") {
-      body = item.data;
-    }
-    if (daySelect == "") {
-      daySelect = item.time;
-    }
+    if (_items[widget.id] != null) {
+      var item = _items[widget.id]!;
+      if (selectDate == "") {
+        selectDate = item.date;
+      }
+      if (title == "") {
+        title = item.title;
+      }
+      if (body == "") {
+        body = item.data;
+      }
+      if (daySelect == "") {
+        daySelect = item.time;
+      }
 
-    //DateTime? dateT = DateTime.now();
-    dCont.text = selectDate;
+      //DateTime? dateT = DateTime.now();
+      dCont.text = selectDate;
 
-    cCont.text = daySelect;
-    //TimeOfDay timer = TimeOfDay.fromDateTime(formatter.parse(daySelect));
-    if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
-      colPick = Color(int.parse(item.color));
-    }
-    if (selectColor == const Color.fromARGB(255, 180, 175, 174)) {
-      selectColor = Color(int.parse(item.color));
-    }
-    return LayoutBuilder(
-        builder: (context, constraints) => SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
+      cCont.text = daySelect;
+      //TimeOfDay timer = TimeOfDay.fromDateTime(formatter.parse(daySelect));
+      if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
+        colPick = Color(int.parse(item.color));
+      }
+      if (selectColor == const Color.fromARGB(255, 180, 175, 174)) {
+        selectColor = Color(int.parse(item.color));
+      }
+      return LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.all(constraints.maxWidth * .04),
-                  child: Form(
-                      child: Column(
-                    children: [
-                      eventTitle(),
-                      eventBody(),
-                      Row(children: [
-                        Expanded(child: eventDate()),
-                        Expanded(child: eventTime()),
-                        Expanded(child: eventRepeat())
-                      ]),
-                      eventColor1(),
-                      SizedBox(
-                        height: constraints.maxHeight * .04,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: Colors.blue[700],
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        child: IconButton(
-                          onPressed: () {
-                            if (_notifs[widget.id] != null) {
-                              var ter = _notifs[widget.id];
-                              if (ter != null) {
-                                String tre = ter.id2;
-                                NotificationService().deleteNotif(tre);
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Padding(
+                    padding: EdgeInsets.all(constraints.maxWidth * .04),
+                    child: Form(
+                        child: Column(
+                      children: [
+                        eventTitle(),
+                        eventBody(),
+                        Row(children: [
+                          Expanded(child: eventDate()),
+                          Expanded(child: eventTime()),
+                          Expanded(child: eventRepeat())
+                        ]),
+                        eventColor1(),
+                        SizedBox(
+                          height: constraints.maxHeight * .04,
+                        ),
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Colors.blue[700],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          child: IconButton(
+                            onPressed: () {
+                              if (_notifs[widget.id] != null) {
+                                var ter = _notifs[widget.id];
+                                if (ter != null) {
+                                  String tre = ter.id2;
+                                  NotificationService().deleteNotif(tre);
+                                }
                               }
-                            }
-                            if (count.notifChoice == true) {
-                              if (scheduler2.isAfter(DateTime.now())) {
-                                NotificationService().displayScheduleNotif(
-                                    body: body,
-                                    channel: count.channelCounter,
-                                    title: title,
-                                    date: scheduler2);
-                              } else {
-                                NotificationService().displayNotification(
-                                    body: body,
-                                    channel: count.channelCounter,
-                                    title: title);
-                              }
-                            }
-
-                            var obj = allNotes.items3[item.id];
-                            if (obj != null) {
-                              obj.delete();
-                            }
-                            bool bloop = item.done;
-                            setState(() {
-                              int b = searchResults
-                                  .indexWhere((val) => val.id == item.id);
-                              if (b != -1) {
-                                searchResults.removeAt(b);
-                              }
-                              int c = uncompleted
-                                  .indexWhere((val) => val.id == item.id);
-                              if (c != -1) {
-                                uncompleted.removeAt(c);
-                              }
-                              allNotes.items.remove(item.id);
-                              int d = table.items1.indexWhere(
-                                  (element) => element.id == item.id);
-                              if (d != -1) {
-                                table.items1.removeAt(d);
+                              if (count.notifChoice == true) {
+                                if (scheduler2.isAfter(DateTime.now())) {
+                                  NotificationService().displayScheduleNotif(
+                                      body: body,
+                                      channel: count.channelCounter,
+                                      title: title,
+                                      date: scheduler2);
+                                } else {
+                                  NotificationService().displayNotification(
+                                      body: body,
+                                      channel: count.channelCounter,
+                                      title: title);
+                                }
                               }
 
-                              notes
-                                  .removeWhere((element) => element == item.id);
-                              _items.remove(item.id);
-                            });
-                            item.delete();
-                            final id = Localstore.instance
-                                .collection("notes")
-                                .doc()
-                                .id;
-                            // print(item.id);
-                            final item1 = store.Notes(
+                              var obj = allNotes.items3[item.id];
+                              if (obj != null) {
+                                obj.delete();
+                              }
+                              bool bloop = item.done;
+                              setState(() {
+                                int b = searchResults
+                                    .indexWhere((val) => val.id == item.id);
+                                if (b != -1) {
+                                  searchResults.removeAt(b);
+                                }
+                                int c = uncompleted
+                                    .indexWhere((val) => val.id == item.id);
+                                if (c != -1) {
+                                  uncompleted.removeAt(c);
+                                }
+                                allNotes.items.remove(item.id);
+                                int d = table.items1.indexWhere(
+                                    (element) => element.id == item.id);
+                                if (d != -1) {
+                                  table.items1.removeAt(d);
+                                }
+
+                                notes.removeWhere(
+                                    (element) => element == item.id);
+                                _items.remove(item.id);
+                              });
+                              item.delete();
+                              final id = Localstore.instance
+                                  .collection("notes")
+                                  .doc()
+                                  .id;
+                              // print(item.id);
+                              final item1 = store.Notes(
+                                  id: id,
+                                  title: title,
+                                  data: body,
+                                  date: selectDate,
+                                  time: daySelect,
+                                  priority: priority,
+                                  color: colPick.value.toString(),
+                                  done: bloop);
+                              item1.save();
+
+                              Notifs notif1 = Notifs(
                                 id: id,
-                                title: title,
-                                data: body,
-                                date: selectDate,
-                                time: daySelect,
-                                priority: priority,
-                                color: colPick.value.toString(),
-                                done: bloop);
-                            item1.save();
-
-                            Notifs notif1 = Notifs(
-                              id: id,
-                              id2: count.channelCounter.toString(),
-                            );
-                            if (obj != null) {
-                              if (obj.option == "Daily") {
-                                Repeat reeeeee =
-                                    Repeat(id: id, option: "Daily");
-                                reeeeee.save();
+                                id2: count.channelCounter.toString(),
+                              );
+                              if (obj != null) {
+                                if (obj.option == "Daily") {
+                                  Repeat reeeeee =
+                                      Repeat(id: id, option: "Daily");
+                                  reeeeee.save();
+                                }
                               }
-                            }
-                            notif1.save();
-                            setState(() {
-                              searchResults.add(item1);
-                              uncompleted.add(item1);
-                              allNotes.items.putIfAbsent(id, () => item1);
-                              table.items1.add(item1);
-                              _items.putIfAbsent(item1.id, () => item1);
-                            });
+                              notif1.save();
+                              setState(() {
+                                searchResults.add(item1);
+                                uncompleted.add(item1);
+                                allNotes.items.putIfAbsent(id, () => item1);
+                                table.items1.add(item1);
+                                _items.putIfAbsent(item1.id, () => item1);
+                              });
 
-                            // Navigator.pop(context);
-                            bool b = true;
-                            Navigator.pop(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Home2(boo: b)));
-                          },
-                          icon: const Icon(
-                            FontAwesomeIcons.arrowUp,
-                            color: Colors.white,
-                            size: 20,
+                              // Navigator.pop(context);
+                              bool b = true;
+                              Navigator.pop(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Home2(boo: b)));
+                            },
+                            icon: const Icon(
+                              FontAwesomeIcons.arrowUp,
+                              color: Colors.white,
+                              size: 20,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  )),
+                      ],
+                    )),
+                  ),
                 ),
-              ),
-            ));
+              ));
+    } else {
+      return Container();
+    }
   }
 
   @override

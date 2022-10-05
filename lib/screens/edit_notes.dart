@@ -59,7 +59,7 @@ class _EditNoteState extends State<EditNote> {
   String title = "";
   String body = "";
   String daySelect = "";
-  String repeat = "One-Time";
+  String repeat = "Once";
   Color selectColor = const Color.fromARGB(255, 180, 175, 174);
   String priority = "high";
   @override
@@ -111,11 +111,13 @@ class _EditNoteState extends State<EditNote> {
   }
 
   Widget eventDate() {
-    DateTime date = DateTime.now();
     return TextFormField(
       controller: dCont..text = selectDate,
       readOnly: true,
       decoration: InputDecoration(
+          isDense: true,
+          contentPadding:
+              EdgeInsets.only(left: -8.0, bottom: 8.0, top: 14.0, right: -8.0),
           border: InputBorder.none,
           prefixIcon: IconButton(
               onPressed: () async {
@@ -134,7 +136,8 @@ class _EditNoteState extends State<EditNote> {
               },
               icon: Icon(
                 FontAwesomeIcons.calendar,
-                color: Colors.grey[500],
+                color: Colors.blue[700],
+                size: 20,
               ))),
     );
     // return ListTile(
@@ -162,6 +165,8 @@ class _EditNoteState extends State<EditNote> {
       controller: cCont..text = daySelect,
       readOnly: true,
       decoration: InputDecoration(
+          contentPadding:
+              EdgeInsets.only(left: -8.0, bottom: 8.0, top: 14.0, right: -8.0),
           border: InputBorder.none,
           prefixIcon: IconButton(
               onPressed: () async {
@@ -176,7 +181,8 @@ class _EditNoteState extends State<EditNote> {
               },
               icon: Icon(
                 FontAwesomeIcons.clock,
-                color: Colors.grey[500],
+                color: Colors.blue[700],
+                size: 20,
               ))),
     );
     // return ListTile(
@@ -611,43 +617,127 @@ class _EditNoteState extends State<EditNote> {
   }
 
   Widget eventRepeat1() {
-    return PopupMenuButton<Select>(
-        icon: Text(eCont.text),
-        onSelected: (value) {
-          if (value == Select.daily) {
-            setState(() {
-              repeat = "Daily";
-            });
-          } else if (value == Select.monthly) {
-            setState(() {
-              repeat = "Monthly";
-            });
-          } else if (value == Select.weekly) {
-            setState(() {
-              repeat = "Weekly";
-            });
-          } else if (value == Select.yearly) {
-            setState(() {
-              repeat = "Yearly";
-            });
-          } else if (value == Select.oneTime) {
-            setState(() {
-              repeat = "One-Time";
-            });
-          }
-        },
-        itemBuilder: (BuildContext context) => <PopupMenuEntry<Select>>[
-              const PopupMenuItem<Select>(
-                  value: Select.oneTime, child: Text("One-Time")),
-              const PopupMenuItem<Select>(
-                  value: Select.daily, child: Text("Daily")),
-              const PopupMenuItem<Select>(
-                  value: Select.weekly, child: Text("Weekly")),
-              const PopupMenuItem<Select>(
-                  value: Select.monthly, child: Text("Monthly")),
-              const PopupMenuItem<Select>(
-                  value: Select.yearly, child: Text("Yearly")),
-            ]);
+    return TextFormField(
+        controller: eCont..text,
+        readOnly: true,
+        decoration: InputDecoration(
+            isDense: true,
+            contentPadding: const EdgeInsets.only(
+                left: -8.0, bottom: 8.0, top: 14.0, right: -8.0),
+            border: InputBorder.none,
+            prefixIcon: IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return SimpleDialog(
+                          title: Text('Select an Option'),
+                          children: <Widget>[
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Once";
+                                Select.oneTime;
+                                eCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Once',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Daily";
+                                Select.daily;
+                                eCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Daily',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Weekly";
+                                Select.weekly;
+                                eCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Weekly',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Monthly";
+                                Select.monthly;
+                                eCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Monthly',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Yearly";
+                                Select.yearly;
+                                eCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Yearly',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ],
+                        );
+                      });
+                },
+                icon: Icon(
+                  FontAwesomeIcons.repeat,
+                  color: Colors.blue[700],
+                ))));
+    // return PopupMenuButton<Select>(
+    //     icon: Text(eCont.text),
+    //     onSelected: (value) {
+    //       if (value == Select.daily) {
+    //         setState(() {
+    //           repeat = "Daily";
+    //         });
+    //       } else if (value == Select.monthly) {
+    //         setState(() {
+    //           repeat = "Monthly";
+    //         });
+    //       } else if (value == Select.weekly) {
+    //         setState(() {
+    //           repeat = "Weekly";
+    //         });
+    //       } else if (value == Select.yearly) {
+    //         setState(() {
+    //           repeat = "Yearly";
+    //         });
+    //       } else if (value == Select.oneTime) {
+    //         setState(() {
+    //           repeat = "One-Time";
+    //         });
+    //       }
+    //     },
+    //     itemBuilder: (BuildContext context) => <PopupMenuEntry<Select>>[
+    //           const PopupMenuItem<Select>(
+    //               value: Select.oneTime, child: Text("One-Time")),
+    //           const PopupMenuItem<Select>(
+    //               value: Select.daily, child: Text("Daily")),
+    //           const PopupMenuItem<Select>(
+    //               value: Select.weekly, child: Text("Weekly")),
+    //           const PopupMenuItem<Select>(
+    //               value: Select.monthly, child: Text("Monthly")),
+    //           const PopupMenuItem<Select>(
+    //               value: Select.yearly, child: Text("Yearly")),
+    //         ]);
   }
 
   @override
@@ -680,7 +770,7 @@ class _EditNoteState extends State<EditNote> {
       daySelect = item.time;
     }
     var obj = allNotes.items3[item.id];
-    if (repeat == "One-Time") {
+    if (repeat == "Once") {
       if (obj != null) {
         repeat = obj.option;
       }
@@ -713,7 +803,7 @@ class _EditNoteState extends State<EditNote> {
                       Row(children: [
                         Expanded(child: eventDate()),
                         Expanded(child: eventTime()),
-                        Expanded(child: eventRepeat())
+                        Expanded(child: eventRepeat1())
                       ]),
                       eventColor1(),
                       SizedBox(
