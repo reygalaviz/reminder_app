@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -41,15 +40,16 @@ class AddNote extends StatefulWidget {
 
 class _AddNoteState extends State<AddNote> {
   DateFormat format = DateFormat("yyyy-MM-dd");
+  final rCont = TextEditingController();
   final dCont = TextEditingController();
   final cCont = TextEditingController();
   Color colPick = Colors.white;
-  String repeat = "One-Time";
+  String repeat = "Once";
   String title = '';
   String body = '';
   String selectDate = "";
   String daySelect = "";
-
+  DateFormat formatter = DateFormat.MMMEd();
   late DateTime scheduler = DateTime.now();
   late DateTime scheduler2 = DateTime.now();
   final id = Localstore.instance.collection("notes").doc().id;
@@ -471,14 +471,27 @@ class _AddNoteState extends State<AddNote> {
 
   Widget eventDate() {
     return TextFormField(
+      // enableInteractiveSelection: false,
       controller: dCont..text = selectDate,
       readOnly: true,
       decoration: InputDecoration(
-          contentPadding: EdgeInsetsDirectional.all(20),
+          isDense: true,
+          contentPadding:
+              EdgeInsets.only(left: -8.0, bottom: 8.0, top: 14.0, right: -8.0),
           border: InputBorder.none,
           prefixIcon: IconButton(
               onPressed: () async {
                 final DateTime? dateT = await showDatePicker(
+                    builder: ((context, child) {
+                      return Theme(
+                          data: Theme.of(context).copyWith(
+                            colorScheme: ColorScheme.light(
+                              primary: Colors.blueAccent,
+                              onSurface: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          child: child!);
+                    }),
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime.now(),
@@ -492,9 +505,10 @@ class _AddNoteState extends State<AddNote> {
 
                 dCont.text = compForm;
               },
-              icon: const Icon(
+              icon: Icon(
                 FontAwesomeIcons.calendar,
-                color: Color.fromARGB(255, 110, 110, 110),
+                color: Colors.blue[700],
+                size: 20,
               ))),
     );
     // return GestureDetector(
@@ -577,11 +591,25 @@ class _AddNoteState extends State<AddNote> {
         enableSuggestions: false,
         controller: cCont..text = daySelect,
         decoration: InputDecoration(
+          contentPadding:
+              EdgeInsets.only(left: -8.0, bottom: 8.0, top: 14.0, right: -8.0),
           border: InputBorder.none,
           prefixIcon: IconButton(
             onPressed: () async {
               TimeOfDay? timeT = await showTimePicker(
-                  context: context, initialTime: TimeOfDay.now());
+                  builder: ((context, child) {
+                    return Theme(
+                        data: Theme.of(context).copyWith(
+                          colorScheme: ColorScheme.light(
+                            primary: Colors.blueAccent,
+                            surface: Theme.of(context).backgroundColor,
+                            onSurface: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                        child: child!);
+                  }),
+                  context: context,
+                  initialTime: TimeOfDay.now());
               if (!mounted) return;
               String timeString = timeT!.format(context);
               daySelect = timeString;
@@ -634,7 +662,7 @@ class _AddNoteState extends State<AddNote> {
             icon: Icon(
               FontAwesomeIcons.clock,
               size: 20,
-              color: Colors.grey[500],
+              color: Colors.blue[700],
             ),
           ),
         ));
@@ -650,7 +678,7 @@ class _AddNoteState extends State<AddNote> {
           onPressed: () {
             count.channelCounter++;
 
-            if (repeat == "One-Time") {
+            if (repeat == "Once") {
               Notifs notif = Notifs(
                 id: id,
                 id2: count.channelCounter.toString(),
@@ -920,33 +948,118 @@ class _AddNoteState extends State<AddNote> {
   }
 
   Widget eventRepeat() {
-    return PopupMenuButton<Select>(
-        icon: Text(repeat),
-        onSelected: (value) {
-          if (value == Select.daily) {
-            repeat = "Daily";
-          } else if (value == Select.monthly) {
-            repeat = "Monthly";
-          } else if (value == Select.weekly) {
-            repeat = "Weekly";
-          } else if (value == Select.yearly) {
-            repeat = "Yearly";
-          } else if (value == Select.oneTime) {
-            repeat = "One-Time";
-          }
-        },
-        itemBuilder: (BuildContext context) => <PopupMenuEntry<Select>>[
-              const PopupMenuItem<Select>(
-                  value: Select.oneTime, child: Text("One-Time")),
-              const PopupMenuItem<Select>(
-                  value: Select.daily, child: Text("Daily")),
-              const PopupMenuItem<Select>(
-                  value: Select.weekly, child: Text("Weekly")),
-              const PopupMenuItem<Select>(
-                  value: Select.monthly, child: Text("Monthly")),
-              const PopupMenuItem<Select>(
-                  value: Select.yearly, child: Text("Yearly")),
-            ]);
+    return TextFormField(
+        controller: rCont..text,
+        readOnly: true,
+        decoration: InputDecoration(
+            isDense: true,
+            contentPadding: const EdgeInsets.only(
+                left: -8.0, bottom: 8.0, top: 14.0, right: -8.0),
+            border: InputBorder.none,
+            prefixIcon: IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return SimpleDialog(
+                          title: Text('Select an Option'),
+                          children: <Widget>[
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Once";
+                                Select.oneTime;
+                                rCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Once',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Daily";
+                                Select.daily;
+                                rCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Daily',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Weekly";
+                                Select.weekly;
+                                rCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Weekly',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Monthly";
+                                Select.monthly;
+                                rCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Monthly',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Yearly";
+                                Select.yearly;
+                                rCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Yearly',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ],
+                        );
+                      });
+                },
+                icon: Icon(
+                  FontAwesomeIcons.repeat,
+                  color: Colors.blue[700],
+                ))));
+
+    // return PopupMenuButton<Select>(
+    //     icon: Text(repeat),
+    //     onSelected: (value) {
+    //       if (value == Select.daily) {
+    //         repeat = "Daily";
+    //       } else if (value == Select.monthly) {
+    //         repeat = "Monthly";
+    //       } else if (value == Select.weekly) {
+    //         repeat = "Weekly";
+    //       } else if (value == Select.yearly) {
+    //         repeat = "Yearly";
+    //       } else if (value == Select.oneTime) {
+    //         repeat = "One-Time";
+    //       }
+    //     },
+    //     itemBuilder: (BuildContext context) => <PopupMenuEntry<Select>>[
+    //           const PopupMenuItem<Select>(
+    //               value: Select.oneTime, child: Text("One-Time")),
+    //           const PopupMenuItem<Select>(
+    //               value: Select.daily, child: Text("Daily")),
+    //           const PopupMenuItem<Select>(
+    //               value: Select.weekly, child: Text("Weekly")),
+    //           const PopupMenuItem<Select>(
+    //               value: Select.monthly, child: Text("Monthly")),
+    //           const PopupMenuItem<Select>(
+    //               value: Select.yearly, child: Text("Yearly")),
+    //         ]);
   }
 
   @override
@@ -975,6 +1088,7 @@ class _AddNoteState extends State<AddNote> {
             child: Form(
               child: Column(children: [
                 TextFormField(
+                  cursorColor: Theme.of(context).primaryColor,
                   maxLines: 2,
                   autocorrect: false,
                   enableSuggestions: false,
@@ -987,6 +1101,7 @@ class _AddNoteState extends State<AddNote> {
                   autofocus: true,
                 ),
                 TextFormField(
+                  cursorColor: Theme.of(context).primaryColor,
                   maxLines: 3,
                   autocorrect: false,
                   enableSuggestions: false,
@@ -999,9 +1114,7 @@ class _AddNoteState extends State<AddNote> {
                   autofocus: false,
                 ),
                 Row(children: [
-                  Expanded(
-                    child: eventDate(),
-                  ),
+                  Expanded(child: eventDate()),
                   Expanded(child: eventTime()),
                   Expanded(child: eventRepeat())
                 ]),

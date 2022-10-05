@@ -42,6 +42,7 @@ class ThemeModel extends ChangeNotifier {
   static ThemeData get lightTheme {
     setting.col = Colors.white;
     return ThemeData(
+      iconTheme: IconThemeData(color: Colors.grey[700]),
       colorScheme: const ColorScheme.light(),
       primaryColor: Colors.black,
       backgroundColor: Colors.white,
@@ -59,6 +60,7 @@ class ThemeModel extends ChangeNotifier {
   static ThemeData get darkTheme {
     setting.col = const Color.fromARGB(255, 48, 48, 48);
     return ThemeData(
+      iconTheme: IconThemeData(color: Colors.grey[200]),
       colorScheme: const ColorScheme.dark(),
       primaryColor: Colors.white,
       backgroundColor: Colors.grey[900],

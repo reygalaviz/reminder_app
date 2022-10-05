@@ -61,12 +61,22 @@ class MySearchDelegate extends SearchDelegate {
           child: ListTile(
             title: Text(suggestion.title),
             onTap: () {
-              close(context, suggestions[index]);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => EditNote(id: suggestion.id)));
+              // close(context, suggestions[index]);
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => EditNote(id: suggestion.id)));
 
+              showModalBottomSheet(
+                  enableDrag: true,
+                  isScrollControlled: true,
+                  context: context,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(20.0))),
+                  builder: (context) {
+                    return EditNote(id: suggestion.id);
+                  });
               showResults(context);
             },
           ),
