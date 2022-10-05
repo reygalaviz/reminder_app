@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:reminder_app/models/note_data_store.dart' as store;
 import 'package:localstore/localstore.dart';
+import 'package:reminder_app/screens/edit_notes.dart';
 import 'package:reminder_app/screens/home.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
@@ -45,6 +46,7 @@ class _EditNoteState extends State<EditNote> {
   StreamSubscription<Map<String, dynamic>>? _subscription;
   // var item;
   DateFormat format = DateFormat("yyyy-MM-dd");
+  final eCont = TextEditingController();
   final dCont = TextEditingController();
   final cCont = TextEditingController();
   Color colPick = const Color.fromARGB(255, 255, 254, 254);
@@ -57,6 +59,7 @@ class _EditNoteState extends State<EditNote> {
   String priority = "high";
   String repeat = "One-Time";
   String be = "beak";
+  String repeat = "Once";
   @override
   void initState() {
     super.initState();
@@ -117,6 +120,9 @@ class _EditNoteState extends State<EditNote> {
       controller: dCont..text = selectDate,
       readOnly: true,
       decoration: InputDecoration(
+          isDense: true,
+          contentPadding:
+              EdgeInsets.only(left: -8.0, bottom: 8.0, top: 14.0, right: -8.0),
           border: InputBorder.none,
           prefixIcon: IconButton(
               onPressed: () async {
@@ -135,7 +141,8 @@ class _EditNoteState extends State<EditNote> {
               },
               icon: Icon(
                 FontAwesomeIcons.calendar,
-                color: Colors.grey[500],
+                color: Colors.blue[700],
+                size: 20,
               ))),
     );
     // return ListTile(
@@ -163,6 +170,8 @@ class _EditNoteState extends State<EditNote> {
       controller: cCont..text = daySelect,
       readOnly: true,
       decoration: InputDecoration(
+          contentPadding:
+              EdgeInsets.only(left: -8.0, bottom: 8.0, top: 14.0, right: -8.0),
           border: InputBorder.none,
           prefixIcon: IconButton(
               onPressed: () async {
@@ -177,7 +186,8 @@ class _EditNoteState extends State<EditNote> {
               },
               icon: Icon(
                 FontAwesomeIcons.clock,
-                color: Colors.grey[500],
+                color: Colors.blue[700],
+                size: 20,
               ))),
     );
     // return ListTile(
@@ -582,83 +592,146 @@ class _EditNoteState extends State<EditNote> {
   }
 
   Widget eventRepeat() {
-    return PopupMenuButton<Select>(
-        icon: Text(repeat),
-        onSelected: (value) {
-          if (value == Select.daily) {
-            repeat = "Daily";
-          } else if (value == Select.monthly) {
-            repeat = "Monthly";
-          } else if (value == Select.weekly) {
-            repeat = "Weekly";
-          } else if (value == Select.yearly) {
-            repeat = "Yearly";
-          } else if (value == Select.oneTime) {
-            repeat = "One-Time";
-          }
-        },
-        itemBuilder: (BuildContext context) => <PopupMenuEntry<Select>>[
-              const PopupMenuItem<Select>(
-                  value: Select.oneTime, child: Text("One-Time")),
-              const PopupMenuItem<Select>(
-                  value: Select.daily, child: Text("Daily")),
-              const PopupMenuItem<Select>(
-                  value: Select.weekly, child: Text("Weekly")),
-              const PopupMenuItem<Select>(
-                  value: Select.monthly, child: Text("Monthly")),
-              const PopupMenuItem<Select>(
-                  value: Select.yearly, child: Text("Yearly")),
-            ]);
+
+    return TextFormField(
+        controller: eCont,
+        readOnly: true,
+        decoration: InputDecoration(
+            isDense: true,
+            contentPadding: const EdgeInsets.only(
+                left: -8.0, bottom: 8.0, top: 14.0, right: -8.0),
+            border: InputBorder.none,
+            prefixIcon: IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return SimpleDialog(
+                          title: Text('Select an Option'),
+                          children: <Widget>[
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Once";
+                                Select.oneTime;
+                                eCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Once',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Daily";
+                                Select.daily;
+                                eCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Daily',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Weekly";
+                                Select.weekly;
+                                eCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Weekly',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Monthly";
+                                Select.monthly;
+                                eCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Monthly',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                repeat = "Yearly";
+                                Select.yearly;
+                                eCont.text = repeat;
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Yearly',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ],
+                        );
+                      });
+                },
+                icon: Icon(
+                  FontAwesomeIcons.repeat,
+                  color: Colors.blue[700],
+                ))));
+
   }
 
   @override
   Widget build(BuildContext context) {
-    var item = _items[widget.id]!;
-    if (selectDate == "") {
-      selectDate = item.date;
-    }
-    if (title == "") {
-      title = item.title;
-    }
-    if (body == "") {
-      body = item.data;
-    }
-    if (daySelect == "") {
-      daySelect = item.time;
-    }
+    if (_items[widget.id] != null) {
+      var item = _items[widget.id]!;
+      if (selectDate == "") {
+        selectDate = item.date;
+      }
+      if (title == "") {
+        title = item.title;
+      }
+      if (body == "") {
+        body = item.data;
+      }
+      if (daySelect == "") {
+        daySelect = item.time;
+      }
 
-    //DateTime? dateT = DateTime.now();
-    dCont.text = selectDate;
+      //DateTime? dateT = DateTime.now();
+      dCont.text = selectDate;
 
-    cCont.text = daySelect;
-    //TimeOfDay timer = TimeOfDay.fromDateTime(formatter.parse(daySelect));
-    if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
-      colPick = Color(int.parse(item.color));
-    }
-    if (selectColor == const Color.fromARGB(255, 180, 175, 174)) {
-      selectColor = Color(int.parse(item.color));
-    }
-    return LayoutBuilder(
-        builder: (context, constraints) => SingleChildScrollView(
-            child: Padding(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
+
+      cCont.text = daySelect;
+      //TimeOfDay timer = TimeOfDay.fromDateTime(formatter.parse(daySelect));
+      if (colPick == const Color.fromARGB(255, 255, 254, 254)) {
+        colPick = Color(int.parse(item.color));
+      }
+      if (selectColor == const Color.fromARGB(255, 180, 175, 174)) {
+        selectColor = Color(int.parse(item.color));
+      }
+      return LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
                 child: Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Padding(
                     padding: EdgeInsets.all(constraints.maxWidth * .04),
                     child: Form(
-                        child: Column(children: [
-                      eventTitle(),
-                      eventBody(),
-                      Row(children: [
-                        Expanded(child: eventDate()),
-                        Expanded(child: eventTime()),
-                        Expanded(child: eventRepeat())
-                      ]),
-                      eventColor1(),
-                      SizedBox(
-                        height: constraints.maxHeight * .04,
-                      ),
-                      Container(
+                        child: Column(
+                      children: [
+                        eventTitle(),
+                        eventBody(),
+                        Row(children: [
+                          Expanded(child: eventDate()),
+                          Expanded(child: eventTime()),
+                          Expanded(child: eventRepeat())
+                        ]),
+                        eventColor1(),
+                        SizedBox(
+                          height: constraints.maxHeight * .04,
+                        ),
+                        Container(
+
                           width: double.infinity,
                           decoration: BoxDecoration(
                               color: Colors.blue[700],
@@ -689,11 +762,13 @@ class _EditNoteState extends State<EditNote> {
                               }
 
                               var obj = allNotes.items3[item.id];
+
                               if (repeat == "One-Time") {
                                 if (obj != null) {
                                   repeat = obj.option;
                                 }
                               }
+
                               if (obj != null) {
                                 obj.delete();
                               }
@@ -741,13 +816,23 @@ class _EditNoteState extends State<EditNote> {
                                 id: id,
                                 id2: count.channelCounter.toString(),
                               );
+
+                              if (obj != null) {
+                                if (obj.option == "Daily") {
+                                  Repeat reeeeee =
+                                      Repeat(id: id, option: "Daily");
+                                  reeeeee.save();
+                                }
+
                               if (repeat != "One-Time") {
                                 Repeat reeeeee = Repeat(id: id, option: repeat);
                                 reeeeee.save();
+
                               }
                               notif1.save();
                               setState(() {
                                 searchResults.add(item1);
+
                                 if (item.done == true) {
                                   comp.completed.add(item1);
                                 } else {
@@ -779,40 +864,25 @@ class _EditNoteState extends State<EditNote> {
                                             boo: true,
                                           )));
                               // Navigator.pop(context);
+
                             },
                             icon: const Icon(
                               FontAwesomeIcons.arrowUp,
                               color: Colors.white,
                               size: 20,
                             ),
-                          ))
-                    ]))))));
-    // body: LayoutBuilder(
-    //     builder: (context, constraints) => Form(
-    //           child: SingleChildScrollView(
-    //             child: Column(
-    //               children: [
-    //                 Padding(
-    //                   padding: const EdgeInsets.all(10.0),
-    //                   child: SizedBox(
-    //                     height: constraints.maxHeight * 1,
-    //                     child: ListView(
-    //                       children: <Widget>[
-    //                         ListTile(title: eventTitle()),
-    //                         ListTile(title: eventBody()),
-    //                         eventDate(),
-    //                         eventTime(),
-    //                         eventColor(),
-    //                         eventRepeat(),
-    //                       ],
-    //                     ),
-    //                   ),
-    //                 ),
-    //               ],
-    //             )),
-    // ),
-    // ),
-    // ));
+
+                          ),
+                        ),
+                      ],
+                    )),
+                  ),
+                ),
+              ));
+    } else {
+      return Container();
+    }
+
   }
 
   @override

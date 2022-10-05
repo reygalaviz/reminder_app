@@ -801,95 +801,97 @@ class Table_CalendarState extends State<Table_Calendar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            color: Theme.of(context).backgroundColor,
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              calendar(),
-              const SizedBox(
-                height: 8.0,
-              ),
-              eventTitle(),
-              const Divider(
-                height: 15,
-                thickness: 2.0,
-                indent: 10.0,
-                endIndent: 10.0,
-              ),
-              Expanded(
-                  child: ListView.builder(
-                      itemCount: items1.length,
-                      itemBuilder: (context, index) {
-                        var item = items1[index];
+        resizeToAvoidBottomInset: false,
+        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          calendar(),
+          const SizedBox(
+            height: 8.0,
+          ),
+          eventTitle(),
+          const Divider(
+            height: 15,
+            thickness: 2.0,
+            indent: 10.0,
+            endIndent: 10.0,
+          ),
+          Expanded(
+              child: ListView.builder(
+                  itemCount: items1.length,
+                  itemBuilder: (context, index) {
+                    var item = items1[index];
 
-                        DateFormat format = DateFormat("yyyy-MM-dd");
-                        String day2 = format.format(_selectedDay!);
-                        don = item.done;
-                        String id5 = item.id;
-                        if (item.date == day2 && item.done == false) {
-                          return Card(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Slidable(
-                                endActionPane: ActionPane(
-                                  motion: const ScrollMotion(),
-                                  children: [
-                                    SlidableAction(
-                                      onPressed: (context) async {
-                                        await _showDialog(item);
-                                      },
-                                      borderRadius: const BorderRadius.only(
-                                          topRight: Radius.circular(10.0),
-                                          bottomRight: Radius.circular(10.0)),
-                                      backgroundColor: Colors.red,
-                                      foregroundColor: Colors.white,
-                                      icon: FontAwesomeIcons.trash,
-                                    ),
-                                  ],
-                                ),
-                                child: ListTile(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  title: Text(
-                                    item.title,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black),
-                                  ),
-                                  subtitle: Text(
-                                    "${item.time}     ${item.data}",
-                                    maxLines: 2,
-                                    style: const TextStyle(color: Colors.black),
-                                  ),
-                                  tileColor: invisColor(item),
-                                  onTap: () {
-                                    id5 = item.id;
+                    DateFormat format = DateFormat("yyyy-MM-dd");
+                    String day2 = format.format(_selectedDay!);
+                    don = item.done;
+                    String id5 = item.id;
+                    if (item.date == day2 && item.done == false) {
+                      return Slidable(
+                        endActionPane: ActionPane(
+                          dragDismissible: true,
+                          extentRatio: .3,
+                          motion: const StretchMotion(),
+                          children: [
+                            SlidableAction(
+                              onPressed: (context) async {
+                                await _showDialog(item);
+                              },
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10.0)),
+                              backgroundColor: Colors.red,
+                              foregroundColor: Colors.white,
+                              icon: FontAwesomeIcons.trash,
+                            ),
+                          ],
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color:
+                                  Color(int.parse(item.color)).withOpacity(1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          child: ListTile(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            title: Text(
+                              item.title,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
+                            subtitle: Text(
+                              "${item.time}     ${item.data}",
+                              maxLines: 2,
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                            // tileColor: invisColor(item),
+                            onTap: () {
+                              id5 = item.id;
 
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) =>
-                                    //             EditNote(id: id5)));
-                                    showModalBottomSheet(
-                                        enableDrag: true,
-                                        isScrollControlled: true,
-                                        context: context,
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.vertical(
-                                                top: Radius.circular(20.0))),
-                                        builder: (context) {
-                                          return EditNote(id: id5);
-                                        });
-                                  },
-                                  trailing: Wrap(children: <Widget>[
-                                    CheckBoxNote(id: id5)
-                                  ]),
-                                ),
-                              ));
-                        } else {
-                          return Container();
-                        }
-                      }))
-            ])));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             EditNote(id: id5)));
+                              showModalBottomSheet(
+                                  enableDrag: true,
+                                  isScrollControlled: true,
+                                  context: context,
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(20.0))),
+                                  builder: (context) {
+                                    return EditNote(id: id5);
+                                  });
+                            },
+                            trailing:
+                                Wrap(children: <Widget>[CheckBoxNote(id: id5)]),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  }))
+        ]));
   }
 }
