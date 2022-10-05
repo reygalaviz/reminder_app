@@ -589,7 +589,6 @@ class _EditNoteState extends State<EditNote> {
   }
 
   Widget eventRepeat() {
-
     return TextFormField(
         controller: eCont,
         readOnly: true,
@@ -674,7 +673,6 @@ class _EditNoteState extends State<EditNote> {
                   FontAwesomeIcons.repeat,
                   color: Colors.blue[700],
                 ))));
-
   }
 
   @override
@@ -696,7 +694,6 @@ class _EditNoteState extends State<EditNote> {
 
       //DateTime? dateT = DateTime.now();
       dCont.text = selectDate;
-
 
       cCont.text = daySelect;
       //TimeOfDay timer = TimeOfDay.fromDateTime(formatter.parse(daySelect));
@@ -728,148 +725,146 @@ class _EditNoteState extends State<EditNote> {
                           height: constraints.maxHeight * .04,
                         ),
                         Container(
-
                           width: double.infinity,
                           decoration: BoxDecoration(
                               color: Colors.blue[700],
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20))),
                           child: IconButton(
-                            onPressed: () {
-                              if (_notifs[widget.id] != null) {
-                                var ter = _notifs[widget.id];
-                                if (ter != null) {
-                                  String tre = ter.id2;
-                                  NotificationService().deleteNotif(tre);
+                              onPressed: () {
+                                if (_notifs[widget.id] != null) {
+                                  var ter = _notifs[widget.id];
+                                  if (ter != null) {
+                                    String tre = ter.id2;
+                                    NotificationService().deleteNotif(tre);
+                                  }
                                 }
-                              }
-                              if (count.notifChoice == true) {
-                                if (scheduler2.isAfter(DateTime.now())) {
-                                  NotificationService().displayScheduleNotif(
-                                      body: body,
-                                      channel: count.channelCounter,
-                                      title: title,
-                                      date: scheduler2);
-                                } else {
-                                  NotificationService().displayNotification(
-                                      body: body,
-                                      channel: count.channelCounter,
-                                      title: title);
+                                if (count.notifChoice == true) {
+                                  if (scheduler2.isAfter(DateTime.now())) {
+                                    NotificationService().displayScheduleNotif(
+                                        body: body,
+                                        channel: count.channelCounter,
+                                        title: title,
+                                        date: scheduler2);
+                                  } else {
+                                    NotificationService().displayNotification(
+                                        body: body,
+                                        channel: count.channelCounter,
+                                        title: title);
+                                  }
                                 }
-                              }
 
-                              var obj = allNotes.items3[item.id];
+                                var obj = allNotes.items3[item.id];
 
-                              if (repeat == "One-Time") {
+                                if (repeat == "One-Time") {
+                                  if (obj != null) {
+                                    repeat = obj.option;
+                                  }
+                                }
+
                                 if (obj != null) {
-                                  repeat = obj.option;
+                                  obj.delete();
                                 }
-                              }
+                                bool bloop = item.done;
+                                setState(() {
+                                  int b = searchResults
+                                      .indexWhere((val) => val.id == item.id);
+                                  if (b != -1) {
+                                    searchResults.removeAt(b);
+                                  }
+                                  int c = uncompleted
+                                      .indexWhere((val) => val.id == item.id);
+                                  if (c != -1) {
+                                    uncompleted.removeAt(c);
+                                  }
+                                  allNotes.items.remove(item.id);
+                                  int d = table.items1.indexWhere(
+                                      (element) => element.id == item.id);
+                                  if (d != -1) {
+                                    table.items1.removeAt(d);
+                                  }
 
-                              if (obj != null) {
-                                obj.delete();
-                              }
-                              bool bloop = item.done;
-                              setState(() {
-                                int b = searchResults
-                                    .indexWhere((val) => val.id == item.id);
-                                if (b != -1) {
-                                  searchResults.removeAt(b);
-                                }
-                                int c = uncompleted
-                                    .indexWhere((val) => val.id == item.id);
-                                if (c != -1) {
-                                  uncompleted.removeAt(c);
-                                }
-                                allNotes.items.remove(item.id);
-                                int d = table.items1.indexWhere(
-                                    (element) => element.id == item.id);
-                                if (d != -1) {
-                                  table.items1.removeAt(d);
-                                }
+                                  notes.removeWhere(
+                                      (element) => element == item.id);
+                                  _items.remove(item.id);
+                                });
+                                item.delete();
+                                final id = Localstore.instance
+                                    .collection("notes")
+                                    .doc()
+                                    .id;
+                                // print(item.id);
+                                final item1 = store.Notes(
+                                    id: id,
+                                    title: title,
+                                    data: body,
+                                    date: selectDate,
+                                    time: daySelect,
+                                    priority: priority,
+                                    color: colPick.value.toString(),
+                                    done: bloop);
+                                item1.save();
 
-                                notes.removeWhere(
-                                    (element) => element == item.id);
-                                _items.remove(item.id);
-                              });
-                              item.delete();
-                              final id = Localstore.instance
-                                  .collection("notes")
-                                  .doc()
-                                  .id;
-                              // print(item.id);
-                              final item1 = store.Notes(
+                                Notifs notif1 = Notifs(
                                   id: id,
-                                  title: title,
-                                  data: body,
-                                  date: selectDate,
-                                  time: daySelect,
-                                  priority: priority,
-                                  color: colPick.value.toString(),
-                                  done: bloop);
-                              item1.save();
+                                  id2: count.channelCounter.toString(),
+                                );
 
-                              Notifs notif1 = Notifs(
-                                id: id,
-                                id2: count.channelCounter.toString(),
-                              );
+                                if (obj != null) {
+                                  if (obj.option == "Daily") {
+                                    Repeat reeeeee =
+                                        Repeat(id: id, option: "Daily");
+                                    reeeeee.save();
+                                  }
 
-                              if (obj != null) {
-                                if (obj.option == "Daily") {
-                                  Repeat reeeeee =
-                                      Repeat(id: id, option: "Daily");
-                                  reeeeee.save();
+                                  if (repeat != "One-Time") {
+                                    Repeat reeeeee =
+                                        Repeat(id: id, option: repeat);
+                                    reeeeee.save();
+                                  }
+                                  notif1.save();
+                                  setState(() {
+                                    searchResults.add(item1);
+
+                                    if (item.done == true) {
+                                      comp.completed.add(item1);
+                                    } else {
+                                      uncompleted.add(item1);
+                                    }
+                                    allNotes.items.putIfAbsent(id, () => item1);
+                                    table.items1.add(item1);
+
+                                    _items.putIfAbsent(item1.id, () => item1);
+                                  });
+                                  // table.items1.clear();
+                                  // if (scheduler.day != DateTime.now().day ||
+                                  //     scheduler.month != DateTime.now().month) {
+                                  //   if (table.done.indexWhere(
+                                  //           (element) => (element == scheduler)) ==
+                                  //       -1) {
+                                  //     table.done.add(scheduler);
+                                  //   }
+                                  // }
+
+                                  // Navigator.pop(context);
+
+                                  allNotes.ee.value = !allNotes.ee.value;
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Home2(
+                                                key: UniqueKey(),
+                                                boo: true,
+                                              )));
+                                  // Navigator.pop(context);
+
                                 }
-
-                              if (repeat != "One-Time") {
-                                Repeat reeeeee = Repeat(id: id, option: repeat);
-                                reeeeee.save();
-
-                              }
-                              notif1.save();
-                              setState(() {
-                                searchResults.add(item1);
-
-                                if (item.done == true) {
-                                  comp.completed.add(item1);
-                                } else {
-                                  uncompleted.add(item1);
-                                }
-                                allNotes.items.putIfAbsent(id, () => item1);
-                                table.items1.add(item1);
-
-                                _items.putIfAbsent(item1.id, () => item1);
-                              });
-                              // table.items1.clear();
-                              // if (scheduler.day != DateTime.now().day ||
-                              //     scheduler.month != DateTime.now().month) {
-                              //   if (table.done.indexWhere(
-                              //           (element) => (element == scheduler)) ==
-                              //       -1) {
-                              //     table.done.add(scheduler);
-                              //   }
-                              // }
-
-                              // Navigator.pop(context);
-
-                              allNotes.ee.value = !allNotes.ee.value;
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Home2(
-                                            key: UniqueKey(),
-                                            boo: true,
-                                          )));
-                              // Navigator.pop(context);
-
-                            },
-                            icon: const Icon(
-                              FontAwesomeIcons.arrowUp,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-
-                          ),
+                              },
+                              icon: const Icon(
+                                FontAwesomeIcons.arrowUp,
+                                color: Colors.white,
+                                size: 20,
+                              )),
                         ),
                       ],
                     )),
@@ -879,7 +874,6 @@ class _EditNoteState extends State<EditNote> {
     } else {
       return Container();
     }
-
   }
 
   @override
