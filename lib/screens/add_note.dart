@@ -507,8 +507,10 @@ class _AddNoteState extends State<AddNote> {
               },
               icon: Icon(
                 FontAwesomeIcons.calendar,
+
                 color: Colors.blue[700],
                 size: 20,
+
               ))),
     );
     // return GestureDetector(
@@ -712,7 +714,7 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
               ee.value = !ee.value;
-              Navigator.pop(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Home(key: UniqueKey())));
@@ -770,7 +772,7 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
               ee.value = !ee.value;
-              Navigator.pop(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Home(key: UniqueKey())));
@@ -824,7 +826,7 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
               ee.value = !ee.value;
-              Navigator.pop(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Home(key: UniqueKey())));
@@ -879,7 +881,7 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
               ee.value = !ee.value;
-              Navigator.pop(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Home(key: UniqueKey())));
@@ -1080,7 +1082,6 @@ class _AddNoteState extends State<AddNote> {
 
     return LayoutBuilder(
       builder: (context, constraints) => SingleChildScrollView(
-        reverse: true,
         child: Padding(
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),

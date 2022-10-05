@@ -1187,8 +1187,6 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
             valueListenable: ee,
             builder: (context, ee, _) {
               calculate2();
-              // valueListenable: eventos1,
-              // builder: (context, ee, _) {
               return ListView.builder(
                   shrinkWrap: false,
                   itemCount: events1.length,

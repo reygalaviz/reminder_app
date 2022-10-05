@@ -895,10 +895,12 @@ class _EditNoteState extends State<EditNote> {
 
                             // k = repeat;
 
-                            print(repeat);
-                            Repeat reeeeee = Repeat(id: id, option: repeat);
-                            reeeeee.save();
-                            allNotes.items3.putIfAbsent(id, () => reeeeee);
+                            if (repeat != "One-Time") {
+                              Repeat reeeeee = Repeat(id: id, option: repeat);
+                              reeeeee.save();
+
+                              allNotes.items3.putIfAbsent(id, () => reeeeee);
+                            }
                             notif1.save();
 
                             searchResults.add(item1);
