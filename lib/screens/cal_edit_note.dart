@@ -677,6 +677,8 @@ class _EditNoteState extends State<EditNote> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.id);
+    print(_items.keys);
     if (_items[widget.id] != null) {
       var item = _items[widget.id]!;
       if (selectDate == "") {
@@ -835,30 +837,19 @@ class _EditNoteState extends State<EditNote> {
                                     table.items1.add(item1);
 
                                     _items.putIfAbsent(item1.id, () => item1);
+
+                                    print(_items.keys);
                                   });
-                                  // table.items1.clear();
-                                  // if (scheduler.day != DateTime.now().day ||
-                                  //     scheduler.month != DateTime.now().month) {
-                                  //   if (table.done.indexWhere(
-                                  //           (element) => (element == scheduler)) ==
-                                  //       -1) {
-                                  //     table.done.add(scheduler);
-                                  //   }
-                                  // }
-
-                                  // Navigator.pop(context);
-
-                                  allNotes.ee.value = !allNotes.ee.value;
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Home2(
-                                                key: UniqueKey(),
-                                                boo: true,
-                                              )));
-                                  // Navigator.pop(context);
-
                                 }
+                                allNotes.ee.value = !allNotes.ee.value;
+                                // Navigator.pushReplacement(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) => Home2(
+                                //               key: UniqueKey(),
+                                //               boo: true,
+                                //             )));
+                                Navigator.pop(context);
                               },
                               icon: const Icon(
                                 FontAwesomeIcons.arrowUp,
@@ -872,6 +863,7 @@ class _EditNoteState extends State<EditNote> {
                 ),
               ));
     } else {
+      print("here");
       return Container();
     }
   }
