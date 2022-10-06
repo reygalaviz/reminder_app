@@ -59,7 +59,7 @@ class _EditNoteState extends State<EditNote> {
   String title = "";
   String body = "";
   String daySelect = "";
-  String repeat = "Once";
+  String repeat = "One-Time";
   Color selectColor = const Color.fromARGB(255, 180, 175, 174);
   String priority = "high";
   @override
@@ -635,13 +635,13 @@ class _EditNoteState extends State<EditNote> {
                           children: <Widget>[
                             SimpleDialogOption(
                               onPressed: () {
-                                repeat = "Once";
+                                repeat = "One-Time";
                                 Select.oneTime;
                                 eCont.text = repeat;
                                 Navigator.of(context).pop();
                               },
                               child: const Text(
-                                'Once',
+                                'One-Time',
                                 style: TextStyle(fontSize: 15),
                               ),
                             ),
@@ -770,7 +770,7 @@ class _EditNoteState extends State<EditNote> {
       daySelect = item.time;
     }
     var obj = allNotes.items3[item.id];
-    if (repeat == "Once") {
+    if (repeat == "One-Time") {
       if (obj != null) {
         repeat = obj.option;
       }
