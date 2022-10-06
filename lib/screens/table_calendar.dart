@@ -852,11 +852,14 @@ class Table_CalendarState extends State<Table_Calendar> {
                           child: ListTile(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
-                            title: Text(
-                              item.title,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
+                            title: Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                item.title,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
                             ),
                             subtitle: Text(
                               "${item.time}     ${item.data}",
@@ -891,7 +894,7 @@ class Table_CalendarState extends State<Table_Calendar> {
                     } else {
                       return Container();
                     }
-                  }))
+                  })),
         ]));
   }
 }

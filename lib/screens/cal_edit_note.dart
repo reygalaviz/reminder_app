@@ -56,7 +56,7 @@ class _EditNoteState extends State<EditNote> {
   Color selectColor = const Color.fromARGB(255, 180, 175, 174);
   String priority = "high";
   String be = "beak";
-  String repeat = "Once";
+  String repeat = "One-Time";
   @override
   void initState() {
     super.initState();
@@ -590,7 +590,7 @@ class _EditNoteState extends State<EditNote> {
 
   Widget eventRepeat() {
     return TextFormField(
-        controller: eCont,
+        controller: eCont..text,
         readOnly: true,
         decoration: InputDecoration(
             isDense: true,
@@ -607,13 +607,13 @@ class _EditNoteState extends State<EditNote> {
                           children: <Widget>[
                             SimpleDialogOption(
                               onPressed: () {
-                                repeat = "Once";
+                                repeat = "One-Time";
                                 Select.oneTime;
                                 eCont.text = repeat;
                                 Navigator.of(context).pop();
                               },
                               child: const Text(
-                                'Once',
+                                'One-Time',
                                 style: TextStyle(fontSize: 15),
                               ),
                             ),
@@ -838,8 +838,33 @@ class _EditNoteState extends State<EditNote> {
 
                                     _items.putIfAbsent(item1.id, () => item1);
 
+                                  //});
+                                  // table.items1.clear();
+                                  // if (scheduler.day != DateTime.now().day ||
+                                  //     scheduler.month != DateTime.now().month) {
+                                  //   if (table.done.indexWhere(
+                                  //           (element) => (element == scheduler)) ==
+                                  //       -1) {
+                                  //     table.done.add(scheduler);
+                                  //   }
+                                  // }
+
+                                  // Navigator.pop(context);
+
+                                  //allNotes.ee.value = !allNotes.ee.value;
+                                  // Navigator.pushReplacement(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) => Home2(
+                                  //               key: UniqueKey(),
+                                  //               boo: true,
+                                  //             )));
+                                  //Navigator.pop(context);
+
+
                                     print(_items.keys);
                                   });
+
                                 }
                                 allNotes.ee.value = !allNotes.ee.value;
                                 // Navigator.pushReplacement(

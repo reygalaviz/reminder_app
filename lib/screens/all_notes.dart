@@ -1211,6 +1211,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                             ),
                           ),
                           ListView.builder(
+                              itemExtent: 80,
                               shrinkWrap: true,
                               itemCount: x.length,
                               physics: const NeverScrollableScrollPhysics(),
