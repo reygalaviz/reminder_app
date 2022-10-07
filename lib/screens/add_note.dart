@@ -44,7 +44,7 @@ class _AddNoteState extends State<AddNote> {
   final dCont = TextEditingController();
   final cCont = TextEditingController();
   Color colPick = Colors.white;
-  String repeat = "Once";
+  String repeat = "One-Time";
   String title = '';
   String body = '';
   String selectDate = "";
@@ -678,7 +678,7 @@ class _AddNoteState extends State<AddNote> {
           onPressed: () {
             count.channelCounter++;
 
-            if (repeat == "Once") {
+            if (repeat == "One-Time") {
               Notifs notif = Notifs(
                 id: id,
                 id2: count.channelCounter.toString(),
@@ -712,7 +712,7 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
               ee.value = !ee.value;
-              Navigator.pushReplacement(
+              Navigator.pop(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Home(key: UniqueKey())));
@@ -770,7 +770,7 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
               ee.value = !ee.value;
-              Navigator.pushReplacement(
+              Navigator.pop(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Home(key: UniqueKey())));
@@ -824,7 +824,7 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
               ee.value = !ee.value;
-              Navigator.pushReplacement(
+              Navigator.pop(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Home(key: UniqueKey())));
@@ -879,7 +879,7 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
               ee.value = !ee.value;
-              Navigator.pushReplacement(
+              Navigator.pop(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Home(key: UniqueKey())));
@@ -933,7 +933,7 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
               ee.value = ee.value;
-              Navigator.pushReplacement(
+              Navigator.pop(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Home(key: UniqueKey())));
@@ -949,7 +949,7 @@ class _AddNoteState extends State<AddNote> {
 
   Widget eventRepeat() {
     return TextFormField(
-        controller: rCont..text,
+        controller: rCont..text = 'One-Time',
         readOnly: true,
         decoration: InputDecoration(
             isDense: true,
@@ -966,13 +966,13 @@ class _AddNoteState extends State<AddNote> {
                           children: <Widget>[
                             SimpleDialogOption(
                               onPressed: () {
-                                repeat = "Once";
+                                repeat = "One-Time";
                                 Select.oneTime;
                                 rCont.text = repeat;
                                 Navigator.of(context).pop();
                               },
                               child: const Text(
-                                'Once',
+                                'One-Time',
                                 style: TextStyle(fontSize: 15),
                               ),
                             ),
