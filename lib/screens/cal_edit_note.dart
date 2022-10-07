@@ -812,60 +812,46 @@ class _EditNoteState extends State<EditNote> {
                                   id2: count.channelCounter.toString(),
                                 );
 
-                                if (obj != null) {
-                                  if (obj.option == "Daily") {
-                                    Repeat reeeeee =
-                                        Repeat(id: id, option: "Daily");
-                                    reeeeee.save();
-                                  }
+                                // if (repeat == "Daily") {
+                                //   Repeat reeeeee =
+                                //       Repeat(id: id, option: "Daily");
+                                //   reeeeee.save();
+                                // } else if (repeat == "Weekly"){
+                                //   Repeat reeeeee =
+                                //       Repeat(id: id, option: "Weekly");
+                                //   reeeeee.save();
+                                // } else if (repeat == "Monthly"){
+                                //   Repeat reeeeee =
+                                //       Repeat(id: id, option: "Monthly");
+                                //   reeeeee.save();
+                                // } else if (repeat == "Yearly"){
+                                //   Repeat reeeeee =
+                                //       Repeat(id: id, option: "Yearly");
+                                //   reeeeee.save();
+                                // }
 
-                                  if (repeat != "One-Time") {
-                                    Repeat reeeeee =
-                                        Repeat(id: id, option: repeat);
-                                    reeeeee.save();
-                                  }
-                                  notif1.save();
-                                  setState(() {
-                                    searchResults.add(item1);
-
-                                    if (item.done == true) {
-                                      comp.completed.add(item1);
-                                    } else {
-                                      uncompleted.add(item1);
-                                    }
-                                    allNotes.items.putIfAbsent(id, () => item1);
-                                    table.items1.add(item1);
-
-                                    _items.putIfAbsent(item1.id, () => item1);
-
-                                  //});
-                                  // table.items1.clear();
-                                  // if (scheduler.day != DateTime.now().day ||
-                                  //     scheduler.month != DateTime.now().month) {
-                                  //   if (table.done.indexWhere(
-                                  //           (element) => (element == scheduler)) ==
-                                  //       -1) {
-                                  //     table.done.add(scheduler);
-                                  //   }
-                                  // }
-
-                                  // Navigator.pop(context);
-
-                                  //allNotes.ee.value = !allNotes.ee.value;
-                                  // Navigator.pushReplacement(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) => Home2(
-                                  //               key: UniqueKey(),
-                                  //               boo: true,
-                                  //             )));
-                                  //Navigator.pop(context);
-
-
-                                    print(_items.keys);
-                                  });
-
+                                if (repeat != "One-Time") {
+                                  Repeat reeeeee =
+                                      Repeat(id: id, option: repeat);
+                                  allNotes.items3
+                                      .putIfAbsent(id, () => reeeeee);
+                                  reeeeee.save();
                                 }
+                                notif1.save();
+                                setState(() {
+                                  searchResults.add(item1);
+
+                                  if (item.done == true) {
+                                    comp.completed.add(item1);
+                                  } else {
+                                    uncompleted.add(item1);
+                                  }
+                                  allNotes.items.putIfAbsent(id, () => item1);
+                                  table.items1.add(item1);
+
+                                  _items.putIfAbsent(item1.id, () => item1);
+                                });
+
                                 allNotes.ee.value = !allNotes.ee.value;
                                 Navigator.pushReplacement(
                                     context,
@@ -888,7 +874,6 @@ class _EditNoteState extends State<EditNote> {
                 ),
               ));
     } else {
-      print("here");
       return Container();
     }
   }

@@ -644,6 +644,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
     events1.clear();
     items1.clear();
     //done.clear();
+    done.clear();
     List<String> items5 = [];
     Map<String, Notes> items6 = {};
 
