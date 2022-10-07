@@ -842,14 +842,14 @@ class _EditNoteState extends State<EditNote> {
                                   });
                                 }
                                 allNotes.ee.value = !allNotes.ee.value;
-                                // Navigator.pushReplacement(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => Home2(
-                                //               key: UniqueKey(),
-                                //               boo: true,
-                                //             )));
-                                Navigator.pop(context);
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Home2(
+                                              key: UniqueKey(),
+                                              boo: true,
+                                            )));
+                                //Navigator.pop(context);
                               },
                               icon: const Icon(
                                 FontAwesomeIcons.arrowUp,
