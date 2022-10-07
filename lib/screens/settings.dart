@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:reminder_app/main.dart';
-import 'package:reminder_app/screens/settings-language.dart';
 import 'package:reminder_app/screens/settings_faq.dart';
 import 'package:reminder_app/screens/settings_policies.dart';
 import 'package:reminder_app/screens/settings_sec.dart';

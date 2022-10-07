@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "997705828041",
+    "project_id": "reminder-app-cf965",
+    "storage_bucket": "reminder-app-cf965.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997705828041:android:8356305a697e4f02636f18",
+        "android_client_info": {
+          "package_name": "com.te.reminder_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "997705828041-2go7k03u1ih5ms6dbi1i1tbaiq9a2h76.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-p1CWeMEvWGxl-e0CKV0nZQ_KSYE_WTs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "997705828041-2go7k03u1ih5ms6dbi1i1tbaiq9a2h76.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "997705828041-n5dlhai9q7hsl7unq3ugh9m3444kk2v3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.te.reminder-app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
