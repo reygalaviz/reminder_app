@@ -38,12 +38,10 @@ dependencies:
   font_awesome_flutter: ^10.1.0
   drag_and_drop_lists: ^0.3.2+2
   flutter_slidable: ^1.3.1
-  bottom_picker: ^1.9.1
   modal_bottom_sheet: ^2.1.0
   flutter_markdown: ^0.6.11
   get:
   get_storage:
-  roundcheckbox: ^2.0.5
   firebase_core: ^1.24.0
   firebase_analytics: ^9.3.8
   firebase_auth: ^3.11.2

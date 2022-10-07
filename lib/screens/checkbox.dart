@@ -24,11 +24,14 @@ class CheckBoxNote extends StatefulWidget {
   State<CheckBoxNote> createState() => _CheckBoxNoteState();
 }
 
-class _CheckBoxNoteState extends State<CheckBoxNote> {
+class _CheckBoxNoteState extends State<CheckBoxNote>
+    with SingleTickerProviderStateMixin {
   final _db = Localstore.instance;
   // final _items = <String, store.Notes>{};
   // StreamSubscription<Map<String, dynamic>>? _subscription;
   // final _notifs = <String, Notifs>{};
+  late AnimationController _animationController;
+  late Animation<double> _animation;
 
   Color colPick2 = const Color.fromARGB(255, 255, 254, 254);
   String selectDate = "";
@@ -39,6 +42,15 @@ class _CheckBoxNoteState extends State<CheckBoxNote> {
   String id4 = "";
   DateFormat format = DateFormat("yyyy-MM-dd");
   bool? val = false;
+  @override
+  void initState() {
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    _animation = new Tween<double>(begin: 0, end: 1).animate(
+        new CurvedAnimation(
+            parent: _animationController, curve: Curves.easeInOutCirc));
+  }
+
   @override
   Widget build(BuildContext context) {
     // print(all.items);
