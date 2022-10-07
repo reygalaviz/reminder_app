@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -40,6 +42,8 @@ class AddNote extends StatefulWidget {
 
 class _AddNoteState extends State<AddNote> {
   DateFormat format = DateFormat("yyyy-MM-dd");
+  final tCont = TextEditingController();
+  final desCont = TextEditingController();
   final rCont = TextEditingController();
   final dCont = TextEditingController();
   final cCont = TextEditingController();
@@ -933,6 +937,7 @@ class _AddNoteState extends State<AddNote> {
 
               selectColor = const Color.fromARGB(255, 180, 175, 175);
               ee.value = ee.value;
+
               Navigator.pop(
                   context,
                   MaterialPageRoute(
@@ -1088,6 +1093,7 @@ class _AddNoteState extends State<AddNote> {
             child: Form(
               child: Column(children: [
                 TextFormField(
+                  controller: tCont,
                   cursorColor: Theme.of(context).primaryColor,
                   maxLines: 2,
                   autocorrect: false,
@@ -1101,6 +1107,7 @@ class _AddNoteState extends State<AddNote> {
                   autofocus: true,
                 ),
                 TextFormField(
+                  controller: desCont,
                   cursorColor: Theme.of(context).primaryColor,
                   maxLines: 3,
                   autocorrect: false,

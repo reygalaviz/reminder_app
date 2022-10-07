@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
+import 'package:reminder_app/firebase_options.dart';
 import 'package:reminder_app/models/notes_operation.dart';
 import 'package:reminder_app/screens/home.dart';
-import 'package:reminder_app/screens/settings-language.dart';
 import 'package:reminder_app/themes/theme_model.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter/material.dart';
@@ -27,19 +28,27 @@ List<String> notes = <String>[];
 List<Notes> uncompleted = <Notes>[];
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await _configureLocalTimeZone();
   await NotificationService().init();
+
   var items = await store.db.collection('notes').get();
 
   if (items != null) {
     channelCounter = items.length;
   }
+
   initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 
 Future<void> openMain({required String? payload}) async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await _configureLocalTimeZone();
   await NotificationService().init();
   runApp(const MyApp());
@@ -83,7 +92,6 @@ class MyApp extends StatelessWidget {
             theme: themeModel.isDark
                 ? ThemeModel.darkTheme
                 : ThemeModel.lightTheme,
-            translations: LocalizationService(),
             locale: Locale('en', 'US'),
             fallbackLocale: Locale('en', 'US'),
             home: const Home(),
