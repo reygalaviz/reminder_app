@@ -1152,6 +1152,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
     items5.clear();
     // initNumber = items.keys.length;
     done.sort(((a, b) => a.compareTo(b)));
+    // bel.value = !bel.value;
     for (var value in done) {
       List<Notes> list = [];
 
@@ -1168,17 +1169,8 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
       } else if (list.isNotEmpty) {
         events1.putIfAbsent(value, () => list);
       }
-      //events1.removeWhere((key, value) => value.isEmpty);
-      // List<DateTime> j = [];
-      // events1.forEach((key, value) {
-      //   if (done.indexWhere((element) => element == key) == -1) {
-      //     j.add(key);
-      //   }
-      // });
-      // for (var element in j) {
-      //   events1.remove(element);
-      // }
     }
+
     // ee.value = !ee.value;
   }
 

@@ -851,14 +851,13 @@ class _EditNoteState extends State<EditNote> {
 
                                   _items.putIfAbsent(item1.id, () => item1);
                                 });
-
+                                table.bel.value = !table.bel.value;
                                 allNotes.ee.value = !allNotes.ee.value;
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => Home2(
+                                        builder: (context) => Home(
                                               key: UniqueKey(),
-                                              boo: true,
                                             )));
                                 //Navigator.pop(context);
                               },
