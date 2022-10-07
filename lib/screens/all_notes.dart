@@ -1239,7 +1239,7 @@ class _AllNotesState extends State<AllNotes> with TickerProviderStateMixin {
                                     decoration: BoxDecoration(
                                         color: Color(int.parse(item.color))
                                             .withOpacity(1),
-                                        borderRadius: BorderRadius.all(
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(10))),
                                     child: ListTile(
                                       shape: RoundedRectangleBorder(
